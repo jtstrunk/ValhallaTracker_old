@@ -9,36 +9,37 @@
 <body>
     {% for row in gameData %}
     <div id="output">
-        <h1>New Game Entry:</h1>
+        <div>
+            <h1>New Game Entry:</h1>
+            <h3>Game ID: {{row[0]}}</h3>
+        </div>
         <div class="playerout" id="Winner">
-            <div>
-                <span>Winner:</span>
-                <span id="p1Name">{{ row[1] }}</span>
-                <br>
-                <span>Score:</span>
-                <span id="p1Score">{{ row[2] }}</span>
-            </div>
+            <span>Winner:</span>
+            <span>{{ row[1] }}</span>
+            <br>
+            <span>Score:&nbsp;&nbsp;&nbsp;</span>
+            <span>{{ row[2] }}</span>
         </div>
         <div class="playerout">
             <span>Second:</span>
-            <span id="p2Name">{{ row[3] }}</span>
+            <span>{{ row[3] }}</span>
             <br>
-            <span>Score:</span>
-            <span id="p2Score">{{ row[4] }}</span>
+            <span>Score:&nbsp;&nbsp;&nbsp;</span>
+            <span>{{ row[4] }}</span>
         </div>
         <div class="playerout">
             <span>Third:</span>
-            <span id="p3Name"></span>
+            <span>{{ row[5] }}</span>
             <br>
             <span>Score:</span>
-            <span id="p3Score"></span>
+            <span>{{ row[6] }}</span>
         </div>
         <div class="playerout">
             <span>Fourth:</span>
-            <span id="p4Name"></span>
+            <span>{{ row[7] }}</span>
             <br>
-            <span>Score:</span>
-            <span id="p5Score"></span>
+            <span>Score:&nbsp;</span>
+            <span>{{ row[8] }}</span>
         </div>
     </div>
     {% endfor %}

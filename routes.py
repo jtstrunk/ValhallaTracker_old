@@ -35,23 +35,29 @@ def addrec():
             player1Score = request.form['Player1_Score']
             player2 = request.form['Player2']
             player2Score = request.form['Player2_Score']
+            player3 = request.form['Player3']
+            player3Score = request.form['Player3_Score']
+            player4 = request.form['Player4']
+            player4Score = request.form['Player4_Score']
             with sqlite3.connect('brotha.db') as conn:
                 c = conn.cursor()
                 c.execute("SELECT MAX(game_id) + 1 FROM DominionGames")
                 newGameID = c.fetchone()[0]
                 print(newGameID)
                 print("Being inserted")
-                c.execute("INSERT INTO DominionGames (game_id, Player1Name, Player1Score, Player2Name, Player2Score) VALUES (?, ?, ?, ?, ?)", (newGameID, player1, player1Score, player2, player2Score))
+                c.execute("INSERT INTO DominionGames (game_id, Player1Name, Player1Score, Player2Name, Player2Score, Player3Name, Player3Score, Player4Name, Player4Score) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (newGameID, player1, player1Score, player2, player2Score, player3, player3Score, player4, player4Score))
                 conn.commit()
+                print("Inserted")
         finally:
-            return render_template('dominion.html', title='Home')
+            print("Redircting")
+            return redirect("http://localhost:5000/added")
         
 @app.route('/added', methods = ['GET'])
 def added():
     with sqlite3.connect('brotha.db') as conn:
         c = conn.cursor()
         c.execute("SELECT * FROM DominionGames")
-        c.execute("SELECT * from DominionGAMES WHERE game_id = 1")
+        c.execute("SELECT * from DominionGAMES WHERE game_id = 7")
         gameData = c.fetchall()
         print(gameData)
 

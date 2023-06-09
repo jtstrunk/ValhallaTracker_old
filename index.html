@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,15 +7,15 @@
     <title>Joshua</title>
 </head>
 <body>
-    <h1>Hello, {{user.username}}!</h1>
+    {% extends "base.html" %}
+
+    {% block content %}
+        <h1>Hello, !</h1>
+        <h1>DAD</h1>
+        <h1>{{ user.username }}</h1>
+    {% endblock %}
+
 </body>
-</html> -->
+</html>
 
 
-{% extends "base.html" %}
-
-{% block content %}
-    <h1>Hello, !</h1>
-    <h1>DAD</h1>
-    <h1>{{ user.username }}</h1>
-{% endblock %}

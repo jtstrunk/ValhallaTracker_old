@@ -2,6 +2,11 @@ body{
     display: flex;
     justify-content: center;
     flex-direction: column;
+    align-items: center;
+}
+
+#title{
+    width: 500px;
 }
 
 .players{
@@ -39,13 +44,13 @@ form button{
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
-    width: 500px;
+    width: 540px;
 }
 
 #Winner{
-    width: 500px;
-    display: flex;
-    justify-content: center;
+
+    margin-right: 185px;
+    margin-left: 185px;
 
 }
 
@@ -54,12 +59,17 @@ form button{
 }
 
 .playerout{
-    width: 150px;
+    width: 170px;
     margin: 5px;
     margin-bottom: 25px;
 }
 
 .playerout span {
     font-size: x-large;
+    width: 150px;
+}
 
+#content {
+    display: flex;
+    justify-content: center;
 }

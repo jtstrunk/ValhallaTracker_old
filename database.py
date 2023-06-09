@@ -2,10 +2,6 @@ import sqlite3
 # from flask import jsonify
 # from flask import request
 
-class DominionGame('brotha.db'):
-    __tablename__ = 'DominionGames'
-    id = db.Column(db.integer, primary_key=true)
-    
 
 conn = sqlite3.connect('brotha.db')
 c = conn.cursor()
