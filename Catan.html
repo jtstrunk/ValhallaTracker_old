@@ -5,16 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <title>Dominion Game</title>
+    <title>Catan Game</title>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </head>
 <body>
     {% extends "base.html" %}
 
     {% block content %}
-    <h1 id="title">Enter Scores for a Dominion Game</h1>
+    <h1 id="title">Enter Scores for a Catan Game</h1>
     <div id="content">
-        <form action = "{{ url_for('addDominion') }}" method = "POST">
+        <form action = "{{ url_for('addCatan') }}" method = "POST">
             <div class="players">
                 <label for="Player1">Winner</label>
                 <input type="text" id="Player1" name="Player1" placeholder="Name">

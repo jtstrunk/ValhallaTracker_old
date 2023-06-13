@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>Game Records</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/GameRecordsStyles.css') }}">
+    <script src="{{ url_for('static', filename='js/GameRecord.js') }}"></script>
+  </head>
+  <body>
+    <h1>Dominion Games</h1>
+    {% for item in Dominiondata %}
+      <div id="domGames">
+        <span>ID: {{ item[0] }}</span>
+        <div>
+          <span>Winner: {{ item[1] }}</span>
+          <span>Score: {{ item[2] }}</span>
+          <span>Second: {{ item[3] }}</span>
+          <span>Score: {{ item[4] }}</span>
+        </div>
+        <div>
+          <span>Third: {{ item[5] }}</span>
+          <span>Score: {{ item[6] }}</span>
+          <span>Fourth: {{ item[7] }}</span>
+          <span>Score: {{ item[8] }}</span>
+        </div>
+
+      </div>
+    {% endfor %}
+    <h1>Catan Games</h1>
+    {% for item in Catandata %}
+      <div id="catGames">
+        <span>ID: {{ item[0] }}</span>
+        <span>Winner: {{ item[1] }}</span>
+        <span>Score: {{ item[2] }}</span>
+        <span>Second: {{ item[3] }}</span>
+        <span>Score: {{ item[4] }}</span>
+        <span>Third: {{ item[5] }}</span>
+        <span>Score: {{ item[6] }}</span>
+        <span>Fourth: {{ item[7] }}</span>
+        <span>Score: {{ item[8] }}</span>
+      </div>
+    {% endfor %}
+  </body>
+</html>

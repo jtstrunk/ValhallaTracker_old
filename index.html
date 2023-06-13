@@ -10,9 +10,16 @@
     {% extends "base.html" %}
 
     {% block content %}
-        <h1>Hello, !</h1>
-        <h1>DAD</h1>
-        <h1>{{ user.username }}</h1>
+        <h1>Hello, {{ user.username }}!</h1>
+        <h2>Welcome to my board game tracker</h2>
+        <form  action = "{{ url_for('Dominion') }}" method = "GET">
+            <button>Click here to add a Dominion Record</button>
+        </form>
+        <form  action = "{{ url_for('Catan') }}"  method = "GET">
+            <button>Click here to add a Catan Record</button>
+        </form>
+        
+
     {% endblock %}
 
 </body>
