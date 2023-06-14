@@ -7,6 +7,9 @@
     <title>Game Out</title>
 </head>
 <body>
+    {% extends "base.html" %}
+
+    {% block content %}
     {% for row in gameData %}
     <div id="output">
         <div>
@@ -42,6 +45,10 @@
             <span>{{ row[8] }}</span>
         </div>
     </div>
+    <div>
+        <a href="/showGames">View All Catan Records</a>
+    </div>
     {% endfor %}
+    {% endblock %}
 </body>
 </html>

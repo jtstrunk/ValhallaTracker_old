@@ -4,23 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/baseStyles.css') }}">
     <title>Base</title>
 </head>
 <body>
     <nav>
-        <a href="/login">Login</a>
+        <a href="/addGame" class="">Add Record</a>
+        <a href="/showGames" class="">View Records</a>
+        <a href="/index" class="">Return Home</a>
+        <!-- <a href="/login">Login</a> -->
         
     </nav>
-    <hr>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
+
     {% block content %}
     {% endblock %}
 </body>

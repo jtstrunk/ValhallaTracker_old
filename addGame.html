@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Add Game Record</title>
+</head>
+<body>
+    {% extends "base.html" %}
+
+    {% block content %}
+    <div id="addGame">
+        <a href="/Catan">
+            <div class="card">
+                <span>Catan</span>
+                <p>Add a Catan Record</p>
+            </div>
+        </a>
+        <a href="/Dominion">
+            <div class="card">
+                <span>Dominion</span    >
+                <p>Add a Dominion Record</p>
+            </div>
+        </a>
+        
+    </div>
+    {% endblock %}
+</body>
+</html>

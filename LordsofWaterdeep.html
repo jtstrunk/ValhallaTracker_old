@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Dominion Game</title>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</head>
+<body>
+    {% extends "base.html" %}
+
+    {% block content %}
+    <h1 id="title">Enter Scores for a Lords of Waterdeep Game</h1>
+    <div id="content">
+        <form action = "{{ url_for('addLordsofWaterdeep') }}" method = "POST">
+            <div class="players">
+                <label for="Player1">Winner</label>
+                <input type="text" id="Player1" name="Player1" placeholder="Name">
+
+                <label for="Player1_Score">Score</label>
+                <input type="text" name="Player1_Score" id="Player1_Score" placeholder="Score">
+            </div>
+            <div class="players">
+                <label for="Player2">Runner Up</label>
+                <input type="text" id="Player2" name="Player2" placeholder="Name">
+
+                <label for="Player2_Score">Score</label>
+                <input type="text" name="Player2_Score" id="Player2_Score" placeholder="Score">
+            </div>
+            <div class="players">
+                <label for="Player3">Third Place</label>
+                <input type="text" id="Player3" name="Player3" placeholder="Name">
+
+                <label for="Player3_Score">Score</label>
+                <input type="text" name="Player3_Score" id="Player3_Score" placeholder="Score">
+            </div>
+            <div class="players">
+                <label for="Player4">Fourth Place</label>
+                <input type="text" id="Player4" name="Player4" placeholder="Name">
+
+                <label for="Player4_Score">Score</label>
+                <input type="text" name="Player4_Score" id="Player4_Score" placeholder="Score">
+            </div>
+            <div class="players">
+                <label for="Player5">Fifth Place</label>
+                <input type="text" id="Player5" name="Player5" placeholder="Name">
+
+                <label for="Player5_Score">Score</label>
+                <input type="text" name="Player5_Score" id="Player5_Score" placeholder="Score">
+            </div>
+            <button>Enter Game</button>
+        </form>
+    </div>
+    {% endblock %}
+</body>
+</html>

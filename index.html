@@ -12,12 +12,13 @@
     {% block content %}
         <h1>Hello, {{ user.username }}!</h1>
         <h2>Welcome to my board game tracker</h2>
-        <form  action = "{{ url_for('Dominion') }}" method = "GET">
-            <button>Click here to add a Dominion Record</button>
-        </form>
-        <form  action = "{{ url_for('Catan') }}"  method = "GET">
-            <button>Click here to add a Catan Record</button>
-        </form>
+        <p>This is still under development as I work on it for fun</p>
+        <span>Currently Supported Games</span>
+        <li>
+            <lu>Dominion</lu>
+            <lu>Catan</lu>
+            <lu>Lords of Waterdeep</lu>
+        </li>
         
 
     {% endblock %}

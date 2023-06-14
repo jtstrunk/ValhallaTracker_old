@@ -5,10 +5,13 @@
     <script src="{{ url_for('static', filename='js/GameRecord.js') }}"></script>
   </head>
   <body>
+    {% extends "base.html" %}
+
+    {% block content %}
     <h1>Dominion Games</h1>
     {% for item in Dominiondata %}
       <div id="domGames">
-        <span>ID: {{ item[0] }}</span>
+        <span>Game ID: {{ item[0] }}</span>
         <div>
           <span>Winner: {{ item[1] }}</span>
           <span>Score: {{ item[2] }}</span>
@@ -27,7 +30,7 @@
     <h1>Catan Games</h1>
     {% for item in Catandata %}
       <div id="catGames">
-        <span>ID: {{ item[0] }}</span>
+        <span>Game ID: {{ item[0] }}</span>
         <span>Winner: {{ item[1] }}</span>
         <span>Score: {{ item[2] }}</span>
         <span>Second: {{ item[3] }}</span>
@@ -38,5 +41,35 @@
         <span>Score: {{ item[8] }}</span>
       </div>
     {% endfor %}
+    <h1>Lords of Waterdeep Games</h1>
+    {% for item in LordsofWaterdeepdata %}
+      <div id="lorGames">
+        <span>Game ID: {{ item[0] }}</span>
+        <span>Winner: {{ item[1] }}</span>
+        <span>Score: {{ item[2] }}</span>
+        <span>Second: {{ item[3] }}</span>
+        <span>Score: {{ item[4] }}</span>
+        <span>Third: {{ item[5] }}</span>
+        <span>Score: {{ item[6] }}</span>
+        <span>Fourth: {{ item[7] }}</span>
+        <span>Score: {{ item[8] }}</span>
+        <span>Fourth: {{ item[9] }}</span>
+        <span>Score: {{ item[10] }}</span>
+      </div>
+    {% endfor %}
+    <h1>Coup Games</h1>
+    {% for item in Coupdata %}
+      <div id="couGames">
+        <span>Game ID: {{ item[0] }}</span>
+        <span>Winner: {{ item[1] }}</span>
+        <span>Cards Left: {{ item[2] }}</span>
+        <span>Second: {{ item[3] }}</span>
+        <span>Third: {{ item[4] }}</span>
+        <span>Fourth: {{ item[5] }}</span>
+        <span>Fifth: {{ item[6] }}</span>
+        <span>Sixth: {{ item[7] }}</span>
+      </div>
+    {% endfor %}
+    {% endblock %}
   </body>
 </html>

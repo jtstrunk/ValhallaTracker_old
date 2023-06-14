@@ -13,40 +13,39 @@
     {% for row in gameData %}
     <div id="output">
         <div>
-            <h1>New Dominion Entry:</h1>
+            <h1>New Coup Entry:</h1>
             <h3>Game ID: {{row[0]}}</h3>
         </div>
         <div class="playerout" id="Winner">
             <span>Winner:</span>
             <span>{{ row[1] }}</span>
             <br>
-            <span>Score:&nbsp;&nbsp;&nbsp;</span>
+            <span>Cards left:&nbsp;&nbsp;&nbsp;</span>
             <span>{{ row[2] }}</span>
         </div>
         <div class="playerout">
             <span>Second:</span>
             <span>{{ row[3] }}</span>
-            <br>
-            <span>Score:&nbsp;&nbsp;&nbsp;</span>
-            <span>{{ row[4] }}</span>
         </div>
         <div class="playerout">
             <span>Third:</span>
+            <span>{{ row[4] }}</span>
+        </div>
+        <div class="playerout">
+            <span>Fourth:</span>
             <span>{{ row[5] }}</span>
-            <br>
-            <span>Score:</span>
+        </div>
+        <div class="playerout">
+            <span>Fourth:</span>
             <span>{{ row[6] }}</span>
         </div>
         <div class="playerout">
             <span>Fourth:</span>
             <span>{{ row[7] }}</span>
-            <br>
-            <span>Score:&nbsp;</span>
-            <span>{{ row[8] }}</span>
         </div>
     </div>
     <div>
-        <a href="/showGames">View All Records</a>
+        <a href="/showGames">View All Coup Records</a>
     </div>
     {% endfor %}
     {% endblock %}
