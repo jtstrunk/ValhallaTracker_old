@@ -73,3 +73,62 @@ form button{
     display: flex;
     justify-content: center;
 }
+
+.card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid black;
+    width: 200px;
+    height: 310px;
+    margin: 25px
+}
+
+.card p {
+    text-align: center;
+}
+
+#addGame {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 800px;
+}
+
+#addGame a{
+    text-decoration: none;
+    color: black;
+}
+
+#CoupBTN{
+    margin-top: 28px;
+}
+
+.primary-button {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    border: 1px solid #007bff ;
+
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    width: 182.67px;
+    height: 26.67px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.primary-button:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}

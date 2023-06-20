@@ -5,12 +5,49 @@ body{
     align-items: center;
 }
 
-#domGames{
+.domGames{
     background-color: blanchedalmond;
     padding: 10px;
     margin-top: 5px;
     margin-bottom: 5px;
     border-radius: 10px;
+}
+
+.catGames{
+    background-color: blanchedalmond;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+}
+
+.lorGames{
+    background-color: blanchedalmond;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+}
+
+.couGames{
+    background-color: blanchedalmond;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+}
+
+.lovGames{
+    background-color: blanchedalmond;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+}
+
+.gameInfo span{
+    margin-left: 3px;
+    margin-right: 3px;
 }
 
 .Hide{

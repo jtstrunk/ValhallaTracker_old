@@ -10,15 +10,13 @@
     {% block content %}
     <h1>Dominion Games</h1>
     {% for item in Dominiondata %}
-      <div id="domGames">
+      <div class="domGames">
         <span>Game ID: {{ item[0] }}</span>
-        <div>
+        <div class="gameInfo">
           <span>Winner: {{ item[1] }}</span>
           <span>Score: {{ item[2] }}</span>
           <span>Second: {{ item[3] }}</span>
           <span>Score: {{ item[4] }}</span>
-        </div>
-        <div>
           <span>Third: {{ item[5] }}</span>
           <span>Score: {{ item[6] }}</span>
           <span>Fourth: {{ item[7] }}</span>
@@ -29,45 +27,69 @@
     {% endfor %}
     <h1>Catan Games</h1>
     {% for item in Catandata %}
-      <div id="catGames">
-        <span>Game ID: {{ item[0] }}</span>
-        <span>Winner: {{ item[1] }}</span>
-        <span>Score: {{ item[2] }}</span>
-        <span>Second: {{ item[3] }}</span>
-        <span>Score: {{ item[4] }}</span>
-        <span>Third: {{ item[5] }}</span>
-        <span>Score: {{ item[6] }}</span>
-        <span>Fourth: {{ item[7] }}</span>
-        <span>Score: {{ item[8] }}</span>
+      <div class="catGames">
+          <span>Game ID: {{ item[0] }}</span>
+        <div class="gameInfo">
+          <span>Winner: {{ item[1] }}</span>
+          <span>Score: {{ item[2] }}</span>
+          <span>Second: {{ item[3] }}</span>
+          <span>Score: {{ item[4] }}</span>
+          <span>Third: {{ item[5] }}</span>
+          <span>Score: {{ item[6] }}</span>
+          <span>Fourth: {{ item[7] }}</span>
+          <span>Score: {{ item[8] }}</span>
+        </div>
+
       </div>
     {% endfor %}
     <h1>Lords of Waterdeep Games</h1>
     {% for item in LordsofWaterdeepdata %}
-      <div id="lorGames">
+      <div class="lorGames">
         <span>Game ID: {{ item[0] }}</span>
-        <span>Winner: {{ item[1] }}</span>
-        <span>Score: {{ item[2] }}</span>
-        <span>Second: {{ item[3] }}</span>
-        <span>Score: {{ item[4] }}</span>
-        <span>Third: {{ item[5] }}</span>
-        <span>Score: {{ item[6] }}</span>
-        <span>Fourth: {{ item[7] }}</span>
-        <span>Score: {{ item[8] }}</span>
-        <span>Fourth: {{ item[9] }}</span>
-        <span>Score: {{ item[10] }}</span>
+        <div class="gameInfo">
+          <span>Winner: {{ item[1] }}</span>
+          <span>Score: {{ item[2] }}</span>
+          <span>Second: {{ item[3] }}</span>
+          <span>Score: {{ item[4] }}</span>
+          <span>Third: {{ item[5] }}</span>
+          <span>Score: {{ item[6] }}</span>
+          <span>Fourth: {{ item[7] }}</span>
+          <span>Score: {{ item[8] }}</span>
+          <span>Fourth: {{ item[9] }}</span>
+          <span>Score: {{ item[10] }}</span>
+        </div>
+
       </div>
     {% endfor %}
     <h1>Coup Games</h1>
     {% for item in Coupdata %}
-      <div id="couGames">
+      <div class="couGames">
         <span>Game ID: {{ item[0] }}</span>
-        <span>Winner: {{ item[1] }}</span>
-        <span>Cards Left: {{ item[2] }}</span>
-        <span>Second: {{ item[3] }}</span>
-        <span>Third: {{ item[4] }}</span>
-        <span>Fourth: {{ item[5] }}</span>
-        <span>Fifth: {{ item[6] }}</span>
-        <span>Sixth: {{ item[7] }}</span>
+        <div class="gameInfo">
+          <span>Winner: {{ item[1] }}</span>
+          <span>Cards Left: {{ item[2] }}</span>
+          <span>Second: {{ item[3] }}</span>
+          <span>Third: {{ item[4] }}</span>
+          <span>Fourth: {{ item[5] }}</span>
+          <span>Fifth: {{ item[6] }}</span>
+          <span>Sixth: {{ item[7] }}</span>
+        </div>
+
+      </div>
+    {% endfor %}
+    <h1>Love Letter Games</h1>
+    {% for item in LoveLetterdata %}
+      <div class="lovGames">
+        <span>Game ID: {{ item[0] }}</span>
+        <div class="gameInfo">
+          <span>Winner: {{ item[1] }}</span>
+          <span>Second: {{ item[2] }}</span>
+          <span>Third: {{ item[3] }}</span>
+          <span>Fourth: {{ item[4] }}</span>
+          <span>Fifth: {{ item[5] }}</span>
+          <span>Sixth: {{ item[6] }}</span>
+        </div>
+
       </div>
     {% endfor %}
     {% endblock %}
