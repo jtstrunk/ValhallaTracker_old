@@ -2,96 +2,166 @@
   <head>
     <title>Game Records</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/GameRecordsStyles.css') }}">
-    <script src="{{ url_for('static', filename='js/GameRecord.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/GameRecord.js') }}" defer></script>
   </head>
   <body>
     {% extends "base.html" %}
 
     {% block content %}
-    <h1>Dominion Games</h1>
-    {% for item in Dominiondata %}
-      <div class="domGames">
-        <span>Game ID: {{ item[0] }}</span>
-        <div class="gameInfo">
-          <span>Winner: {{ item[1] }}</span>
-          <span>Score: {{ item[2] }}</span>
-          <span>Second: {{ item[3] }}</span>
-          <span>Score: {{ item[4] }}</span>
-          <span>Third: {{ item[5] }}</span>
-          <span>Score: {{ item[6] }}</span>
-          <span>Fourth: {{ item[7] }}</span>
-          <span>Score: {{ item[8] }}</span>
+    
+    <div class="gameWrapper">
+      <p>Dominion Games</p>
+      {% for item in Dominiondata %}
+        <div class="domGames table">
+          <table>
+            <tr>
+              <th>Game Id</th>
+              <th>Winner</th>
+              <th>Score</th>
+              <th>Second</th>
+              <th>Score</th>
+              <th>Third</th>
+              <th>Score</th>
+              <th>Fourth</th>
+              <th>Score</th>
+            </tr>
+            <tr>
+              <td>{{ item[0] }}</td>
+              <td>{{ item[1] }}</td>
+              <td>{{ item[2] }}</td>
+              <td>{{ item[3] }}</td>
+              <td>{{ item[4] }}</td>
+              <td>{{ item[5] }}</td>
+              <td>{{ item[6] }}</td>
+              <td>{{ item[7] }}</td>
+              <td>{{ item[8] }}</td>
+            </tr>
+          </table>
         </div>
-
-      </div>
-    {% endfor %}
-    <h1>Catan Games</h1>
-    {% for item in Catandata %}
-      <div class="catGames">
-          <span>Game ID: {{ item[0] }}</span>
-        <div class="gameInfo">
-          <span>Winner: {{ item[1] }}</span>
-          <span>Score: {{ item[2] }}</span>
-          <span>Second: {{ item[3] }}</span>
-          <span>Score: {{ item[4] }}</span>
-          <span>Third: {{ item[5] }}</span>
-          <span>Score: {{ item[6] }}</span>
-          <span>Fourth: {{ item[7] }}</span>
-          <span>Score: {{ item[8] }}</span>
+      {% endfor %}
+    </div>
+    <div class="gameWrapper">
+      <p>Catan Games</p>
+      {% for item in Catandata %}
+        <div class="catGames table">
+          <table>
+            <tr>
+              <th>Game Id</th>
+              <th>Winner</th>
+              <th>Score</th>
+              <th>Second</th>
+              <th>Score</th>
+              <th>Third</th>
+              <th>Score</th>
+              <th>Fourth</th>
+              <th>Score</th>
+            </tr>
+            <tr>
+              <td>{{ item[0] }}</td>
+              <td>{{ item[1] }}</td>
+              <td>{{ item[2] }}</td>
+              <td>{{ item[3] }}</td>
+              <td>{{ item[4] }}</td>
+              <td>{{ item[5] }}</td>
+              <td>{{ item[6] }}</td>
+              <td>{{ item[7] }}</td>
+              <td>{{ item[8] }}</td>
+            </tr>
+          </table>
         </div>
-
-      </div>
-    {% endfor %}
-    <h1>Lords of Waterdeep Games</h1>
-    {% for item in LordsofWaterdeepdata %}
-      <div class="lorGames">
-        <span>Game ID: {{ item[0] }}</span>
-        <div class="gameInfo">
-          <span>Winner: {{ item[1] }}</span>
-          <span>Score: {{ item[2] }}</span>
-          <span>Second: {{ item[3] }}</span>
-          <span>Score: {{ item[4] }}</span>
-          <span>Third: {{ item[5] }}</span>
-          <span>Score: {{ item[6] }}</span>
-          <span>Fourth: {{ item[7] }}</span>
-          <span>Score: {{ item[8] }}</span>
-          <span>Fourth: {{ item[9] }}</span>
-          <span>Score: {{ item[10] }}</span>
+      {% endfor %}
+    </div>
+    <div class="gameWrapper">
+      <p>Lords of Waterdeep Games</p>
+      {% for item in LordsofWaterdeepdata %}
+        <div class="lorGames table">
+          <table>
+            <tr>
+              <th>Game Id</th>
+              <th>Winner</th>
+              <th>Score</th>
+              <th>Second</th>
+              <th>Score</th>
+              <th>Third</th>
+              <th>Score</th>
+              <th>Fourth</th>
+              <th>Score</th>
+              <th>Fifth</th>
+              <th>Score</th>
+            </tr>
+            <tr>
+              <td>{{ item[0] }}</td>
+              <td>{{ item[1] }}</td>
+              <td>{{ item[2] }}</td>
+              <td>{{ item[3] }}</td>
+              <td>{{ item[4] }}</td>
+              <td>{{ item[5] }}</td>
+              <td>{{ item[6] }}</td>
+              <td>{{ item[7] }}</td>
+              <td>{{ item[8] }}</td>
+              <td>{{ item[9] }}</td>
+              <td>{{ item[10] }}</td>
+            </tr>
+          </table>
         </div>
-
-      </div>
-    {% endfor %}
-    <h1>Coup Games</h1>
-    {% for item in Coupdata %}
-      <div class="couGames">
-        <span>Game ID: {{ item[0] }}</span>
-        <div class="gameInfo">
-          <span>Winner: {{ item[1] }}</span>
-          <span>Cards Left: {{ item[2] }}</span>
-          <span>Second: {{ item[3] }}</span>
-          <span>Third: {{ item[4] }}</span>
-          <span>Fourth: {{ item[5] }}</span>
-          <span>Fifth: {{ item[6] }}</span>
-          <span>Sixth: {{ item[7] }}</span>
+      {% endfor %}
+    </div>
+    <div class="gameWrapper">
+      <p>Coup Games</p>
+      {% for item in Coupdata %}
+        <div class="couGames table">
+          <table>
+            <tr>
+              <th>Game Id</th>
+              <th>Winner</th>
+              <th>Lives</th>
+              <th>Second</th>
+              <th>Third</th>
+              <th>Fourth</th>
+              <th>Fifth</th>
+              <th>Sixth</th>
+            </tr>
+            <tr>
+              <td>{{ item[0] }}</td>
+              <td>{{ item[1] }}</td>
+              <td>{{ item[2] }}</td>
+              <td>{{ item[3] }}</td>
+              <td>{{ item[4] }}</td>
+              <td>{{ item[5] }}</td>
+              <td>{{ item[6] }}</td>
+              <td>{{ item[7] }}</td>
+            </tr>
+          </table>
         </div>
-
-      </div>
-    {% endfor %}
-    <h1>Love Letter Games</h1>
-    {% for item in LoveLetterdata %}
-      <div class="lovGames">
-        <span>Game ID: {{ item[0] }}</span>
-        <div class="gameInfo">
-          <span>Winner: {{ item[1] }}</span>
-          <span>Second: {{ item[2] }}</span>
-          <span>Third: {{ item[3] }}</span>
-          <span>Fourth: {{ item[4] }}</span>
-          <span>Fifth: {{ item[5] }}</span>
-          <span>Sixth: {{ item[6] }}</span>
+      {% endfor %}
+    </div>
+    <div class="gameWrapper">
+      <p>Love Letter Games</p>
+      {% for item in LoveLetterdata %}
+        <div class="lovGames table">
+          <table>
+            <tr>
+              <th>Game Id</th>
+              <th>Winner</th>
+              <th>Second</th>
+              <th>Third</th>
+              <th>Fourth</th>
+              <th>Fifth</th>
+              <th>Sixth</th>
+            </tr>
+            <tr>
+              <td>{{ item[0] }}</td>
+              <td>{{ item[1] }}</td>
+              <td>{{ item[2] }}</td>
+              <td>{{ item[3] }}</td>
+              <td>{{ item[4] }}</td>
+              <td>{{ item[5] }}</td>
+              <td>{{ item[6] }}</td>
+            </tr>
+          </table>
         </div>
-
-      </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
     {% endblock %}
   </body>
 </html>
