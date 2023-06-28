@@ -6,41 +6,22 @@
   </head>
   <body>
     {% extends "base.html" %}
-
-    {% block content %}
     
-    <div class="gameWrapper">
-      <p>Dominion Games</p>
-      {% for item in Dominiondata %}
-        <div class="domGames table">
-          <table>
-            <tr>
-              <th>Game Id</th>
-              <th>Winner</th>
-              <th>Score</th>
-              <th>Second</th>
-              <th>Score</th>
-              <th>Third</th>
-              <th>Score</th>
-              <th>Fourth</th>
-              <th>Score</th>
-            </tr>
-            <tr>
-              <td>{{ item[0] }}</td>
-              <td>{{ item[1] }}</td>
-              <td>{{ item[2] }}</td>
-              <td>{{ item[3] }}</td>
-              <td>{{ item[4] }}</td>
-              <td>{{ item[5] }}</td>
-              <td>{{ item[6] }}</td>
-              <td>{{ item[7] }}</td>
-              <td>{{ item[8] }}</td>
-            </tr>
-          </table>
-        </div>
-      {% endfor %}
+    {% block content %}
+    <div id="select">
+      <label for="gameSelect">Choose a game to see its records</label>
+      <select name="gameSelect" id="gameSelect">
+        <option value="allGames">Select a Game</option>
+        <option value="allGames">Show All Records</option>
+        <option value="Catan">Catan</option>
+        <option value="Coup">Coup</option>
+        <option value="Dominion">Dominion</option>
+        <option value="LordsofWaterdeep">Lords of Waterdeep</option>
+        <option value="LoveLetter">Love Letter</option>
+      </select>
     </div>
-    <div class="gameWrapper">
+
+    <div class="gameWrapper" id="Catan">
       <p>Catan Games</p>
       {% for item in Catandata %}
         <div class="catGames table">
@@ -71,7 +52,67 @@
         </div>
       {% endfor %}
     </div>
-    <div class="gameWrapper">
+    <div class="gameWrapper" id="Coup">
+      <p>Coup Games</p>
+      {% for item in Coupdata %}
+        <div class="couGames table">
+          <table>
+            <tr>
+              <th>Game Id</th>
+              <th>Winner</th>
+              <th>Lives</th>
+              <th>Second</th>
+              <th>Third</th>
+              <th>Fourth</th>
+              <th>Fifth</th>
+              <th>Sixth</th>
+            </tr>
+            <tr>
+              <td>{{ item[0] }}</td>
+              <td>{{ item[1] }}</td>
+              <td>{{ item[2] }}</td>
+              <td>{{ item[3] }}</td>
+              <td>{{ item[4] }}</td>
+              <td>{{ item[5] }}</td>
+              <td>{{ item[6] }}</td>
+              <td>{{ item[7] }}</td>
+            </tr>
+          </table>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="gameWrapper" id="Dominion">
+      <p>Dominion Games</p>
+      {% for item in Dominiondata %}
+        <div class="domGames table">
+          <table>
+            <tr>
+              <th>Game Id</th>
+              <th>Winner</th>
+              <th>Score</th>
+              <th>Second</th>
+              <th>Score</th>
+              <th>Third</th>
+              <th>Score</th>
+              <th>Fourth</th>
+              <th>Score</th>
+            </tr>
+            <tr>
+              <td>{{ item[0] }}</td>
+              <td>{{ item[1] }}</td>
+              <td>{{ item[2] }}</td>
+              <td>{{ item[3] }}</td>
+              <td>{{ item[4] }}</td>
+              <td>{{ item[5] }}</td>
+              <td>{{ item[6] }}</td>
+              <td>{{ item[7] }}</td>
+              <td>{{ item[8] }}</td>
+            </tr>
+          </table>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="gameWrapper" id="LordsofWaterdeep">
       <p>Lords of Waterdeep Games</p>
       {% for item in LordsofWaterdeepdata %}
         <div class="lorGames table">
@@ -106,36 +147,7 @@
         </div>
       {% endfor %}
     </div>
-    <div class="gameWrapper">
-      <p>Coup Games</p>
-      {% for item in Coupdata %}
-        <div class="couGames table">
-          <table>
-            <tr>
-              <th>Game Id</th>
-              <th>Winner</th>
-              <th>Lives</th>
-              <th>Second</th>
-              <th>Third</th>
-              <th>Fourth</th>
-              <th>Fifth</th>
-              <th>Sixth</th>
-            </tr>
-            <tr>
-              <td>{{ item[0] }}</td>
-              <td>{{ item[1] }}</td>
-              <td>{{ item[2] }}</td>
-              <td>{{ item[3] }}</td>
-              <td>{{ item[4] }}</td>
-              <td>{{ item[5] }}</td>
-              <td>{{ item[6] }}</td>
-              <td>{{ item[7] }}</td>
-            </tr>
-          </table>
-        </div>
-      {% endfor %}
-    </div>
-    <div class="gameWrapper">
+    <div class="gameWrapper" id="LoveLetter">
       <p>Love Letter Games</p>
       {% for item in LoveLetterdata %}
         <div class="lovGames table">

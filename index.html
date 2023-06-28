@@ -4,21 +4,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joshua</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/baseStyles.css') }}">
+    <title>Game Tracker</title>
 </head>
 <body>
     {% extends "base.html" %}
 
     {% block content %}
-        <h1>Hello, {{ user.username }}!</h1>
-        <h2>Welcome to my board game tracker</h2>
-        <p>This is still under development as I work on it for fun</p>
-        <span>Currently Supported Games</span>
-        <ul>
-            <li>Dominion</li>
-            <li>Catan</li>
-            <li>Lords of Waterdeep</li>
-        </ul>
+        <div id="content">
+            <div>
+                <h2>Welcome to my board game tracker</h2>
+                <p>This is still under development as I work on it for fun</p>
+                <span>Currently Supported Games</span>
+                <ul>
+                    <li>Dominion</li>
+                    <li>Catan</li>
+                    <li>Lords of Waterdeep</li>
+                    <li>Coup</li>
+                    <li>Love Letter</li>
+                </ul>
+            </div>
+        </div>
+
         
 
     {% endblock %}

@@ -11,13 +11,14 @@
     {% import "bootstrap/wtf.html" as wtf %}
     {% block content %}
     <div>
-        <h1>Login</h1>
-        <form action="/login" method="post" novalidate>
+        <h1>Register</h1>
+        <form action="/register" method="post" novalidate>
             {{form.hidden_tag()}}
             {{wtf.form_field(form.username) }}
+            {{wtf.form_field(form.email) }}
             {{wtf.form_field(form.password) }}
-            {{wtf.form_field(form.remember) }}
-            <button type="submit">Sign In</button>
+            {{wtf.form_field(form.fullname) }}
+            <button type="submit">Register</button>
         </form>
     </div>
 
