@@ -10,45 +10,43 @@
     {% extends "base.html" %}
 
     {% block content %}
-    {% for row in gameData %}
     <div id="output">
         <div>
             <h1>New Dominion Entry:</h1>
-            <h3>Game ID: {{row[0]}}</h3>
+            <h3>Game ID: {{gameData.game_id}}</h3>
         </div>
         <div class="playerout" id="Winner">
             <span>Winner:</span>
-            <span>{{ row[1] }}</span>
+            <span>{{ gameData.winnerName }}</span>
             <br>
             <span>Score:&nbsp;&nbsp;&nbsp;</span>
-            <span>{{ row[2] }}</span>
+            <span>{{ gameData.winnerScore }}</span>
         </div>
         <div class="playerout">
             <span>Second:</span>
-            <span>{{ row[3] }}</span>
+            <span>{{ gameData.secondName }}</span>
             <br>
             <span>Score:&nbsp;&nbsp;&nbsp;</span>
-            <span>{{ row[4] }}</span>
+            <span>{{ gameData.secondScore }}</span>
         </div>
         <div class="playerout">
             <span>Third:</span>
-            <span>{{ row[5] }}</span>
+            <span>{{ gameData.secondName }}</span>
             <br>
             <span>Score:</span>
-            <span>{{ row[6] }}</span>
+            <span>{{ gameData.thirdScore }}</span>
         </div>
         <div class="playerout">
             <span>Fourth:</span>
-            <span>{{ row[7] }}</span>
+            <span>{{ gameData.fourthName }}</span>
             <br>
             <span>Score:&nbsp;</span>
-            <span>{{ row[8] }}</span>
+            <span>{{ gameData.fourthScore }}</span>
         </div>
     </div>
     <div>
         <a href="/showGames">View All Records</a>
     </div>
-    {% endfor %}
     {% endblock %}
 </body>
 </html>

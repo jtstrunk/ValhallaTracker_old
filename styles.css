@@ -9,6 +9,10 @@ body{
     width: 500px;
 }
 
+.Hide{
+    display: none;
+}
+
 .players{
     display: flex;
     flex-direction: column;

@@ -5,7 +5,16 @@ body{
     align-items: center;
 }
 
+#select select {
+    width: 210px;
+    height: 25px;
+    margin-top: 5px;
+}
 
+#select {
+    display: flex;
+    flex-direction: column;
+}
 
 .gameInfo span{
     margin-left: 3px;
