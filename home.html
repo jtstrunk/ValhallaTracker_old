@@ -23,120 +23,34 @@
                     <li>Coup</li>
                     <li>Love Letter</li>
                 </ul> -->
-                    <table>
-                        <tr>
-                            <th>Game Id</th>
-                            <th>Game</th>
-                            <th>Winner</th>
-                            <th>Second</th>
-                            <th>Third</th>
-                            <th>Date</th>
-                        </tr>
-                        {% for game in recent_games %}
-                        <tr>
-                            <td>{{ game.game_id }}</td>
-                            <td>{{ game.game }}</td>
-                            <td>{{ game.winnerName }}</td>
-                            <td>{{ game.secondName }}</td>
-                            <td>{{ game.thirdName }}</td>
-                            <td>{{ game.date }}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
+                    
                 <div id="mainLayout">
                     <div  class="section">
                         <h3>Your Recent Games</h3>
-                        {% if dominion_games %}
-                        <div class="gameWrapper" id="Dominion">
-                            <div class="dominionGames table">
-                              <table>
-                                <tr>
-                                  <th>Game Id</th>
-                                  <th>Winner</th>
-                                  <th>Score</th>
-                                  <th>Second</th>
-                                  <th>Score</th>
-                                  <th>Third</th>
-                                  <th>Score</th>
-                                  <th>Fourth</th>
-                                  <th>Score</th>
-                                </tr>
-                                {% for game in dominion_games %}
-                                <tr>
-                                  <td>{{ game.game_id }}</td>
-                                  <td>{{ game.winnerName }}</td>
-                                  <td>{{ game.winnerScore }}</td>
-                                  <td>{{ game.secondName }}</td>
-                                  <td>{{ game.secondScore }}</td>
-                                  <td>{{ game.thirdName }}</td>
-                                  <td>{{ game.thirdScore }}</td>
-                                  <td>{{ game.fourthName }}</td>
-                                  <td>{{ game.fourthScore }}</td>
-                                </tr>
-                                {% endfor %}
-                              </table>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% if catan_games %}
-                        <div class="gameWrapper" id="Catan">
-                            <div class="catanGames table">
-                              <table>
-                                <tr>
-                                  <th>Game Id</th>
-                                  <th>Winner</th>
-                                  <th>Score</th>
-                                  <th>Second</th>
-                                  <th>Score</th>
-                                  <th>Third</th>
-                                  <th>Score</th>
-                                  <th>Fourth</th>
-                                  <th>Score</th>
-                                </tr>
-                                {% for game in catan_games %}
-                                <tr>
-                                  <td>{{ game.game_id }}</td>
-                                  <td>{{ game.winnerName }}</td>
-                                  <td>{{ game.winnerScore }}</td>
-                                  <td>{{ game.secondName }}</td>
-                                  <td>{{ game.secondScore }}</td>
-                                  <td>{{ game.thirdName }}</td>
-                                  <td>{{ game.thirdScore }}</td>
-                                  <td>{{ game.fourthName }}</td>
-                                  <td>{{ game.fourthScore }}</td>
-                                </tr>
-                                {% endfor %}
-                              </table>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% if coup_games %}
-                            <div class="couGames table">
-                                <table>
-                                    <tr>
-                                        <th>Game Id</th>
-                                        <th>Winner</th>
-                                        <th>Lives</th>
-                                        <th>Second</th>
-                                        <th>Third</th>
-                                        <th>Fourth</th>
-                                        <th>Fifth</th>
-                                        <th>Sixth</th>
-                                    </tr>
-                                    {% for game in coup_games %}
-                                    <tr>
-                                        <td>{{ game.game_id }}</td>
-                                        <td>{{ game.winnerName }}</td>
-                                        <td>{{ game.secondName }}</td>
-                                        <td>{{ game.thirdName }}</td>
-                                        <td>{{ game.fourthName }}</td>
-                                        <td>{{ game.fifthName }}</td>
-                                        <td>{{ game.sixthName }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </table>
-                            </div>
-                        {% endif %}
+                        <table>
+                            <thead>
+                              <tr>
+                                <th>Game Type</th>
+                                <th>Winner</th>
+                                <th>Second Place</th>
+                                <th>Third Place</th>
+                                <th>Game ID</th>
+                                <th>Date</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for game in recentGames %}
+                              <tr>
+                                <td>{{ game.game_type }}</td>
+                                <td>{{ game.winnerName }}</td>
+                                <td>{{ game.secondName }}</td>
+                                <td>{{ game.thirdName }}</td>
+                                <td>{{ game.game_id }}</td>
+                                <td>{{ game.current_date }}</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                     <div class="section">
                         <h3>Friends</h3>
@@ -148,7 +62,7 @@
                             {% endfor %}
                         </div>
                         <div style="margin-top: 10px;">
-                            <a href="/friend" class="btn btn-primary">Manage Friends</a>
+                            <a href="/friend" class="btn-info">Manage Friends</a>
                         </div>
                     </div>
                 </div>
@@ -156,6 +70,7 @@
 
                 
             </div>
+
         </div>
 
         

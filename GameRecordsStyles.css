@@ -35,13 +35,37 @@ tr td, th {
     padding-right: 6px;
 }
 
-.table{
-    width: 700px;
-    background-color: #D2E6F3;
+.fourTable{
+    width: 810px;
+    /* background-color: #D2E6F3; */
     padding: 10px;
     margin-top: 5px;
     margin-bottom: 5px;
-    border-radius: 10px;
+    /* border-radius: 10px; */
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+.fiveTable{
+    width: 930px;
+    /* background-color: #D2E6F3; */
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /* border-radius: 10px; */
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+.sixTable{
+    width: 1050px;
+    /* background-color: #D2E6F3; */
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /* border-radius: 10px; */
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
 
 .gameWrapper p {
