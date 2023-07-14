@@ -2,10 +2,13 @@ nav{
     display: flex;
     flex-direction: row;
     justify-content: center;
+    background-color: #333333;
+    width: 100%;
 }
 
 nav a {
     margin: 10px;
+    height: 18px;
     text-decoration: none;
     padding-top: 4px;
     padding-bottom: 4px;
@@ -16,6 +19,13 @@ nav a {
     text-align: center;
     color: black;
     background-color: white;
+}
+
+nav h2 {
+    margin-top: 10px;
+    margin-bottom: 12px;
+    margin-right: 100px;
+    color: white;
 }
 
 #content{
@@ -55,10 +65,15 @@ a {
     text-decoration: none;
 }
 
-/* .btn-info {
-    border-radius: 5px;
-    padding: 5px;
+#logout {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 25px;
+    margin-right: 100px;
+}
+
+.friend{
+    text-decoration: none;
     color: black;
-    background-color: #5dbea3;
-    border-color: #5dbea3;
-  } */
+}

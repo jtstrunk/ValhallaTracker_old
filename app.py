@@ -64,6 +64,7 @@ class DominionGame(db.Model):
     thirdScore = db.Column(db.Integer)
     fourthName = db.Column(db.String(50))
     fourthScore = db.Column(db.Integer)
+    date = db.Column(db.Date)
 
 class CatanGame(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -76,6 +77,7 @@ class CatanGame(db.Model):
     thirdScore = db.Column(db.Integer)
     fourthName = db.Column(db.String(50))
     fourthScore = db.Column(db.Integer)
+    date = db.Column(db.Date)
 
 class LordsofWaterdeepGame(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -90,6 +92,7 @@ class LordsofWaterdeepGame(db.Model):
     fourthScore = db.Column(db.Integer)
     fifthName = db.Column(db.String(50))
     fifthScore = db.Column(db.Integer)
+    date = db.Column(db.Date)
 
 class CoupGame(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -101,6 +104,7 @@ class CoupGame(db.Model):
     fourthName = db.Column(db.String(50))
     fifthName = db.Column(db.String(50))
     sixthName = db.Column(db.String(50))
+    date = db.Column(db.Date)
 
 class LoveLetterGame(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -111,15 +115,7 @@ class LoveLetterGame(db.Model):
     fourthName = db.Column(db.String(50))
     fifthName = db.Column(db.String(50))
     sixthName = db.Column(db.String(50))
-
-class basicGame(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    game_id = db.Column(db.Integer, nullable=False)
-    winnerName = db.Column(db.String(50), nullable=False)
-    secondName = db.Column(db.String(50), nullable=False)
-    thirdName = db.Column(db.String(50))
-    game = db.Column(db.String(50))
-    date = db.Column(Date)
+    date = db.Column(db.Date)
 
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[InputRequired()])
@@ -171,7 +167,7 @@ def home():
         DominionGame.secondName == current_user.username,
         DominionGame.thirdName == current_user.username,
         DominionGame.fourthName == current_user.username
-    )).with_entities(DominionGame.game_id, DominionGame.winnerName, DominionGame.secondName, DominionGame.thirdName, literal('Dominion').label('game_type'), literal(date.today()).label('current_date')).all()
+    )).with_entities(DominionGame.game_id, DominionGame.winnerName, DominionGame.secondName, DominionGame.thirdName, DominionGame.date, literal('Dominion').label('game_type')).all()
 
     recentGames = []
 
@@ -192,7 +188,7 @@ def home():
 
         new_game['game_id'] = game.game_id
         new_game['game_type'] = 'Dominion'
-        new_game['current_date'] = date.today()
+        new_game['current_date'] = game.date
         recentGames.append(new_game)
 
     catan_games = CatanGame.query.filter(or_(
@@ -204,7 +200,7 @@ def home():
         CatanGame.secondName == current_user.username,
         CatanGame.thirdName == current_user.username,
         CatanGame.fourthName == current_user.username
-    )).with_entities(CatanGame.game_id, CatanGame.winnerName, CatanGame.secondName, CatanGame.thirdName, literal('Catan').label('game_type'), literal(date.today()).label('current_date')).all()
+    )).with_entities(CatanGame.game_id, CatanGame.winnerName, CatanGame.secondName, CatanGame.thirdName, CatanGame.date, literal('Catan').label('game_type')).all()
 
     for game in catan_games:
         new_game = {}
@@ -223,7 +219,7 @@ def home():
 
         new_game['game_id'] = game.game_id
         new_game['game_type'] = 'Catan'
-        new_game['current_date'] = date.today()
+        new_game['current_date'] = game.date
         recentGames.append(new_game)
 
     lords_games = LordsofWaterdeepGame.query.filter(or_(
@@ -235,7 +231,7 @@ def home():
         LordsofWaterdeepGame.secondName == current_user.username,
         LordsofWaterdeepGame.thirdName == current_user.username,
         LordsofWaterdeepGame.fourthName == current_user.username
-    )).with_entities(LordsofWaterdeepGame.game_id, LordsofWaterdeepGame.winnerName, LordsofWaterdeepGame.secondName, LordsofWaterdeepGame.thirdName, literal('Catan').label('game_type'), literal(date.today()).label('current_date')).all()
+    )).with_entities(LordsofWaterdeepGame.game_id, LordsofWaterdeepGame.winnerName, LordsofWaterdeepGame.secondName, LordsofWaterdeepGame.thirdName, LordsofWaterdeepGame.date, literal('Catan').label('game_type')).all()
 
     for game in lords_games:
         new_game = {}
@@ -259,30 +255,6 @@ def home():
 
     sortedGames = sorted(recentGames, key=lambda x: x['game_id'], reverse=True)
     top5Games = sortedGames[:5]
-
-
-    # print(dominion_games)
-
-
-
-    # print(catan_games)
-
-    # coup_games = CoupGame.query.filter(or_(
-    #     CoupGame.winnerName == current_user.fullname,
-    #     CoupGame.secondName == current_user.fullname,
-    #     CoupGame.thirdName == current_user.fullname,
-    #     CoupGame.fourthName == current_user.fullname,
-    #     CoupGame.fifthName == current_user.fullname,
-    #     CoupGame.sixthName == current_user.fullname,
-
-    #     CoupGame.winnerName == current_user.username,
-    #     CoupGame.secondName == current_user.username,
-    #     CoupGame.thirdName == current_user.username,
-    #     CoupGame.fourthName == current_user.username,
-    #     CoupGame.fifthName == current_user.username,
-    #     CoupGame.sixthName == current_user.username
-    # )).all()
-    # print(coup_games)
 
     return render_template('home.html', title='Home', name=current_user.fullname, friends=user_friends, recentGames=top5Games)
 
@@ -321,13 +293,128 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
+@app.route('/profile')
+@login_required
+def profile():
+    userName = request.args.get('name')
+
+    if userName != 'current':
+        user = User.query.filter_by(username=userName).first()
+    else:
+        user = current_user
+
+    user_friends = user.friends.limit(5).all()
+
+    dominion_games = DominionGame.query.filter(or_(
+        DominionGame.winnerName == current_user.fullname,
+        DominionGame.secondName == current_user.fullname,
+        DominionGame.thirdName == current_user.fullname,
+        DominionGame.fourthName == current_user.fullname,
+        DominionGame.winnerName == current_user.username,
+        DominionGame.secondName == current_user.username,
+        DominionGame.thirdName == current_user.username,
+        DominionGame.fourthName == current_user.username
+    )).with_entities(DominionGame.game_id, DominionGame.winnerName, DominionGame.secondName, DominionGame.thirdName, DominionGame.date, literal('Dominion').label('game_type')).all()
+
+    recentGames = []
+
+    for game in dominion_games:
+        new_game = {}
+        if game.winnerName == current_user.username:
+            new_game['winnerName'] = current_user.fullname
+        else:
+            new_game['winnerName'] = game.winnerName
+        if game.secondName == current_user.username:
+            new_game['secondName'] = current_user.fullname
+        else:
+            new_game['secondName'] = game.secondName
+        if game.thirdName == current_user.username:
+            new_game['thirdName'] = current_user.fullname
+        else:
+            new_game['thirdName'] = game.thirdName
+
+        new_game['game_id'] = game.game_id
+        new_game['game_type'] = 'Dominion'
+        new_game['current_date'] = game.date
+        recentGames.append(new_game)
+
+    catan_games = CatanGame.query.filter(or_(
+        CatanGame.winnerName == current_user.fullname,
+        CatanGame.secondName == current_user.fullname,
+        CatanGame.thirdName == current_user.fullname,
+        CatanGame.fourthName == current_user.fullname,
+        CatanGame.winnerName == current_user.username,
+        CatanGame.secondName == current_user.username,
+        CatanGame.thirdName == current_user.username,
+        CatanGame.fourthName == current_user.username
+    )).with_entities(CatanGame.game_id, CatanGame.winnerName, CatanGame.secondName, CatanGame.thirdName, CatanGame.date, literal('Catan').label('game_type')).all()
+
+    for game in catan_games:
+        new_game = {}
+        if game.winnerName == current_user.username:
+            new_game['winnerName'] = current_user.fullname
+        else:
+            new_game['winnerName'] = game.winnerName
+        if game.secondName == current_user.username:
+            new_game['secondName'] = current_user.fullname
+        else:
+            new_game['secondName'] = game.secondName
+        if game.thirdName == current_user.username:
+            new_game['thirdName'] = current_user.fullname
+        else:
+            new_game['thirdName'] = game.thirdName
+
+        new_game['game_id'] = game.game_id
+        new_game['game_type'] = 'Catan'
+        new_game['current_date'] = game.date
+        recentGames.append(new_game)
+
+    lords_games = LordsofWaterdeepGame.query.filter(or_(
+        LordsofWaterdeepGame.winnerName == current_user.fullname,
+        LordsofWaterdeepGame.secondName == current_user.fullname,
+        LordsofWaterdeepGame.thirdName == current_user.fullname,
+        LordsofWaterdeepGame.fourthName == current_user.fullname,
+        LordsofWaterdeepGame.winnerName == current_user.username,
+        LordsofWaterdeepGame.secondName == current_user.username,
+        LordsofWaterdeepGame.thirdName == current_user.username,
+        LordsofWaterdeepGame.fourthName == current_user.username
+    )).with_entities(LordsofWaterdeepGame.game_id, LordsofWaterdeepGame.winnerName, LordsofWaterdeepGame.secondName, LordsofWaterdeepGame.thirdName, LordsofWaterdeepGame.date, literal('Catan').label('game_type')).all()
+
+    for game in lords_games:
+        new_game = {}
+        if game.winnerName == current_user.username:
+            new_game['winnerName'] = current_user.fullname
+        else:
+            new_game['winnerName'] = game.winnerName
+        if game.secondName == current_user.username:
+            new_game['secondName'] = current_user.fullname
+        else:
+            new_game['secondName'] = game.secondName
+        if game.thirdName == current_user.username:
+            new_game['thirdName'] = current_user.fullname
+        else:
+            new_game['thirdName'] = game.thirdName
+
+        new_game['game_id'] = game.game_id
+        new_game['game_type'] = 'Lords of Waterdeep'
+        new_game['current_date'] = date.today()
+        recentGames.append(new_game)
+
+    sortedGames = sorted(recentGames, key=lambda x: x['game_id'], reverse=True)
+    top5Games = sortedGames[:5]
+
+    
+    return render_template('profile.html', user=user, friends=user_friends, recentGames = top5Games)
+
 @app.route('/friend', methods = ['GET'])
+@login_required
 def friend():
     user = current_user
     user_friends = user.friends.all()
     return render_template('friends.html', friends=user_friends)
 
 @app.route('/addfriend', methods=['POST'])
+@login_required
 def addFriend():
     user1 = current_user
     username = request.form.get('addAccount')
@@ -344,6 +431,7 @@ def addFriend():
     return redirect(url_for('home'))
         
 @app.route('/removefriend', methods=['POST'])
+@login_required
 def removefriend():
     user1 = current_user
     username = request.form.get('addAccount')
@@ -355,34 +443,8 @@ def removefriend():
     return redirect(url_for('friends'))
 
 @app.route('/showGames', methods=['GET'])
+@login_required
 def showGames():
-
-    # activeGames = [DominionGame, CatanGame, LordsofWaterdeepGame, CoupGame, LoveLetterGame]
-
-    # for gameType in activeGames:
-
-    #     player_name_columns = ['winnerName', 'secondName', 'thirdName', 'fourthName', 'fifthName', 'sixthName']
-    #     player_name_columns = [column for column in player_name_columns if hasattr(gameType, column)]
-
-    #     games = gameType.query.filter(or_(
-    #     *[getattr(gameType, column) == current_user.fullname for column in player_name_columns],
-    #     *[getattr(gameType, column) == current_user.username for column in player_name_columns]
-    # )).all()
-
-    #     for game in games:
-    #         if game.winnerName == current_user.username:
-    #             game.winnerName = current_user.fullname
-    #         if game.secondName == current_user.username:
-    #             game.secondName = current_user.fullname
-    #         if hasattr(gameType, 'thirdName') and game.thirdName == current_user.username:
-    #             game.thirdName = current_user.fullname
-    #         if hasattr(gameType, 'fourthName') and game.fourthName == current_user.username:
-    #             game.fourthName = current_user.fullname
-    #         if hasattr(gameType, 'fifthName') and game.fifthName == current_user.username:
-    #             game.fifthName = current_user.fullname
-    #         if hasattr(gameType, 'sixthName') and game.sixthName == current_user.username:
-    #             game.sixthName = current_user.fullname
-
 
     Dominiondata = DominionGame.query.filter(or_(
         DominionGame.winnerName == current_user.fullname,
@@ -512,14 +574,17 @@ def showGames():
     return render_template('GameRecords.html', title='Home', Dominiondata=Dominiondata, Catandata=Catandata, LordsofWaterdeepdata=LordsofWaterdeepdata, Coupdata=Coupdata, LoveLetterdata=LoveLetterdata)
 
 @app.route('/addGame', methods=['GET'])
+@login_required
 def addGame():
     return render_template("addGame.html", title='Home')
 
 @app.route('/Dominion', methods = ['GET'])
+@login_required
 def Dominion():
     return render_template('Dominion.html', title='Home')
 
 @app.route('/addDominion', methods = ['POST', 'GET'])
+@login_required
 def addDominion():
     if request.method == 'POST':
         try:
@@ -541,17 +606,9 @@ def addDominion():
                 thirdName=player3, 
                 thirdScore=player3Score, 
                 fourthName=player4, 
-                fourthScore=player4Score)
+                fourthScore=player4Score,
+                date=date.today())
             db.session.add(dominion_game)
-            game = basicGame(
-                game_id=newGameID,
-                winnerName=player1,
-                secondName=player2,
-                thirdName=player3,
-                game='Dominion',
-                date=date.today()
-            )
-            db.session.add(game)
             db.session.commit()
             print("DominionGame added successfully!")
 
@@ -563,16 +620,19 @@ def addDominion():
             return redirect("http://localhost:5000/DominionAdded")
         
 @app.route('/DominionAdded', methods = ['GET'])
+@login_required
 def DominionAdded():
     gameData = db.session.query(DominionGame).order_by(DominionGame.game_id.desc()).first()
     print(gameData)
     return render_template('DominionOutput.html', title='Home', gameData=gameData)
 
 @app.route('/Catan', methods = ['GET'])
+@login_required
 def Catan():
     return render_template('Catan.html', title='Home')
 
 @app.route('/addCatan', methods = ['POST', 'GET'])
+@login_required
 def addCatan():
     if request.method == 'POST':
         try:
@@ -594,17 +654,9 @@ def addCatan():
                 thirdName=player3, 
                 thirdScore=player3Score, 
                 fourthName=player4, 
-                fourthScore=player4Score)
+                fourthScore=player4Score,
+                date=date.today())
             db.session.add(catan_game)
-            game = basicGame(
-                game_id=newGameID,
-                winnerName=player1,
-                secondName=player2,
-                thirdName=player3,
-                game='Catan',
-                date=date.today()
-            )
-            db.session.add(game)
             db.session.commit()
 
         except Exception as e:
@@ -615,16 +667,19 @@ def addCatan():
             return redirect("http://localhost:5000/CatanAdded")
         
 @app.route('/CatanAdded', methods = ['GET'])
+@login_required
 def CatanAdded():
     gameData = db.session.query(CatanGame).order_by(CatanGame.game_id.desc()).first()
     return render_template('CatanOutput.html', title='Home', gameData=gameData)
 
 
 @app.route('/LordsofWaterdeep', methods = ['GET'])
+@login_required
 def LordsofWaterdeep():
     return render_template('LordsofWaterdeep.html', title='Home')
 
 @app.route('/addLordsofWaterdeep', methods = ['POST', 'GET'])
+@login_required
 def addLordsofWaterdeep():
     if request.method == 'POST':
         try:
@@ -650,17 +705,9 @@ def addLordsofWaterdeep():
                 fourthName=player4, 
                 fourthScore=player4Score, 
                 fifthName=player5, 
-                fifthScore=player5Score)
+                fifthScore=player5Score,
+                date=date.today())
             db.session.add(new_game)
-            game = basicGame(
-                game_id=newGameID,
-                winnerName=player1,
-                secondName=player2,
-                thirdName=player3,
-                game='Lords of Waterdeep',
-                date=date.today(),
-            )
-            db.session.add(game)
             db.session.commit()
 
         finally:
@@ -668,15 +715,18 @@ def addLordsofWaterdeep():
             return redirect("http://localhost:5000/LordsofWaterdeepAdded")
         
 @app.route('/LordsofWaterdeepAdded', methods=['GET'])
+@login_required
 def LordsofWaterdeepAdded():
     gameData = db.session.query(LordsofWaterdeepGame).order_by(LordsofWaterdeepGame.game_id.desc()).first()
     return render_template('LordsofWaterdeepOutput.html', title='Home', gameData=gameData)
 
 @app.route('/Coup', methods = ['GET'])
+@login_required
 def Coup():
     return render_template('Coup.html', title='Home')
 
 @app.route('/addCoup', methods = ['POST', 'GET'])
+@login_required
 def addCoup():
     if request.method == 'POST':
         try:
@@ -696,23 +746,16 @@ def addCoup():
                 thirdName=player3, 
                 fourthName=player4, 
                 fifthName=player5, 
-                sixthName=player6)
+                sixthName=player6,
+                date=date.today())
             db.session.add(new_game)
-            game = basicGame(
-                game_id=newGameID,
-                winnerName=player1,
-                secondName=player2,
-                thirdName=player3,
-                game='Coup',
-                date=date.today(),
-            )
-            db.session.add(game)
             db.session.commit()
         finally:
             print("Redircting")
             return redirect("http://localhost:5000/CoupAdded")
         
 @app.route('/CoupAdded', methods=['GET'])
+@login_required
 def CoupAdded():
     gameData = db.session.query(CoupGame).order_by(CoupGame.game_id.desc()).first()
     return render_template('CoupOutput.html', title='Home', gameData=gameData)
@@ -738,17 +781,9 @@ def addLoveLetter():
             thirdName=player3, 
             fourthName=player4, 
             fifthName=player5, 
-            sixthName=player6)
+            sixthName=player6,
+            date=date.today())
         db.session.add(new_game)
-        game = basicGame(
-            game_id=newGameID,
-            winnerName=player1,
-            secondName=player2,
-            thirdName=player3,
-            game='Love Letter',
-            date=date.today(),
-        )
-        db.session.add(game)
         db.session.commit()
 
         return redirect("/LoveLetterAdded")

@@ -13,20 +13,10 @@
     {% block content %}
         <div id="content">
             <div>
-                <h2>{{ name }}, Welcome to my board game tracker</h2>
-                <!-- <p>This is still under development as I work on it for fun</p>
-                <span>Currently Supported Games</span>
-                <ul>
-                    <li>Dominion</li>
-                    <li>Catan</li>
-                    <li>Lords of Waterdeep</li>
-                    <li>Coup</li>
-                    <li>Love Letter</li>
-                </ul> -->
-                    
+                <h2>{{ user.fullname }}'s profile</h2>
                 <div id="mainLayout">
                     <div  class="section">
-                        <h3>Your Recent Games</h3>
+                        <h3>{{ user.fullname }}'s Recent Games</h3>
                         <table>
                             <thead>
                               <tr>
@@ -53,7 +43,7 @@
                         </table>
                     </div>
                     <div class="section">
-                        <h3>Friends</h3>
+                        <h3>{{ user.fullname }}'s Friends</h3>
                         <div>
                             {% for friend in friends %}
                             <div style="margin-top: 10px;">
@@ -61,23 +51,16 @@
                             </div>
                             {% endfor %}
                         </div>
-                        <div style="margin-top: 10px;">
-                            <a href="/friend" class="btn-info">Manage Friends</a>
-                        </div>
                     </div>
                 </div>
-
-
+                    
                 
+
             </div>
 
         </div>
-
-        
 
     {% endblock %}
 
 </body>
 </html>
-
-
