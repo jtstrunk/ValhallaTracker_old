@@ -36,18 +36,30 @@ friends = db.Table('friends',
     db.Column('friend_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
 )
 
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    fullname = db.Column(db.String(50), nullable=False)
-    username = db.Column(db.String(15), nullable=False, unique=True)
-    email = db.Column(db.String(50), nullable=False, unique=True)
-    password = db.Column(db.String(80), nullable=False)
+userFavorites = db.Table('userFavorites',
+        db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+        db.Column('game_id', db.Integer, db.ForeignKey('supported_games.id'))
+    )
 
-    friends = db.relationship('User', secondary=friends,
-                              primaryjoin=(friends.c.user_id == id),
-                              secondaryjoin=(friends.c.friend_id == id),
-                              backref=db.backref('friend_of', lazy='dynamic'),
-                              lazy='dynamic')
+class User(UserMixin, db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        fullname = db.Column(db.String(50), nullable=False)
+        username = db.Column(db.String(15), nullable=False, unique=True)
+        email = db.Column(db.String(50), nullable=False, unique=True)
+        password = db.Column(db.String(80), nullable=False)
+
+        favorites = db.relationship('SupportedGames', secondary=userFavorites, backref='favoritedby')
+
+        friends = db.relationship('User', secondary=friends,
+                                primaryjoin=(friends.c.user_id == id),
+                                secondaryjoin=(friends.c.friend_id == id),
+                                backref=db.backref('friend_of', lazy='dynamic'),
+                                lazy='dynamic')
+        
+class SupportedGames(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        gameName = db.Column(db.String(50))
+        numPlayers = db.Column(db.String(50))
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -256,6 +268,15 @@ def home():
     sortedGames = sorted(recentGames, key=lambda x: x['game_id'], reverse=True)
     top5Games = sortedGames[:5]
 
+    # results = db.session.query(User.fullname, SupportedGames.gameName).\
+    #     join(User, User.id == userFavorites.c.user_id).\
+    #     join(SupportedGames, SupportedGames.id == userFavorites.c.game_id).\
+    #     all()
+
+    # # print the results
+    # for fullname, gameName in results:
+    #     print(f"{fullname} likes {gameName}")
+
     return render_template('home.html', title='Home', name=current_user.fullname, friends=user_friends, recentGames=top5Games)
 
 @app.route('/login', methods=['GET','POST'])
@@ -304,32 +325,31 @@ def profile():
         user = current_user
 
     user_friends = user.friends.limit(5).all()
+    recentGames = []
 
     dominion_games = DominionGame.query.filter(or_(
-        DominionGame.winnerName == current_user.fullname,
-        DominionGame.secondName == current_user.fullname,
-        DominionGame.thirdName == current_user.fullname,
-        DominionGame.fourthName == current_user.fullname,
-        DominionGame.winnerName == current_user.username,
-        DominionGame.secondName == current_user.username,
-        DominionGame.thirdName == current_user.username,
-        DominionGame.fourthName == current_user.username
+        DominionGame.winnerName == user.fullname,
+        DominionGame.secondName == user.fullname,
+        DominionGame.thirdName == user.fullname,
+        DominionGame.fourthName == user.fullname,
+        DominionGame.winnerName == user.username,
+        DominionGame.secondName == user.username,
+        DominionGame.thirdName == user.username,
+        DominionGame.fourthName == user.username
     )).with_entities(DominionGame.game_id, DominionGame.winnerName, DominionGame.secondName, DominionGame.thirdName, DominionGame.date, literal('Dominion').label('game_type')).all()
-
-    recentGames = []
 
     for game in dominion_games:
         new_game = {}
-        if game.winnerName == current_user.username:
-            new_game['winnerName'] = current_user.fullname
+        if game.winnerName == user.username:
+            new_game['winnerName'] = user.fullname
         else:
             new_game['winnerName'] = game.winnerName
-        if game.secondName == current_user.username:
-            new_game['secondName'] = current_user.fullname
+        if game.secondName == user.username:
+            new_game['secondName'] = user.fullname
         else:
             new_game['secondName'] = game.secondName
-        if game.thirdName == current_user.username:
-            new_game['thirdName'] = current_user.fullname
+        if game.thirdName == user.username:
+            new_game['thirdName'] = user.fullname
         else:
             new_game['thirdName'] = game.thirdName
 
@@ -339,28 +359,28 @@ def profile():
         recentGames.append(new_game)
 
     catan_games = CatanGame.query.filter(or_(
-        CatanGame.winnerName == current_user.fullname,
-        CatanGame.secondName == current_user.fullname,
-        CatanGame.thirdName == current_user.fullname,
-        CatanGame.fourthName == current_user.fullname,
-        CatanGame.winnerName == current_user.username,
-        CatanGame.secondName == current_user.username,
-        CatanGame.thirdName == current_user.username,
-        CatanGame.fourthName == current_user.username
+        CatanGame.winnerName == user.fullname,
+        CatanGame.secondName == user.fullname,
+        CatanGame.thirdName == user.fullname,
+        CatanGame.fourthName == user.fullname,
+        CatanGame.winnerName == user.username,
+        CatanGame.secondName == user.username,
+        CatanGame.thirdName == user.username,
+        CatanGame.fourthName == user.username
     )).with_entities(CatanGame.game_id, CatanGame.winnerName, CatanGame.secondName, CatanGame.thirdName, CatanGame.date, literal('Catan').label('game_type')).all()
 
     for game in catan_games:
         new_game = {}
-        if game.winnerName == current_user.username:
-            new_game['winnerName'] = current_user.fullname
+        if game.winnerName == user.username:
+            new_game['winnerName'] = user.fullname
         else:
             new_game['winnerName'] = game.winnerName
-        if game.secondName == current_user.username:
-            new_game['secondName'] = current_user.fullname
+        if game.secondName == user.username:
+            new_game['secondName'] = user.fullname
         else:
             new_game['secondName'] = game.secondName
-        if game.thirdName == current_user.username:
-            new_game['thirdName'] = current_user.fullname
+        if game.thirdName == user.username:
+            new_game['thirdName'] = user.fullname
         else:
             new_game['thirdName'] = game.thirdName
 
@@ -370,28 +390,28 @@ def profile():
         recentGames.append(new_game)
 
     lords_games = LordsofWaterdeepGame.query.filter(or_(
-        LordsofWaterdeepGame.winnerName == current_user.fullname,
-        LordsofWaterdeepGame.secondName == current_user.fullname,
-        LordsofWaterdeepGame.thirdName == current_user.fullname,
-        LordsofWaterdeepGame.fourthName == current_user.fullname,
-        LordsofWaterdeepGame.winnerName == current_user.username,
-        LordsofWaterdeepGame.secondName == current_user.username,
-        LordsofWaterdeepGame.thirdName == current_user.username,
-        LordsofWaterdeepGame.fourthName == current_user.username
+        LordsofWaterdeepGame.winnerName == user.fullname,
+        LordsofWaterdeepGame.secondName == user.fullname,
+        LordsofWaterdeepGame.thirdName == user.fullname,
+        LordsofWaterdeepGame.fourthName == user.fullname,
+        LordsofWaterdeepGame.winnerName == user.username,
+        LordsofWaterdeepGame.secondName == user.username,
+        LordsofWaterdeepGame.thirdName == user.username,
+        LordsofWaterdeepGame.fourthName == user.username
     )).with_entities(LordsofWaterdeepGame.game_id, LordsofWaterdeepGame.winnerName, LordsofWaterdeepGame.secondName, LordsofWaterdeepGame.thirdName, LordsofWaterdeepGame.date, literal('Catan').label('game_type')).all()
 
     for game in lords_games:
         new_game = {}
-        if game.winnerName == current_user.username:
-            new_game['winnerName'] = current_user.fullname
+        if game.winnerName == user.username:
+            new_game['winnerName'] = user.fullname
         else:
             new_game['winnerName'] = game.winnerName
-        if game.secondName == current_user.username:
-            new_game['secondName'] = current_user.fullname
+        if game.secondName == user.username:
+            new_game['secondName'] = user.fullname
         else:
             new_game['secondName'] = game.secondName
-        if game.thirdName == current_user.username:
-            new_game['thirdName'] = current_user.fullname
+        if game.thirdName == user.username:
+            new_game['thirdName'] = user.fullname
         else:
             new_game['thirdName'] = game.thirdName
 
@@ -403,8 +423,36 @@ def profile():
     sortedGames = sorted(recentGames, key=lambda x: x['game_id'], reverse=True)
     top5Games = sortedGames[:5]
 
+    # user_id = user.id
+    # user = User.query.filter_by(id=user_id).first()
+    games = user.favorites
+
+    gameResults = []
+    for game in games:
+        #fullname = user.fullname
+        game_name = game.gameName
+        num_players = game.numPlayers
+        gameResults.append((game_name, num_players))
+
+    print(gameResults)
+
+    for game_name, num_players in gameResults:
+        print(f"{game_name} has {num_players}")
+
+    gamesWon = calcGamesWon(user)
+    print(gamesWon)
+    gamesPlayed = calcGamesPlayed(user)
+    print(gamesPlayed)
+    mostPlayed = calcMostPlayed(user)
+    print(mostPlayed)
+    mostWon = calcMostWon(user)
+    print(mostWon)
+    bestFriend = calcBestFriend(user)
+
+    profileStats = [gamesPlayed, gamesWon, mostPlayed, mostWon, bestFriend]
+
     
-    return render_template('profile.html', user=user, friends=user_friends, recentGames = top5Games)
+    return render_template('profile.html', user=user, friends=user_friends, recentGames = top5Games, favoriteGames=gameResults, profileStats = profileStats)
 
 @app.route('/friend', methods = ['GET'])
 @login_required
@@ -805,3 +853,300 @@ def findID():
     #max_id = max(max_id, temp_id)
 
     return max_id + 1
+
+def calcGamesWon(user):
+    gamesWon = 0
+    gamesWon += db.session.query(DominionGame).filter(or_(DominionGame.winnerName == user.username, DominionGame.winnerName == user.fullname)).count()
+    gamesWon += db.session.query(CatanGame).filter(or_(CatanGame.winnerName == user.username, CatanGame.winnerName == user.fullname)).count()
+    gamesWon += db.session.query(LordsofWaterdeepGame).filter(or_(LordsofWaterdeepGame.winnerName == user.username, LordsofWaterdeepGame.winnerName == user.fullname)).count()
+    gamesWon += db.session.query(CoupGame).filter(or_(CoupGame.winnerName == user.username, CoupGame.winnerName == user.fullname)).count()
+    gamesWon += db.session.query(LoveLetterGame).filter(or_(LoveLetterGame.winnerName == user.username, LoveLetterGame.winnerName == user.fullname)).count()
+
+    return gamesWon
+
+def calcGamesPlayed(user):
+    gamesPlayed = 0
+    gamesPlayed += db.session.query(DominionGame).filter(or_(
+        DominionGame.winnerName == user.fullname,
+        DominionGame.secondName == current_user.fullname,
+        DominionGame.thirdName == user.fullname,
+        DominionGame.fourthName == user.fullname,
+        DominionGame.winnerName == user.username,
+        DominionGame.secondName == user.username,
+        DominionGame.thirdName == user.username,
+        DominionGame.fourthName == user.username)).count()
+    gamesPlayed += db.session.query(CatanGame).filter(or_(
+        CatanGame.winnerName == user.fullname,
+        CatanGame.secondName == user.fullname,
+        CatanGame.thirdName == user.fullname,
+        CatanGame.fourthName == user.fullname,
+        CatanGame.winnerName == user.username,
+        CatanGame.secondName == user.username,
+        CatanGame.thirdName == user.username,
+        CatanGame.fourthName == user.username)).count()
+    gamesPlayed += db.session.query(LordsofWaterdeepGame).filter(or_(
+        LordsofWaterdeepGame.winnerName == user.fullname,
+        LordsofWaterdeepGame.secondName == user.fullname,
+        LordsofWaterdeepGame.thirdName == user.fullname,
+        LordsofWaterdeepGame.fourthName == user.fullname,
+        LordsofWaterdeepGame.fifthName == user.fullname,
+        LordsofWaterdeepGame.winnerName == user.username,
+        LordsofWaterdeepGame.secondName == user.username,
+        LordsofWaterdeepGame.thirdName == user.username,
+        LordsofWaterdeepGame.fourthName == user.username,
+        LordsofWaterdeepGame.fifthName == user.username)).count()
+    gamesPlayed += db.session.query(CoupGame).filter(or_(
+        CoupGame.winnerName == user.fullname,
+        CoupGame.secondName == user.fullname,
+        CoupGame.thirdName == user.fullname,
+        CoupGame.fourthName == user.fullname,
+        CoupGame.fifthName == user.fullname,
+        CoupGame.sixthName == user.fullname,
+        CoupGame.winnerName == user.username,
+        CoupGame.secondName == user.username,
+        CoupGame.thirdName == user.username,
+        CoupGame.fourthName == user.username,
+        CoupGame.fifthName == user.username,
+        CoupGame.sixthName == user.username)).count()
+    gamesPlayed += db.session.query(LoveLetterGame).filter(or_(
+        LoveLetterGame.winnerName == user.fullname,
+        LoveLetterGame.secondName == user.fullname,
+        LoveLetterGame.thirdName == user.fullname,
+        LoveLetterGame.fourthName == user.fullname,
+        LoveLetterGame.fifthName == user.fullname,
+        LoveLetterGame.sixthName == user.fullname,
+        LoveLetterGame.winnerName == user.username,
+        LoveLetterGame.secondName == user.username,
+        LoveLetterGame.thirdName == user.username,
+        LoveLetterGame.fourthName == user.username,
+        LoveLetterGame.fifthName == user.username,
+        LoveLetterGame.sixthName == user.username)).count()
+
+    return gamesPlayed
+
+def calcMostPlayed(user):
+    mostPlayed = ""
+
+    DominionCount = db.session.query(DominionGame).filter(or_(
+        DominionGame.winnerName == user.fullname,
+        DominionGame.secondName == user.fullname,
+        DominionGame.thirdName == user.fullname,
+        DominionGame.fourthName == user.fullname,
+        DominionGame.winnerName == user.username,
+        DominionGame.secondName == user.username,
+        DominionGame.thirdName == user.username,
+        DominionGame.fourthName == user.username)).count()
+    CatanCount = db.session.query(CatanGame).filter(or_(
+        CatanGame.winnerName == user.fullname,
+        CatanGame.secondName == user.fullname,
+        CatanGame.thirdName == user.fullname,
+        CatanGame.fourthName == user.fullname,
+        CatanGame.winnerName == user.username,
+        CatanGame.secondName == user.username,
+        CatanGame.thirdName == user.username,
+        CatanGame.fourthName == user.username)).count()
+    LordsofWaterdeepCount = db.session.query(LordsofWaterdeepGame).filter(or_(
+        LordsofWaterdeepGame.winnerName == user.fullname,
+        LordsofWaterdeepGame.secondName == user.fullname,
+        LordsofWaterdeepGame.thirdName == user.fullname,
+        LordsofWaterdeepGame.fourthName == user.fullname,
+        LordsofWaterdeepGame.fifthName == user.fullname,
+        LordsofWaterdeepGame.winnerName == user.username,
+        LordsofWaterdeepGame.secondName == user.username,
+        LordsofWaterdeepGame.thirdName == user.username,
+        LordsofWaterdeepGame.fourthName == user.username,
+        LordsofWaterdeepGame.fifthName == user.username)).count()
+    CoupCount = db.session.query(CoupGame).filter(or_(
+        CoupGame.winnerName == user.fullname,
+        CoupGame.secondName == user.fullname,
+        CoupGame.thirdName == user.fullname,
+        CoupGame.fourthName == user.fullname,
+        CoupGame.fifthName == user.fullname,
+        CoupGame.sixthName == user.fullname,
+        CoupGame.winnerName == user.username,
+        CoupGame.secondName == user.username,
+        CoupGame.thirdName == user.username,
+        CoupGame.fourthName == user.username,
+        CoupGame.fifthName == user.username,
+        CoupGame.sixthName == user.username)).count()
+    LoveLetterCount = db.session.query(LoveLetterGame).filter(or_(
+        LoveLetterGame.winnerName == user.fullname,
+        LoveLetterGame.secondName == user.fullname,
+        LoveLetterGame.thirdName == user.fullname,
+        LoveLetterGame.fourthName == user.fullname,
+        LoveLetterGame.fifthName == user.fullname,
+        LoveLetterGame.sixthName == user.fullname,
+        LoveLetterGame.winnerName == user.username,
+        LoveLetterGame.secondName == user.username,
+        LoveLetterGame.thirdName == user.username,
+        LoveLetterGame.fourthName == user.username,
+        LoveLetterGame.fifthName == user.username,
+        LoveLetterGame.sixthName == user.username)).count()
+    
+    counts = {
+        'DomionionCount': DominionCount,
+        'CatanCount': CatanCount,
+        'LordsofWaterdeepCount': LordsofWaterdeepCount,
+        'CoupCount': CoupCount,
+        'LoveLetterCount': LoveLetterCount
+    }
+
+    maxCount = max(counts.values())
+    mostPlayed = [variable for variable, count in counts.items() if count == maxCount]
+
+    return mostPlayed[0][:-5]
+
+def calcMostWon(user):
+    dominionWins = db.session.query(DominionGame).filter(or_(DominionGame.winnerName == user.username, DominionGame.winnerName == user.fullname)).count()
+    catanWins = db.session.query(CatanGame).filter(or_(CatanGame.winnerName == user.username, CatanGame.winnerName == user.fullname)).count()
+    lordsofwaterdeepWins = db.session.query(LordsofWaterdeepGame).filter(or_(LordsofWaterdeepGame.winnerName == user.username, LordsofWaterdeepGame.winnerName == user.fullname)).count()
+    coupWins = db.session.query(CoupGame).filter(or_(CoupGame.winnerName == user.username, CoupGame.winnerName == user.fullname)).count()
+    loveletterWins = db.session.query(LoveLetterGame).filter(or_(LoveLetterGame.winnerName == user.username, LoveLetterGame.winnerName == user.fullname)).count()
+
+    counts = {
+        'DomionionCount': dominionWins,
+        'CatanCount': catanWins,
+        'LordsofWaterdeepCount': lordsofwaterdeepWins,
+        'CoupCount': coupWins,
+        'LoveLetterCount': loveletterWins
+    }
+
+    maxCount = max(counts.values())
+    mostWon = [variable for variable, count in counts.items() if count == maxCount]
+
+    return mostWon[0][:-5]
+
+def calcBestFriend(user):
+    bestFriend = ""
+    maxCount = 0
+    user_friends = user.friends.all()
+
+    for friend in user_friends:
+        DominionCount = db.session.query(DominionGame).filter(or_(
+            DominionGame.winnerName == friend.fullname,
+            DominionGame.secondName == friend.fullname,
+            DominionGame.thirdName == friend.fullname,
+            DominionGame.fourthName == friend.fullname,
+            DominionGame.winnerName == friend.username,
+            DominionGame.secondName == friend.username,
+            DominionGame.thirdName == friend.username,
+            DominionGame.fourthName == friend.username,
+            DominionGame.winnerName == user.fullname,
+            DominionGame.secondName == user.fullname,
+            DominionGame.thirdName == user.fullname,
+            DominionGame.fourthName == user.fullname,
+            DominionGame.winnerName == user.username,
+            DominionGame.secondName == user.username,
+            DominionGame.thirdName == user.username,
+            DominionGame.fourthName == user.username)).count()
+        CatanCount = db.session.query(CatanGame).filter(or_(
+            CatanGame.winnerName == friend.fullname,
+            CatanGame.secondName == friend.fullname,
+            CatanGame.thirdName == friend.fullname,
+            CatanGame.fourthName == friend.fullname,
+            CatanGame.winnerName == friend.username,
+            CatanGame.secondName == friend.username,
+            CatanGame.thirdName == friend.username,
+            CatanGame.fourthName == friend.username,
+            CatanGame.winnerName == user.fullname,
+            CatanGame.secondName == user.fullname,
+            CatanGame.thirdName == user.fullname,
+            CatanGame.fourthName == user.fullname,
+            CatanGame.winnerName == user.username,
+            CatanGame.secondName == user.username,
+            CatanGame.thirdName == user.username,
+            CatanGame.fourthName == user.username)).count()
+        LordsofWaterdeepCount = db.session.query(LordsofWaterdeepGame).filter(or_(
+            LordsofWaterdeepGame.winnerName == friend.fullname,
+            LordsofWaterdeepGame.secondName == friend.fullname,
+            LordsofWaterdeepGame.thirdName == friend.fullname,
+            LordsofWaterdeepGame.fourthName == friend.fullname,
+            LordsofWaterdeepGame.fifthName == friend.fullname,
+            LordsofWaterdeepGame.winnerName == friend.username,
+            LordsofWaterdeepGame.secondName == friend.username,
+            LordsofWaterdeepGame.thirdName == friend.username,
+            LordsofWaterdeepGame.fourthName == friend.username,
+            LordsofWaterdeepGame.fifthName == friend.username,
+            LordsofWaterdeepGame.winnerName == user.fullname,
+            LordsofWaterdeepGame.secondName == user.fullname,
+            LordsofWaterdeepGame.thirdName == user.fullname,
+            LordsofWaterdeepGame.fourthName == user.fullname,
+            LordsofWaterdeepGame.fifthName == user.fullname,
+            LordsofWaterdeepGame.winnerName == user.username,
+            LordsofWaterdeepGame.secondName == user.username,
+            LordsofWaterdeepGame.thirdName == user.username,
+            LordsofWaterdeepGame.fourthName == user.username,
+            LordsofWaterdeepGame.fifthName == user.username)).count()
+        CoupCount = db.session.query(CoupGame).filter(or_(
+            CoupGame.winnerName == friend.fullname,
+            CoupGame.secondName == friend.fullname,
+            CoupGame.thirdName == friend.fullname,
+            CoupGame.fourthName == friend.fullname,
+            CoupGame.fifthName == friend.fullname,
+            CoupGame.sixthName == friend.fullname,
+            CoupGame.winnerName == friend.username,
+            CoupGame.secondName == friend.username,
+            CoupGame.thirdName == friend.username,
+            CoupGame.fourthName == friend.username,
+            CoupGame.fifthName == friend.username,
+            CoupGame.sixthName == friend.username,
+            CoupGame.winnerName == user.fullname,
+            CoupGame.secondName == user.fullname,
+            CoupGame.thirdName == user.fullname,
+            CoupGame.fourthName == user.fullname,
+            CoupGame.fifthName == user.fullname,
+            CoupGame.sixthName == user.fullname,
+            CoupGame.winnerName == user.username,
+            CoupGame.secondName == user.username,
+            CoupGame.thirdName == user.username,
+            CoupGame.fourthName == user.username,
+            CoupGame.fifthName == user.username,
+            CoupGame.sixthName == user.username)).count()
+        LoveLetterCount = db.session.query(LoveLetterGame).filter(or_(
+            LoveLetterGame.winnerName == user.fullname,
+            LoveLetterGame.secondName == friend.fullname,
+            LoveLetterGame.thirdName == friend.fullname,
+            LoveLetterGame.fourthName == friend.fullname,
+            LoveLetterGame.fifthName == friend.fullname,
+            LoveLetterGame.sixthName == friend.fullname,
+            LoveLetterGame.winnerName == friend.username,
+            LoveLetterGame.secondName == friend.username,
+            LoveLetterGame.thirdName == friend.username,
+            LoveLetterGame.fourthName == friend.username,
+            LoveLetterGame.fifthName == friend.username,
+            LoveLetterGame.sixthName == friend.username,
+            LoveLetterGame.winnerName == user.fullname,
+            LoveLetterGame.secondName == user.fullname,
+            LoveLetterGame.thirdName == user.fullname,
+            LoveLetterGame.fourthName == user.fullname,
+            LoveLetterGame.fifthName == user.fullname,
+            LoveLetterGame.sixthName == user.fullname,
+            LoveLetterGame.winnerName == user.username,
+            LoveLetterGame.secondName == user.username,
+            LoveLetterGame.thirdName == user.username,
+            LoveLetterGame.fourthName == user.username,
+            LoveLetterGame.fifthName == user.username,
+            LoveLetterGame.sixthName == user.username)).count()
+
+
+        # friendCount = DominionCount + CatanCount + LordsofWaterdeepCount + CoupCount + LoveLetterCount
+        # print("friend")
+        # print(friendCount)
+        if DominionCount > maxCount:
+            maxCount = DominionCount
+            bestFriend = friend.fullname
+        if CatanCount > maxCount:
+            maxCount = CatanCount
+            bestFriend = friend.fullname
+        if LordsofWaterdeepCount > maxCount:
+            maxCount = LordsofWaterdeepCount
+            bestFriend = friend.fullname
+        if CoupCount > maxCount:
+            maxCount = CoupCount
+            bestFriend = friend.fullname
+        if LoveLetterCount > maxCount:
+            maxCount = LoveLetterCount
+            bestFriend = friend.fullname
+
+    print(bestFriend)
+    return bestFriend

@@ -13,10 +13,11 @@
     {% block content %}
         <div id="content">
             <div>
-                <h2>{{ user.fullname }}'s profile</h2>
+                <h2 id="displayname">{{ user.fullname }}'s profile</h2>
+                <h3 id="username">{{ user.username }}</h3>
                 <div id="mainLayout">
                     <div  class="section">
-                        <h3>{{ user.fullname }}'s Recent Games</h3>
+                        <h3>Recent Games</h3>
                         <table>
                             <thead>
                               <tr>
@@ -42,8 +43,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="section">
-                        <h3>{{ user.fullname }}'s Friends</h3>
+                    <div class="section" id="friends">
+                        <h3>Friends</h3>
                         <div>
                             {% for friend in friends %}
                             <div style="margin-top: 10px;">
@@ -52,15 +53,69 @@
                             {% endfor %}
                         </div>
                     </div>
+                    <div class="section" id="favorites">
+                        <h3>Favorite Games</h3>
+                        <div id="favGames">
+                            {% for game in favoriteGames %}
+                            <div class="miniCard">
+                                <span>{{ game[0] }}</span>
+                                <p>{{ game[1] }}</p>
+                            </div>
+                            {% endfor %}
+                            <div id="addFavorite"class="miniCard Hide">
+                                <a>Add a Favorite</a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="section" id="statistics">
+                        <h3>Basic Statistics</h3>
+                        <div id="favGames">
+                        
+                            <div class="miniCard">
+                                <span>Games Played</span>
+                                <p>{{ profileStats[0] }}</p>
+                            </div>
+                            <div class="miniCard">
+                                <span>Games Won</span>
+                                <p>{{ profileStats[1] }}</p>
+                            </div>
+                            <div class="miniCard">
+                                <span>Most Played</span>
+                                <p>{{ profileStats[2] }}</p>
+                            </div>
+                            <div class="miniCard">
+                                <span>Most Won</span>
+                                <p>{{ profileStats[3] }}</p>
+                            </div>
+                            <div class="miniCard">
+                                <span>Best Friend</span>
+                                <p>{{ profileStats[4] }}</p>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
                     
-                
-
             </div>
 
         </div>
 
+        <script>
+            console.log("hahah")
+            let favoriteGamesLength = {{ favoriteGames|length }};
+            
+            if(favoriteGamesLength < 5) {
+                let fav = document.querySelector("#favorites");
+                fav.setAttribute("style","width:950px");
+                let addFavorite = document.querySelector("#addFavorite");
+                addFavorite.classList.remove("Hide");
+            }
+        </script>
+
     {% endblock %}
+
 
 </body>
 </html>
+
