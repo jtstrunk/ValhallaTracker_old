@@ -268,16 +268,15 @@ def home():
     sortedGames = sorted(recentGames, key=lambda x: x['game_id'], reverse=True)
     top5Games = sortedGames[:5]
 
-    # results = db.session.query(User.fullname, SupportedGames.gameName).\
-    #     join(User, User.id == userFavorites.c.user_id).\
-    #     join(SupportedGames, SupportedGames.id == userFavorites.c.game_id).\
-    #     all()
+    gamesWon = calcGamesWon(user)
+    gamesPlayed = calcGamesPlayed(user)
+    mostPlayed = calcMostPlayed(user)
+    mostWon = calcMostWon(user)
+    bestFriend = calcBestFriend(user)
 
-    # # print the results
-    # for fullname, gameName in results:
-    #     print(f"{fullname} likes {gameName}")
+    profileStats = [gamesPlayed, gamesWon, mostPlayed, mostWon, bestFriend]
 
-    return render_template('home.html', title='Home', name=current_user.fullname, friends=user_friends, recentGames=top5Games)
+    return render_template('home.html', title='Home', name=current_user.fullname, friends=user_friends, recentGames=top5Games, profileStats=profileStats)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -440,13 +439,9 @@ def profile():
         print(f"{game_name} has {num_players}")
 
     gamesWon = calcGamesWon(user)
-    print(gamesWon)
     gamesPlayed = calcGamesPlayed(user)
-    print(gamesPlayed)
     mostPlayed = calcMostPlayed(user)
-    print(mostPlayed)
     mostWon = calcMostWon(user)
-    print(mostWon)
     bestFriend = calcBestFriend(user)
 
     profileStats = [gamesPlayed, gamesWon, mostPlayed, mostWon, bestFriend]
@@ -489,6 +484,21 @@ def removefriend():
         user1.friends.remove(user2)
         user2.friends.remove(user1)
     return redirect(url_for('friends'))
+
+@app.route('/addFavorite', methods=['POST'])
+def addFavorite():
+    game = request.args.get('game')
+    print(game)
+    user = User.query.get(current_user.id)
+    # gameID = 4
+    game_obj = SupportedGames.query.filter_by(gameName=game).first()
+    user.favorites.append(game_obj)
+
+    # favorite = userFavorites(user_id=userID, game_id=gameID)
+    # userID.favorites.append(favorite)
+    db.session.commit()
+    return 'Game Added'
+
 
 @app.route('/showGames', methods=['GET'])
 @login_required

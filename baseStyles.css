@@ -12,7 +12,7 @@ nav{
 
 nav a {
     margin: 10px;
-    height: 18px;
+    height: 30px;
     text-decoration: none;
     padding-top: 4px;
     padding-bottom: 4px;
@@ -78,6 +78,13 @@ nav h2 {
 #favGames {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+}
+
+#Stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .miniCard {
@@ -85,7 +92,7 @@ nav h2 {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 110px;
+    width: 115px;
     height: 140px;
     margin: 20px;
     border-radius: 8px;
@@ -114,6 +121,7 @@ nav h2 {
 
 .miniCard span {
     text-align: center;
+    margin-bottom: 8px;
 }
 
 table {
@@ -143,4 +151,18 @@ a {
 .friend{
     text-decoration: none;
     color: black;
+}
+
+.popup {
+    width: 260px;
+    height: 220px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: white;
+    border-radius: 8%;
+    text-align: center;
+
 }

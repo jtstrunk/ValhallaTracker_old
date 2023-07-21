@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/baseStyles.css') }}">
     <title>Game Tracker</title>
 </head>
@@ -53,7 +54,7 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="section" id="favorites">
+                    <div class="section" id="favorites" style="width: 785px;">
                         <h3>Favorite Games</h3>
                         <div id="favGames">
                             {% for game in favoriteGames %}
@@ -62,15 +63,15 @@
                                 <p>{{ game[1] }}</p>
                             </div>
                             {% endfor %}
-                            <div id="addFavorite"class="miniCard Hide">
-                                <a>Add a Favorite</a>
+                            <div id="addFavorite" class="miniCard Hide">
+                                <span>Add a Favorite Game</span>
                             </div>
 
                         </div>
                     </div>
-                    <div class="section" id="statistics">
+                    <div class="section" id="statistics" style="width: 785px;">
                         <h3>Basic Statistics</h3>
-                        <div id="favGames">
+                        <div id="Stats">
                         
                             <div class="miniCard">
                                 <span>Games Played</span>
@@ -96,21 +97,67 @@
                         </div>
                     </div>
                 </div>
+                <div id="myPopup" class="popup Hide">
+                    <h2>Favorite a Game</h2>
+                    <div style="margin-top: 25px;">
+                            <select name="gameSelect" id="gameSelect" class="form-select">
+                                <option value="allGames">Select a Game</option>
+                                <option value="Catan">Catan</option>
+                                <option value="Coup">Coup</option>
+                                <option value="Dominion">Dominion</option>
+                                <option value="Lords of Waterdeep">Lords of Waterdeep</option>
+                                <option value="Love Letter">Love Letter</option>
+                              </select>
+                    </div>
+                    <!-- <label for="gameSelect">Select a Game</label> -->
+                    <div style="margin-top: 25px;">
+                        <button id="joshy" class="btn btn-primary">Add to Favorites</button>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button id="close" class="btn btn-secondary-sm">Close</button>
+                    </div>
+                </div>
+
                     
             </div>
 
         </div>
 
         <script>
+            let adding = document.querySelector("#addFavorite");
+            adding.addEventListener('click', () => {
+                console.log("clicked")
+                let popup = document.getElementById("myPopup");
+                popup.classList.remove("Hide");
+                popup.classList.add("popup");
+            })
+
+            document.querySelector("#close").addEventListener('click', () => {
+                let popup = document.getElementById("myPopup");
+                popup.classList.remove("popup");
+                popup.classList.add("Hide");
+            })
+
+            let joshy = document.querySelector("#joshy");
+            joshy.addEventListener('click', () => {
+                let game = document.querySelector("#gameSelect").value;
+                console.log(game);
+                fetch(`/addFavorite?game=${game}`, {method: 'POST'})
+                .then(response => response.json())
+                .then(data => console.log(data))
+                location.reload();
+            })
+
             console.log("hahah")
             let favoriteGamesLength = {{ favoriteGames|length }};
             
             if(favoriteGamesLength < 5) {
                 let fav = document.querySelector("#favorites");
-                fav.setAttribute("style","width:950px");
+                fav.setAttribute("style","width:785px");
                 let addFavorite = document.querySelector("#addFavorite");
                 addFavorite.classList.remove("Hide");
             }
+
         </script>
 
     {% endblock %}
@@ -118,4 +165,3 @@
 
 </body>
 </html>
-
