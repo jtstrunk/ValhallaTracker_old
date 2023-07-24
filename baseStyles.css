@@ -43,7 +43,7 @@ nav h2 {
 }
 
 #mainLayout {
-    width: 867px;
+    width: 900px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

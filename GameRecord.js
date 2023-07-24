@@ -31,20 +31,33 @@ selectGame.addEventListener('change', () => {
 
 })
 
-let tables = document.querySelectorAll("tbody");
+// let tables = document.querySelectorAll("tbody");
 
-for(let i = 0; i < tables.length; i++){
-    let tbody = tables[i];
-    let rows = tbody.getElementsByTagName('tr');
-    if(rows.length >= 2) {
-        let secondRow = rows[1];
-        var cell = secondRow.querySelector('td');
-        if (cell.innerHTML.trim() === '') {
-            let table = tbody.parentElement;
-            let div1 = table.parentElement;
-            let finalDiv = div1.parentElement;
-            finalDiv.classList.add("Hide");
-        }
+// for(let i = 0; i < tables.length; i++){
+//     let tbody = tables[i];
+//     let rows = tbody.getElementsByTagName('tr');
+//     if(rows.length >= 2) {
+//         let secondRow = rows[1];
+//         var cell = secondRow.querySelector('td');
+//         if (cell.innerHTML.trim() === '') {
+//             let table = tbody.parentElement;
+//             let div1 = table.parentElement;
+//             let finalDiv = div1.parentElement;
+//             finalDiv.classList.add("Hide");
+//         }
+//     }
+
+// }
+
+let gameWrappers = document.querySelectorAll(".gameWrapper");
+
+for (let i = 0; i < gameWrappers.length; i++) {
+    let table = gameWrappers[i].querySelector("table");
+    console.log(table);
+    let rows = table.querySelectorAll("tr");
+  
+    if (rows.length <= 1) {
+      gameWrappers[i].classList.add("Hide");
     }
-
 }
+

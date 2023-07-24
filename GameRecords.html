@@ -1,12 +1,13 @@
 <html>
   <head>
     <title>Game Records</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/GameRecordsStyles.css') }}">
     <script src="{{ url_for('static', filename='js/GameRecord.js') }}" defer></script>
   </head>
   <body>
     {% extends "base.html" %}
-    
+    {% import "bootstrap/wtf.html" as wtf %}
     {% block content %}
     <div id="select">
       <label for="gameSelect">Choose a game to see its records</label>
@@ -56,7 +57,6 @@
 
     <div class="gameWrapper" id="Coup">
       <p>Coup Games</p>
-      {% for item in Coupdata %}
         <div class="couGames sixTable">
           <table>
             <tr>
@@ -69,19 +69,20 @@
               <th>Fifth</th>
               <th>Sixth</th>
             </tr>
+            {% for game in Coupdata %}
             <tr>
-              <td>{{ item[0] }}</td>
-              <td>{{ item[1] }}</td>
-              <td>{{ item[2] }}</td>
-              <td>{{ item[3] }}</td>
-              <td>{{ item[4] }}</td>
-              <td>{{ item[5] }}</td>
-              <td>{{ item[6] }}</td>
-              <td>{{ item[7] }}</td>
+              <td>{{ game.game_id }}</td>
+              <td>{{ game.winnerName }}</td>
+              <td>{{ game.cardsLeft }}</td>
+              <td>{{ game.secondName }}</td>
+              <td>{{ game.thirdName }}</td>
+              <td>{{ game.fourthName }}</td>
+              <td>{{ game.fifthName }}</td>
+              <td>{{ game.sixthName }}</td>
             </tr>
+            {% endfor %}
           </table>
         </div>
-      {% endfor %}
     </div>
 
     <div class="gameWrapper" id="Dominion">
@@ -118,7 +119,6 @@
 
     <div class="gameWrapper" id="LordsofWaterdeep">
       <p>Lords of Waterdeep Games</p>
-      {% for item in LordsofWaterdeepdata %}
         <div class="lorGames fiveTable">
           <table>
             <tr>
@@ -134,27 +134,27 @@
               <th>Fifth</th>
               <th>Score</th>
             </tr>
+            {% for game in LordsofWaterdeepdata %}
             <tr>
-              <td>{{ item[0] }}</td>
-              <td>{{ item[1] }}</td>
-              <td>{{ item[2] }}</td>
-              <td>{{ item[3] }}</td>
-              <td>{{ item[4] }}</td>
-              <td>{{ item[5] }}</td>
-              <td>{{ item[6] }}</td>
-              <td>{{ item[7] }}</td>
-              <td>{{ item[8] }}</td>
-              <td>{{ item[9] }}</td>
-              <td>{{ item[10] }}</td>
+              <td>{{ game.game_id }}</td>
+              <td>{{ game.winnerName }}</td>
+              <td>{{ game.winnerScore }}</td>
+              <td>{{ game.secondName }}</td>
+              <td>{{ game.secondScore }}</td>
+              <td>{{ game.thirdName }}</td>
+              <td>{{ game.thirdScore }}</td>
+              <td>{{ game.fourthName }}</td>
+              <td>{{ game.fourthScore }}</td>
+              <td>{{ game.fifthName }}</td>
+              <td>{{ game.fifthScore }}</td>
             </tr>
+            {% endfor %}
           </table>
-        </div>
-      {% endfor %}
+        </div>      
     </div>
 
     <div class="gameWrapper" id="LoveLetter">
       <p>Love Letter Games</p>
-      {% for item in LoveLetterdata %}
         <div class="lovGames sixTable">
           <table>
             <tr>
@@ -166,18 +166,19 @@
               <th>Fifth</th>
               <th>Sixth</th>
             </tr>
+            {% for game in LoveLetterdata %}
             <tr>
-              <td>{{ item[0] }}</td>
-              <td>{{ item[1] }}</td>
-              <td>{{ item[2] }}</td>
-              <td>{{ item[3] }}</td>
-              <td>{{ item[4] }}</td>
-              <td>{{ item[5] }}</td>
-              <td>{{ item[6] }}</td>
+              <td>{{ game.game_id }}</td>
+              <td>{{ game.winnerName }}</td>
+              <td>{{ game.secondName }}</td>
+              <td>{{ game.thirdName }}</td>
+              <td>{{ game.fourthName }}</td>
+              <td>{{ game.fifthName }}</td>
+              <td>{{ game.sixthName }}</td>
             </tr>
+            {% endfor %}
           </table>
         </div>
-      {% endfor %}
     </div>
     {% endblock %}
   </body>

@@ -37,7 +37,7 @@ tr td, th {
 }
 
 .fourTable{
-    width: 810px;
+    width: 950px;
     /* background-color: #D2E6F3; */
     padding: 10px;
     margin-top: 5px;
@@ -48,7 +48,7 @@ tr td, th {
 }
 
 .fiveTable{
-    width: 930px;
+    width: 1020px;
     /* background-color: #D2E6F3; */
     padding: 10px;
     margin-top: 5px;
@@ -59,7 +59,7 @@ tr td, th {
 }
 
 .sixTable{
-    width: 1050px;
+    width: 1090px;
     /* background-color: #D2E6F3; */
     padding: 10px;
     margin-top: 5px;
