@@ -144,6 +144,15 @@ class RegisterForm(FlaskForm):
 @app.route('/home')
 @login_required
 def home():
+
+    # if current_user.is_authenticated:
+    #     print("logged in")
+    #     print(current_user)
+    # else:
+    #     print("not logged int")
+    #     return render_template('testhome.html', title='Register')
+
+
     user = User.query.filter_by(username=current_user.username).first()
     user_friends = user.friends.limit(5).all()
 
@@ -292,7 +301,7 @@ def login():
             login_user(user, remember=form.remember.data)
             return redirect(url_for('home'))
 
-        return '<h1>wtf</h1>'
+        
 
     return render_template('login.html', title='Sign In', form=form)
 
@@ -443,7 +452,7 @@ def profile():
     mostPlayed = calcMostPlayed(user)
     mostWon = calcMostWon(user)
     bestFriend = calcBestFriend(user)
-
+    
     profileStats = [gamesPlayed, gamesWon, mostPlayed, mostWon, bestFriend]
 
     
@@ -477,13 +486,17 @@ def addFriend():
 @login_required
 def removefriend():
     user1 = current_user
-    username = request.form.get('addAccount')
+    username = request.form.get('removeAccount')
     user2 = User.query.filter_by(username=username).first()
 
     if user2:
         user1.friends.remove(user2)
         user2.friends.remove(user1)
-    return redirect(url_for('friends'))
+        db.session.commit()
+        print("removingdasdsadsadsa")
+
+    print("removing")
+    return redirect(url_for('friend'))
 
 @app.route('/addFavorite', methods=['POST'])
 def addFavorite():

@@ -66,6 +66,10 @@
                             <div id="addFavorite" class="miniCard Hide">
                                 <span>Add a Favorite Game</span>
                             </div>
+                            <div id="noFavorite" class="miniCard Hide">
+                                <span>Looks like {{ user.fullname }}</span>
+                                <p>Does not have any favorite games</p>
+                            </div>
 
                         </div>
                     </div>
@@ -150,13 +154,13 @@
 
             console.log("hahah")
             let favoriteGamesLength = {{ favoriteGames|length }};
-            
+
             if(favoriteGamesLength < 5) {
                 let fav = document.querySelector("#favorites");
                 fav.setAttribute("style","width:785px");
                 let addFavorite = document.querySelector("#addFavorite");
                 addFavorite.classList.remove("Hide");
-            }
+            } 
 
         </script>
 

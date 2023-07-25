@@ -78,7 +78,7 @@ nav h2 {
 #favGames {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    
 }
 
 #Stats {
@@ -164,5 +164,4 @@ a {
     background-color: white;
     border-radius: 8%;
     text-align: center;
-
 }
