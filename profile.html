@@ -49,7 +49,7 @@
                         <div>
                             {% for friend in friends %}
                             <div style="margin-top: 10px;">
-                                <a href="/profile?name={{ friend.username }}" class="friend">{{ friend.fullname }}</a>
+                                <a href="/profile?name={{ friend.username }}" class="friend" style="cursor: pointer;">{{ friend.fullname }}</a>
                             </div>
                             {% endfor %}
                         </div>
@@ -63,7 +63,7 @@
                                 <p>{{ game[1] }}</p>
                             </div>
                             {% endfor %}
-                            <div id="addFavorite" class="miniCard Hide">
+                            <div id="addFavorite" class="miniCard Hide" style="cursor: pointer;">
                                 <span>Add a Favorite Game</span>
                             </div>
                             <div id="noFavorite" class="miniCard Hide">
@@ -102,7 +102,8 @@
                     </div>
                 </div>
                 <div id="myPopup" class="popup Hide">
-                    <h2>Favorite a Game</h2>
+                    <p class="close-button">x</p>
+                    <h3>Favorite a Game</h3>
                     <div style="margin-top: 25px;">
                             <select name="gameSelect" id="gameSelect" class="form-select">
                                 <option value="allGames">Select a Game</option>
@@ -111,14 +112,14 @@
                                 <option value="Dominion">Dominion</option>
                                 <option value="Lords of Waterdeep">Lords of Waterdeep</option>
                                 <option value="Love Letter">Love Letter</option>
+                                <option value="Munchkin">Munchkin</option>
+                                <option value="Just One">Just One</option>
+                                <option value="The Mind">The Mind</option>
                               </select>
                     </div>
                     <!-- <label for="gameSelect">Select a Game</label> -->
                     <div style="margin-top: 25px;">
                         <button id="joshy" class="btn btn-primary">Add to Favorites</button>
-                    </div>
-                    <div style="margin-top: 15px;">
-                        <button id="close" class="btn btn-secondary-sm">Close</button>
                     </div>
                 </div>
 
@@ -136,7 +137,7 @@
                 popup.classList.add("popup");
             })
 
-            document.querySelector("#close").addEventListener('click', () => {
+            document.querySelector(".close-button").addEventListener('click', () => {
                 let popup = document.getElementById("myPopup");
                 popup.classList.remove("popup");
                 popup.classList.add("Hide");

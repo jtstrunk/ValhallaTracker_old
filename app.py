@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import or_, Date, text, literal
+from sqlalchemy import and_, or_, Date, text, literal
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
@@ -110,7 +110,6 @@ class CoupGame(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     game_id = db.Column(db.Integer, nullable=False)
     winnerName = db.Column(db.String(50), nullable=False)
-    cardsLeft = db.Column(db.Integer, nullable=False)
     secondName = db.Column(db.String(50), nullable=False)
     thirdName = db.Column(db.String(50))
     fourthName = db.Column(db.String(50))
@@ -129,6 +128,46 @@ class LoveLetterGame(db.Model):
     sixthName = db.Column(db.String(50))
     date = db.Column(db.Date)
 
+class MunchkinGame(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    game_id = db.Column(db.Integer, nullable=False)
+    winnerName = db.Column(db.String(50), nullable=False)
+    winnerScore = db.Column(db.Integer, nullable=False)
+    secondName = db.Column(db.String(50), nullable=False)
+    secondScore = db.Column(db.Integer, nullable=False)
+    thirdName = db.Column(db.String(50), nullable=False)
+    thirdScore = db.Column(db.Integer, nullable=False)
+    fourthName = db.Column(db.String(50))
+    fourthScore = db.Column(db.Integer)
+    fifthName = db.Column(db.String(50))
+    fifthScore = db.Column(db.Integer)
+    sixthName = db.Column(db.String(50))
+    sixthScore = db.Column(db.Integer)
+    date = db.Column(db.Date)
+
+class TheMindGame(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    game_id = db.Column(db.Integer, nullable=False)
+    playerone = db.Column(db.String(50), nullable=False)
+    playertwo = db.Column(db.String(50), nullable=False)
+    playerthree = db.Column(db.String(50))
+    playerfour = db.Column(db.String(50))
+    victory = db.Column(db.String(50), nullable=False)
+    date = db.Column(db.Date)
+    
+class JustOneGame(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    game_id = db.Column(db.Integer, nullable=False)
+    playerone = db.Column(db.String(50), nullable=False)
+    playertwo = db.Column(db.String(50), nullable=False)
+    playerthree = db.Column(db.String(50))
+    playerfour = db.Column(db.String(50))
+    playerfive = db.Column(db.String(50))
+    playersix = db.Column(db.String(50))
+    playerseven = db.Column(db.String(50))
+    victory = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.Date)
+
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[InputRequired()])
     password = PasswordField('password', validators=[InputRequired()])
@@ -145,39 +184,11 @@ class RegisterForm(FlaskForm):
 @login_required
 def home():
 
-    # if current_user.is_authenticated:
-    #     print("logged in")
-    #     print(current_user)
-    # else:
-    #     print("not logged int")
-    #     return render_template('testhome.html', title='Register')
-
-
     user = User.query.filter_by(username=current_user.username).first()
     user_friends = user.friends.limit(5).all()
 
     print(current_user.username)
     print(current_user.fullname)
-
-    # recent_games = basicGame.query.filter(or_(
-    #     basicGame.winnerName == current_user.fullname,
-    #     basicGame.secondName == current_user.fullname,
-    #     basicGame.thirdName == current_user.fullname,
-    #     basicGame.winnerName == current_user.username,
-    #     basicGame.secondName == current_user.username,
-    #     basicGame.thirdName == current_user.username,
-    # )).order_by(basicGame.game_id.desc()).limit(5).all()
-
-    # for game in recent_games:
-    #     if game.winnerName == current_user.username:
-    #         game.winnerName = current_user.fullname
-    #     if game.secondName == current_user.username:
-    #         game.secondName = current_user.fullname
-    #     if game.thirdName == current_user.username:
-    #         game.thirdName = current_user.fullname
-
-    # print("recent")
-    # print(recent_games)
 
     dominion_games = DominionGame.query.filter(or_(
         DominionGame.winnerName == current_user.fullname,
@@ -312,7 +323,7 @@ def register():
         new_user = User(username = form.username.data, email = form.email.data, password = form.password.data, fullname = form.fullname.data)
         db.session.add(new_user)
         db.session.commit()
-        return '<h1> new user created</h1>'
+        return redirect('/login')
     
     return render_template('register.html', title='Register', form=form)
 
@@ -649,11 +660,6 @@ def showGames():
 def addGame():
     return render_template("addGame.html", title='Home')
 
-@app.route('/Dominion', methods = ['GET'])
-@login_required
-def Dominion():
-    return render_template('Dominion.html', title='Home')
-
 @app.route('/addDominion', methods = ['POST', 'GET'])
 @login_required
 def addDominion():
@@ -687,20 +693,8 @@ def addDominion():
             print(f"An error occurred while adding the DominionGame: {e}")
 
         finally:
-            print("Redircting")
-            return redirect("http://localhost:5000/DominionAdded")
-        
-@app.route('/DominionAdded', methods = ['GET'])
-@login_required
-def DominionAdded():
-    gameData = db.session.query(DominionGame).order_by(DominionGame.game_id.desc()).first()
-    print(gameData)
-    return render_template('DominionOutput.html', title='Home', gameData=gameData)
-
-@app.route('/Catan', methods = ['GET'])
-@login_required
-def Catan():
-    return render_template('Catan.html', title='Home')
+            print("Record Added")
+            return redirect('/addGame')
 
 @app.route('/addCatan', methods = ['POST', 'GET'])
 @login_required
@@ -731,23 +725,11 @@ def addCatan():
             db.session.commit()
 
         except Exception as e:
-            print(f"An error occurred while adding the DominionGame: {e}")
+            print(f"An error occurred while adding the CatanGame: {e}")
 
         finally:
-            print("Redircting")
-            return redirect("http://localhost:5000/CatanAdded")
-        
-@app.route('/CatanAdded', methods = ['GET'])
-@login_required
-def CatanAdded():
-    gameData = db.session.query(CatanGame).order_by(CatanGame.game_id.desc()).first()
-    return render_template('CatanOutput.html', title='Home', gameData=gameData)
-
-
-@app.route('/LordsofWaterdeep', methods = ['GET'])
-@login_required
-def LordsofWaterdeep():
-    return render_template('LordsofWaterdeep.html', title='Home')
+            print("Record Added")
+            return redirect('/addGame')
 
 @app.route('/addLordsofWaterdeep', methods = ['POST', 'GET'])
 @login_required
@@ -781,28 +763,19 @@ def addLordsofWaterdeep():
             db.session.add(new_game)
             db.session.commit()
 
+        except Exception as e:
+            print(f"An error occurred while adding the LordsofWaterdeepGame: {e}")
+
         finally:
-            print("Redircting")
-            return redirect("http://localhost:5000/LordsofWaterdeepAdded")
+            print("Record Added")
+            return redirect('/addGame')
         
-@app.route('/LordsofWaterdeepAdded', methods=['GET'])
-@login_required
-def LordsofWaterdeepAdded():
-    gameData = db.session.query(LordsofWaterdeepGame).order_by(LordsofWaterdeepGame.game_id.desc()).first()
-    return render_template('LordsofWaterdeepOutput.html', title='Home', gameData=gameData)
-
-@app.route('/Coup', methods = ['GET'])
-@login_required
-def Coup():
-    return render_template('Coup.html', title='Home')
-
 @app.route('/addCoup', methods = ['POST', 'GET'])
 @login_required
 def addCoup():
     if request.method == 'POST':
         try:
             player1 = request.form['Player1']
-            cardsLeft = request.form['cardsLeft']
             player2 = request.form['Player2']
             player3 = request.form['Player3']
             player4 = request.form['Player4']
@@ -812,7 +785,6 @@ def addCoup():
             new_game = CoupGame(
                 game_id=newGameID, 
                 winnerName=player1, 
-                cardsLeft=cardsLeft, 
                 secondName=player2, 
                 thirdName=player3, 
                 fourthName=player4, 
@@ -821,59 +793,160 @@ def addCoup():
                 date=date.today())
             db.session.add(new_game)
             db.session.commit()
-        finally:
-            print("Redircting")
-            return redirect("http://localhost:5000/CoupAdded")
-        
-@app.route('/CoupAdded', methods=['GET'])
-@login_required
-def CoupAdded():
-    gameData = db.session.query(CoupGame).order_by(CoupGame.game_id.desc()).first()
-    return render_template('CoupOutput.html', title='Home', gameData=gameData)
-        
-@app.route('/LoveLetter', methods = ['GET'])
-def LoveLetter():
-    return render_template('LoveLetter.html', title='Home')
 
+        except Exception as e:
+            print(f"An error occurred while adding the CoupGame: {e}")
+
+        finally:
+            print("Record Added")
+            return redirect('/addGame')
+        
 @app.route('/addLoveLetter', methods=['POST', 'GET'])
 def addLoveLetter():
     if request.method == 'POST':
-        player1 = request.form['Player1']
-        player2 = request.form['Player2']
-        player3 = request.form['Player3']
-        player4 = request.form['Player4']
-        player5 = request.form['Player5']
-        player6 = request.form['Player6']
-        newGameID = findID()
-        new_game = LoveLetterGame(
-            game_id=newGameID, 
-            winnerName=player1, 
-            secondName=player2, 
-            thirdName=player3, 
-            fourthName=player4, 
-            fifthName=player5, 
-            sixthName=player6,
-            date=date.today())
-        db.session.add(new_game)
-        db.session.commit()
+        try:
+            player1 = request.form['Player1']
+            player2 = request.form['Player2']
+            player3 = request.form['Player3']
+            player4 = request.form['Player4']
+            player5 = request.form['Player5']
+            player6 = request.form['Player6']
+            newGameID = findID()
+            new_game = LoveLetterGame(
+                game_id=newGameID, 
+                winnerName=player1, 
+                secondName=player2, 
+                thirdName=player3, 
+                fourthName=player4, 
+                fifthName=player5, 
+                sixthName=player6,
+                date=date.today())
+            db.session.add(new_game)
+            db.session.commit()
 
-        return redirect("/LoveLetterAdded")
+        finally:
+            print("Record Added")
+            return redirect('/addGame')
+        
+@app.route('/addMunchkin', methods = ['POST', 'GET'])
+@login_required
+def addMunchkin():
+    if request.method == 'POST':
+        try:
+            player1 = request.form['Player1']
+            player1Score = request.form['Player1_Score']
+            player2 = request.form['Player2']
+            player2Score = request.form['Player2_Score']
+            player3 = request.form['Player3']
+            player3Score = request.form['Player3_Score']
+            player4 = request.form['Player4']
+            player4Score = request.form['Player4_Score']
+            player5 = request.form['Player5']
+            player5Score = request.form['Player5_Score']
+            player6 = request.form['Player6']
+            player6Score = request.form['Player6_Score']
+            newGameID = findID()
+            new_game = MunchkinGame(
+                game_id=newGameID, 
+                winnerName=player1, 
+                winnerScore=player1Score, 
+                secondName=player2, 
+                secondScore=player2Score, 
+                thirdName=player3, 
+                thirdScore=player3Score, 
+                fourthName=player4, 
+                fourthScore=player4Score, 
+                fifthName=player5, 
+                fifthScore=player5Score,
+                sixthName=player6, 
+                sixthScore=player6Score,
+                date=date.today())
+            db.session.add(new_game)
+            db.session.commit()
 
-@app.route('/LoveLetterAdded', methods=['GET'])
-def LoveLetterAdded():
-    gameData = db.session.query(LoveLetterGame).order_by(LoveLetterGame.game_id.desc()).all()
-    return render_template('LoveLetterOutput.html', title='Home', gameData=gameData)
+        except Exception as e:
+            print(f"An error occurred while adding the MunchkinGame: {e}")
+
+        finally:
+            print("Record Added")
+            return redirect('/addGame')
+        
+@app.route('/addJustOne', methods = ['POST', 'GET'])
+@login_required
+def addJustOne():
+    if request.method == 'POST':
+        try:
+            player1 = request.form['Player1']
+            player2 = request.form['Player2']
+            player3 = request.form['Player3']
+            player4 = request.form['Player4']
+            player5 = request.form['Player5']
+            player6 = request.form['Player6']
+            player7 = request.form['Player7']
+            gamevictory = request.form['win']
+            newGameID = findID()
+            new_game = JustOneGame(
+                game_id=newGameID, 
+                playerone=player1, 
+                playertwo=player2,  
+                playerthree=player3, 
+                playerfour=player4,
+                playerfive=player5,  
+                playersix=player6, 
+                playerseven=player7,  
+                victory = gamevictory,
+                date=date.today())
+            db.session.add(new_game)
+            db.session.commit()
+            print("JustOneGame added successfully!")
+
+        except Exception as e:
+            print(f"An error occurred while adding the JustOneGame: {e}")
+
+        finally:
+            print("Record Added")
+            return redirect('/addGame')
+        
+@app.route('/addTheMind', methods = ['POST', 'GET'])
+@login_required
+def addTheMind():
+    if request.method == 'POST':
+        try:
+            player1 = request.form['Player1']
+            player2 = request.form['Player2']
+            player3 = request.form['Player3']
+            player4 = request.form['Player4']
+            gamevictory = request.form['win']
+            newGameID = findID()
+            new_game = TheMindGame(
+                game_id=newGameID, 
+                playerone=player1, 
+                playertwo=player2,  
+                playerthree=player3, 
+                playerfour=player4, 
+                victory = gamevictory,
+                date=date.today())
+            db.session.add(new_game)
+            db.session.commit()
+            print("TheMindGame added successfully!")
+
+        except Exception as e:
+            print(f"An error occurred while adding the TheMindGame: {e}")
+
+        finally:
+            print("Record Added")
+            return redirect('/addGame')
 
 def findID():
-    max_id = db.session.query(db.func.max(DominionGame.game_id)).scalar() or 0
-    temp_id = db.session.query(db.func.max(CatanGame.game_id)).scalar() or 0
-    max_id = max(max_id, temp_id)
-    temp_id = db.session.query(db.func.max(LordsofWaterdeepGame.game_id)).scalar() or 0
-    max_id = max(max_id, temp_id)
-    temp_id = db.session.query(db.func.max(CoupGame.game_id)).scalar() or 0
-    max_id = max(max_id, temp_id)
-    #temp_id = db.session.query(db.func.max(LoveLetterGame.game_id)).scalar() or 0
-    #max_id = max(max_id, temp_id)
+    dom_id = db.session.query(db.func.max(DominionGame.game_id)).scalar() or 0
+    cat_id = db.session.query(db.func.max(CatanGame.game_id)).scalar() or 0
+    lor_id = db.session.query(db.func.max(LordsofWaterdeepGame.game_id)).scalar() or 0
+    cou_id = db.session.query(db.func.max(CoupGame.game_id)).scalar() or 0
+    lov_id = db.session.query(db.func.max(LoveLetterGame.game_id)).scalar() or 0
+    mun_id = db.session.query(db.func.max(MunchkinGame.game_id)).scalar() or 0
+    jus_id = db.session.query(db.func.max(JustOneGame.game_id)).scalar() or 0
+    min_id = db.session.query(db.func.max(TheMindGame.game_id)).scalar() or 0
+    max_id = max(dom_id, cat_id, lor_id, cou_id, lov_id, mun_id, jus_id, min_id)
 
     return max_id + 1
 
@@ -884,6 +957,22 @@ def calcGamesWon(user):
     gamesWon += db.session.query(LordsofWaterdeepGame).filter(or_(LordsofWaterdeepGame.winnerName == user.username, LordsofWaterdeepGame.winnerName == user.fullname)).count()
     gamesWon += db.session.query(CoupGame).filter(or_(CoupGame.winnerName == user.username, CoupGame.winnerName == user.fullname)).count()
     gamesWon += db.session.query(LoveLetterGame).filter(or_(LoveLetterGame.winnerName == user.username, LoveLetterGame.winnerName == user.fullname)).count()
+    gamesWon += db.session.query(MunchkinGame).filter(or_(MunchkinGame.winnerName == user.username, MunchkinGame.winnerName == user.fullname)).count()
+    gamesWon += db.session.query(TheMindGame).filter(
+        and_(
+            TheMindGame.victory == 'Yes',
+            or_(
+                TheMindGame.playerone == user.username,
+                TheMindGame.playerone == user.fullname,
+                TheMindGame.playertwo == user.username,
+                TheMindGame.playertwo == user.fullname,
+                TheMindGame.playerthree == user.username,
+                TheMindGame.playerthree == user.fullname,
+                TheMindGame.playerfour == user.username,
+                TheMindGame.playerfour == user.fullname,
+            )
+        )
+    ).count()
 
     return gamesWon
 
@@ -891,7 +980,7 @@ def calcGamesPlayed(user):
     gamesPlayed = 0
     gamesPlayed += db.session.query(DominionGame).filter(or_(
         DominionGame.winnerName == user.fullname,
-        DominionGame.secondName == current_user.fullname,
+        DominionGame.secondName == user.fullname,
         DominionGame.thirdName == user.fullname,
         DominionGame.fourthName == user.fullname,
         DominionGame.winnerName == user.username,
@@ -944,6 +1033,43 @@ def calcGamesPlayed(user):
         LoveLetterGame.fourthName == user.username,
         LoveLetterGame.fifthName == user.username,
         LoveLetterGame.sixthName == user.username)).count()
+    gamesPlayed += db.session.query(MunchkinGame).filter(or_(
+        MunchkinGame.winnerName == user.fullname,
+        MunchkinGame.secondName == user.fullname,
+        MunchkinGame.thirdName == user.fullname,
+        MunchkinGame.fourthName == user.fullname,
+        MunchkinGame.fifthName == user.fullname,
+        MunchkinGame.sixthName == user.fullname,
+        MunchkinGame.winnerName == user.username,
+        MunchkinGame.secondName == user.username,
+        MunchkinGame.thirdName == user.username,
+        MunchkinGame.fourthName == user.username,
+        MunchkinGame.fifthName == user.username,
+        MunchkinGame.sixthName == user.username)).count()
+    gamesPlayed += db.session.query(TheMindGame).filter(or_(
+        TheMindGame.playerone == user.fullname,
+        TheMindGame.playertwo == user.fullname,
+        TheMindGame.playerthree == user.fullname,
+        TheMindGame.playerfour == user.fullname,
+        TheMindGame.playerone == user.username,
+        TheMindGame.playertwo == user.username,
+        TheMindGame.playerthree == user.username,
+        TheMindGame.playerfour == user.username)).count()
+    gamesPlayed += db.session.query(JustOneGame).filter(or_(
+        JustOneGame.playerone == user.fullname,
+        JustOneGame.playertwo == user.fullname,
+        JustOneGame.playerthree == user.fullname,
+        JustOneGame.playerfour == user.fullname,
+        JustOneGame.playerfive == user.fullname,
+        JustOneGame.playersix == user.fullname,
+        JustOneGame.playerseven == user.fullname,
+        JustOneGame.playerone == user.username,
+        JustOneGame.playertwo == user.username,
+        JustOneGame.playerthree == user.username,
+        JustOneGame.playerfour == user.username,
+        JustOneGame.playerfive == user.username,
+        JustOneGame.playersix == user.username,
+        JustOneGame.playerseven == user.username)).count()
 
     return gamesPlayed
 
@@ -1005,13 +1131,53 @@ def calcMostPlayed(user):
         LoveLetterGame.fourthName == user.username,
         LoveLetterGame.fifthName == user.username,
         LoveLetterGame.sixthName == user.username)).count()
+    MunchkinCount = db.session.query(MunchkinGame).filter(or_(
+        MunchkinGame.winnerName == user.fullname,
+        MunchkinGame.secondName == user.fullname,
+        MunchkinGame.thirdName == user.fullname,
+        MunchkinGame.fourthName == user.fullname,
+        MunchkinGame.fifthName == user.fullname,
+        MunchkinGame.sixthName == user.fullname,
+        MunchkinGame.winnerName == user.username,
+        MunchkinGame.secondName == user.username,
+        MunchkinGame.thirdName == user.username,
+        MunchkinGame.fourthName == user.username,
+        MunchkinGame.fifthName == user.username,
+        MunchkinGame.sixthName == user.username)).count()
+    TheMindCount = db.session.query(TheMindGame).filter(or_(
+        TheMindGame.playerone == user.fullname,
+        TheMindGame.playertwo == user.fullname,
+        TheMindGame.playerthree == user.fullname,
+        TheMindGame.playerfour == user.fullname,
+        TheMindGame.playerone == user.username,
+        TheMindGame.playertwo == user.username,
+        TheMindGame.playerthree == user.username,
+        TheMindGame.playerfour == user.username)).count()
+    JustOneCount = db.session.query(JustOneGame).filter(or_(
+        JustOneGame.playerone == user.fullname,
+        JustOneGame.playertwo == user.fullname,
+        JustOneGame.playerthree == user.fullname,
+        JustOneGame.playerfour == user.fullname,
+        JustOneGame.playerfive == user.fullname,
+        JustOneGame.playersix == user.fullname,
+        JustOneGame.playerseven == user.fullname,
+        JustOneGame.playerone == user.username,
+        JustOneGame.playertwo == user.username,
+        JustOneGame.playerthree == user.username,
+        JustOneGame.playerfour == user.username,
+        JustOneGame.playerfive == user.username,
+        JustOneGame.playersix == user.username,
+        JustOneGame.playerseven == user.username)).count()
     
     counts = {
         'DomionionCount': DominionCount,
         'CatanCount': CatanCount,
         'LordsofWaterdeepCount': LordsofWaterdeepCount,
         'CoupCount': CoupCount,
-        'LoveLetterCount': LoveLetterCount
+        'LoveLetterCount': LoveLetterCount,
+        'MunchkinCount': MunchkinCount,
+        'TheMindCount': TheMindCount,
+        'JustOneCount': JustOneCount
     }
 
     maxCount = max(counts.values())
@@ -1025,13 +1191,31 @@ def calcMostWon(user):
     lordsofwaterdeepWins = db.session.query(LordsofWaterdeepGame).filter(or_(LordsofWaterdeepGame.winnerName == user.username, LordsofWaterdeepGame.winnerName == user.fullname)).count()
     coupWins = db.session.query(CoupGame).filter(or_(CoupGame.winnerName == user.username, CoupGame.winnerName == user.fullname)).count()
     loveletterWins = db.session.query(LoveLetterGame).filter(or_(LoveLetterGame.winnerName == user.username, LoveLetterGame.winnerName == user.fullname)).count()
+    munchkinWins = db.session.query(MunchkinGame).filter(or_(MunchkinGame.winnerName == user.username, MunchkinGame.winnerName == user.fullname)).count()
+    themindWins = db.session.query(TheMindGame).filter(
+        and_(
+            TheMindGame.victory == 'Yes',
+            or_(
+                TheMindGame.playerone == user.username,
+                TheMindGame.playerone == user.fullname,
+                TheMindGame.playertwo == user.username,
+                TheMindGame.playertwo == user.fullname,
+                TheMindGame.playerthree == user.username,
+                TheMindGame.playerthree == user.fullname,
+                TheMindGame.playerfour == user.username,
+                TheMindGame.playerfour == user.fullname,
+            )
+        )
+    ).count()
 
     counts = {
         'DomionionCount': dominionWins,
         'CatanCount': catanWins,
         'LordsofWaterdeepCount': lordsofwaterdeepWins,
         'CoupCount': coupWins,
-        'LoveLetterCount': loveletterWins
+        'LoveLetterCount': loveletterWins,
+        'MunchkinCount': munchkinWins,
+        'TheMindCount': themindWins
     }
 
     maxCount = max(counts.values())
@@ -1045,116 +1229,213 @@ def calcBestFriend(user):
     user_friends = user.friends.all()
 
     for friend in user_friends:
-        DominionCount = db.session.query(DominionGame).filter(or_(
-            DominionGame.winnerName == friend.fullname,
-            DominionGame.secondName == friend.fullname,
-            DominionGame.thirdName == friend.fullname,
-            DominionGame.fourthName == friend.fullname,
-            DominionGame.winnerName == friend.username,
-            DominionGame.secondName == friend.username,
-            DominionGame.thirdName == friend.username,
-            DominionGame.fourthName == friend.username,
-            DominionGame.winnerName == user.fullname,
-            DominionGame.secondName == user.fullname,
-            DominionGame.thirdName == user.fullname,
-            DominionGame.fourthName == user.fullname,
-            DominionGame.winnerName == user.username,
-            DominionGame.secondName == user.username,
-            DominionGame.thirdName == user.username,
-            DominionGame.fourthName == user.username)).count()
-        CatanCount = db.session.query(CatanGame).filter(or_(
-            CatanGame.winnerName == friend.fullname,
-            CatanGame.secondName == friend.fullname,
-            CatanGame.thirdName == friend.fullname,
-            CatanGame.fourthName == friend.fullname,
-            CatanGame.winnerName == friend.username,
-            CatanGame.secondName == friend.username,
-            CatanGame.thirdName == friend.username,
-            CatanGame.fourthName == friend.username,
-            CatanGame.winnerName == user.fullname,
-            CatanGame.secondName == user.fullname,
-            CatanGame.thirdName == user.fullname,
-            CatanGame.fourthName == user.fullname,
-            CatanGame.winnerName == user.username,
-            CatanGame.secondName == user.username,
-            CatanGame.thirdName == user.username,
-            CatanGame.fourthName == user.username)).count()
-        LordsofWaterdeepCount = db.session.query(LordsofWaterdeepGame).filter(or_(
-            LordsofWaterdeepGame.winnerName == friend.fullname,
-            LordsofWaterdeepGame.secondName == friend.fullname,
-            LordsofWaterdeepGame.thirdName == friend.fullname,
-            LordsofWaterdeepGame.fourthName == friend.fullname,
-            LordsofWaterdeepGame.fifthName == friend.fullname,
-            LordsofWaterdeepGame.winnerName == friend.username,
-            LordsofWaterdeepGame.secondName == friend.username,
-            LordsofWaterdeepGame.thirdName == friend.username,
-            LordsofWaterdeepGame.fourthName == friend.username,
-            LordsofWaterdeepGame.fifthName == friend.username,
-            LordsofWaterdeepGame.winnerName == user.fullname,
-            LordsofWaterdeepGame.secondName == user.fullname,
-            LordsofWaterdeepGame.thirdName == user.fullname,
-            LordsofWaterdeepGame.fourthName == user.fullname,
-            LordsofWaterdeepGame.fifthName == user.fullname,
-            LordsofWaterdeepGame.winnerName == user.username,
-            LordsofWaterdeepGame.secondName == user.username,
-            LordsofWaterdeepGame.thirdName == user.username,
-            LordsofWaterdeepGame.fourthName == user.username,
-            LordsofWaterdeepGame.fifthName == user.username)).count()
-        CoupCount = db.session.query(CoupGame).filter(or_(
-            CoupGame.winnerName == friend.fullname,
-            CoupGame.secondName == friend.fullname,
-            CoupGame.thirdName == friend.fullname,
-            CoupGame.fourthName == friend.fullname,
-            CoupGame.fifthName == friend.fullname,
-            CoupGame.sixthName == friend.fullname,
-            CoupGame.winnerName == friend.username,
-            CoupGame.secondName == friend.username,
-            CoupGame.thirdName == friend.username,
-            CoupGame.fourthName == friend.username,
-            CoupGame.fifthName == friend.username,
-            CoupGame.sixthName == friend.username,
-            CoupGame.winnerName == user.fullname,
-            CoupGame.secondName == user.fullname,
-            CoupGame.thirdName == user.fullname,
-            CoupGame.fourthName == user.fullname,
-            CoupGame.fifthName == user.fullname,
-            CoupGame.sixthName == user.fullname,
-            CoupGame.winnerName == user.username,
-            CoupGame.secondName == user.username,
-            CoupGame.thirdName == user.username,
-            CoupGame.fourthName == user.username,
-            CoupGame.fifthName == user.username,
-            CoupGame.sixthName == user.username)).count()
-        LoveLetterCount = db.session.query(LoveLetterGame).filter(or_(
-            LoveLetterGame.winnerName == user.fullname,
-            LoveLetterGame.secondName == friend.fullname,
-            LoveLetterGame.thirdName == friend.fullname,
-            LoveLetterGame.fourthName == friend.fullname,
-            LoveLetterGame.fifthName == friend.fullname,
-            LoveLetterGame.sixthName == friend.fullname,
-            LoveLetterGame.winnerName == friend.username,
-            LoveLetterGame.secondName == friend.username,
-            LoveLetterGame.thirdName == friend.username,
-            LoveLetterGame.fourthName == friend.username,
-            LoveLetterGame.fifthName == friend.username,
-            LoveLetterGame.sixthName == friend.username,
-            LoveLetterGame.winnerName == user.fullname,
-            LoveLetterGame.secondName == user.fullname,
-            LoveLetterGame.thirdName == user.fullname,
-            LoveLetterGame.fourthName == user.fullname,
-            LoveLetterGame.fifthName == user.fullname,
-            LoveLetterGame.sixthName == user.fullname,
-            LoveLetterGame.winnerName == user.username,
-            LoveLetterGame.secondName == user.username,
-            LoveLetterGame.thirdName == user.username,
-            LoveLetterGame.fourthName == user.username,
-            LoveLetterGame.fifthName == user.username,
-            LoveLetterGame.sixthName == user.username)).count()
+        DominionCount = db.session.query(DominionGame).filter(and_(
+            or_(
+                DominionGame.winnerName == friend.fullname,
+                DominionGame.secondName == friend.fullname,
+                DominionGame.thirdName == friend.fullname,
+                DominionGame.fourthName == friend.fullname,
+                DominionGame.winnerName == friend.username,
+                DominionGame.secondName == friend.username,
+                DominionGame.thirdName == friend.username,
+                DominionGame.fourthName == friend.username
+            ), or_( 
+                DominionGame.winnerName == user.fullname,
+                DominionGame.secondName == user.fullname,
+                DominionGame.thirdName == user.fullname,
+                DominionGame.fourthName == user.fullname,
+                DominionGame.winnerName == user.username,
+                DominionGame.secondName == user.username,
+                DominionGame.thirdName == user.username,
+                DominionGame.fourthName == user.username
+            ))).count()
 
+        CatanCount = db.session.query(CatanGame).filter(and_(
+            or_(
+                CatanGame.winnerName == friend.fullname,
+                CatanGame.secondName == friend.fullname,
+                CatanGame.thirdName == friend.fullname,
+                CatanGame.fourthName == friend.fullname,
+                CatanGame.winnerName == friend.username,
+                CatanGame.secondName == friend.username,
+                CatanGame.thirdName == friend.username,
+                CatanGame.fourthName == friend.username
+            ), or_(
+                CatanGame.winnerName == user.fullname,
+                CatanGame.secondName == user.fullname,
+                CatanGame.thirdName == user.fullname,
+                CatanGame.fourthName == user.fullname,
+                CatanGame.winnerName == user.username,
+                CatanGame.secondName == user.username,
+                CatanGame.thirdName == user.username,
+                CatanGame.fourthName == user.username
+            ))).count()
 
-        # friendCount = DominionCount + CatanCount + LordsofWaterdeepCount + CoupCount + LoveLetterCount
-        # print("friend")
-        # print(friendCount)
+        LordsofWaterdeepCount = db.session.query(LordsofWaterdeepGame).filter(and_(
+            or_(
+                LordsofWaterdeepGame.winnerName == friend.fullname,
+                LordsofWaterdeepGame.secondName == friend.fullname,
+                LordsofWaterdeepGame.thirdName == friend.fullname,
+                LordsofWaterdeepGame.fourthName == friend.fullname,
+                LordsofWaterdeepGame.fifthName == friend.fullname,
+                LordsofWaterdeepGame.winnerName == friend.username,
+                LordsofWaterdeepGame.secondName == friend.username,
+                LordsofWaterdeepGame.thirdName == friend.username,
+                LordsofWaterdeepGame.fourthName == friend.username,
+                LordsofWaterdeepGame.fifthName == friend.username
+            ), or_(
+                LordsofWaterdeepGame.winnerName == user.fullname,
+                LordsofWaterdeepGame.secondName == user.fullname,
+                LordsofWaterdeepGame.thirdName == user.fullname,
+                LordsofWaterdeepGame.fourthName == user.fullname,
+                LordsofWaterdeepGame.fifthName == user.fullname,
+                LordsofWaterdeepGame.winnerName == user.username,
+                LordsofWaterdeepGame.secondName == user.username,
+                LordsofWaterdeepGame.thirdName == user.username,
+                LordsofWaterdeepGame.fourthName == user.username,
+                LordsofWaterdeepGame.fifthName == user.username
+            ))).count()
+
+        CoupCount = db.session.query(CoupGame).filter(and_(
+            or_(
+                CoupGame.winnerName == friend.fullname,
+                CoupGame.secondName == friend.fullname,
+                CoupGame.thirdName == friend.fullname,
+                CoupGame.fourthName == friend.fullname,
+                CoupGame.fifthName == friend.fullname,
+                CoupGame.sixthName == friend.fullname,
+                CoupGame.winnerName == friend.username,
+                CoupGame.secondName == friend.username,
+                CoupGame.thirdName == friend.username,
+                CoupGame.fourthName == friend.username,
+                CoupGame.fifthName == friend.username,
+                CoupGame.sixthName == friend.username
+            ), or_(
+                CoupGame.winnerName == user.fullname,
+                CoupGame.secondName == user.fullname,
+                CoupGame.thirdName == user.fullname,
+                CoupGame.fourthName == user.fullname,
+                CoupGame.fifthName == user.fullname,
+                CoupGame.sixthName == user.fullname,
+                CoupGame.winnerName == user.username,
+                CoupGame.secondName == user.username,
+                CoupGame.thirdName == user.username,
+                CoupGame.fourthName == user.username,
+                CoupGame.fifthName == user.username,
+                CoupGame.sixthName == user.username
+            ))).count()
+
+        LoveLetterCount = db.session.query(LoveLetterGame).filter(and_(
+            or_(
+                LoveLetterGame.winnerName == user.fullname,
+                LoveLetterGame.secondName == friend.fullname,
+                LoveLetterGame.thirdName == friend.fullname,
+                LoveLetterGame.fourthName == friend.fullname,
+                LoveLetterGame.fifthName == friend.fullname,
+                LoveLetterGame.sixthName == friend.fullname,
+                LoveLetterGame.winnerName == friend.username,
+                LoveLetterGame.secondName == friend.username,
+                LoveLetterGame.thirdName == friend.username,
+                LoveLetterGame.fourthName == friend.username,
+                LoveLetterGame.fifthName == friend.username,
+                LoveLetterGame.sixthName == friend.username),
+            or_(
+                LoveLetterGame.winnerName == user.fullname,
+                LoveLetterGame.secondName == user.fullname,
+                LoveLetterGame.thirdName == user.fullname,
+                LoveLetterGame.fourthName == user.fullname,
+                LoveLetterGame.fifthName == user.fullname,
+                LoveLetterGame.sixthName == user.fullname,
+                LoveLetterGame.winnerName == user.username,
+                LoveLetterGame.secondName == user.username,
+                LoveLetterGame.thirdName == user.username,
+                LoveLetterGame.fourthName == user.username,
+                LoveLetterGame.fifthName == user.username,
+                LoveLetterGame.sixthName == user.username))).count()
+        
+        MunchkinCount = db.session.query(MunchkinGame).filter(and_(
+            or_(
+                MunchkinGame.winnerName == friend.fullname,
+                MunchkinGame.secondName == friend.fullname,
+                MunchkinGame.thirdName == friend.fullname,
+                MunchkinGame.fourthName == friend.fullname,
+                MunchkinGame.fifthName == friend.fullname,
+                MunchkinGame.sixthName == friend.fullname,
+                MunchkinGame.winnerName == friend.username,
+                MunchkinGame.secondName == friend.username,
+                MunchkinGame.thirdName == friend.username,
+                MunchkinGame.fourthName == friend.username,
+                MunchkinGame.fifthName == friend.username,
+                MunchkinGame.sixthName == friend.username
+            ), or_(
+                MunchkinGame.winnerName == user.fullname,
+                MunchkinGame.secondName == user.fullname,
+                MunchkinGame.thirdName == user.fullname,
+                MunchkinGame.fourthName == user.fullname,
+                MunchkinGame.fifthName == user.fullname,
+                MunchkinGame.sixthName == user.fullname,
+                MunchkinGame.winnerName == user.username,
+                MunchkinGame.secondName == user.username,
+                MunchkinGame.thirdName == user.username,
+                MunchkinGame.fourthName == user.username,
+                MunchkinGame.fifthName == user.username,
+                MunchkinGame.sixthName == user.username
+            ))).count()
+
+        TheMindCount = db.session.query(TheMindGame).filter(and_(
+            or_(
+                TheMindGame.playerone == friend.fullname,
+                TheMindGame.playertwo == friend.fullname,
+                TheMindGame.playerthree == friend.fullname,
+                TheMindGame.playerfour == friend.fullname,
+                TheMindGame.playerone == friend.username,
+                TheMindGame.playertwo == friend.username,
+                TheMindGame.playerthree == friend.username,
+                TheMindGame.playerfour == friend.username
+            ), or_(
+                TheMindGame.playerone == user.fullname,
+                TheMindGame.playertwo == user.fullname,
+                TheMindGame.playerthree == user.fullname,
+                TheMindGame.playerfour == user.fullname,
+                TheMindGame.playerone == user.username,
+                TheMindGame.playertwo == user.username,
+                TheMindGame.playerthree == user.username,
+                TheMindGame.playerfour == user.username
+            ))).count()
+
+        JustOneCount = db.session.query(JustOneGame).filter(and_(
+            or_(
+                JustOneGame.playerone == friend.fullname,
+                JustOneGame.playertwo == friend.fullname,
+                JustOneGame.playerthree == friend.fullname,
+                JustOneGame.playerfour == friend.fullname,
+                JustOneGame.playerfive == friend.fullname,
+                JustOneGame.playersix == friend.fullname,
+                JustOneGame.playerseven == friend.fullname,
+                JustOneGame.playerone == friend.username,
+                JustOneGame.playertwo == friend.username,
+                JustOneGame.playerthree == friend.username,
+                JustOneGame.playerfour == friend.username,
+                JustOneGame.playerfive == friend.username,
+                JustOneGame.playersix == friend.username,
+                JustOneGame.playerseven == friend.username
+            ), or_(
+                JustOneGame.playerone == user.fullname,
+                JustOneGame.playertwo == user.fullname,
+                JustOneGame.playerthree == user.fullname,
+                JustOneGame.playerfour == user.fullname,
+                JustOneGame.playerfive == user.fullname,
+                JustOneGame.playersix == user.fullname,
+                JustOneGame.playerseven == user.fullname,
+                JustOneGame.playerone == user.username,
+                JustOneGame.playertwo == user.username,
+                JustOneGame.playerthree == user.username,
+                JustOneGame.playerfour == user.username,
+                JustOneGame.playerfive == user.username,
+                JustOneGame.playersix == user.username,
+                JustOneGame.playerseven == user.username
+            ))).count()
+
         if DominionCount > maxCount:
             maxCount = DominionCount
             bestFriend = friend.fullname
@@ -1170,6 +1451,33 @@ def calcBestFriend(user):
         if LoveLetterCount > maxCount:
             maxCount = LoveLetterCount
             bestFriend = friend.fullname
-
+        if MunchkinCount > maxCount:
+            maxCount = MunchkinCount
+            bestFriend = friend.fullname
+        if TheMindCount > maxCount:
+            maxCount = LoveLetterCount
+            bestFriend = friend.fullname
+        if JustOneCount > maxCount:
+            maxCount = LoveLetterCount
+            bestFriend = friend.fullname
+        
     print(bestFriend)
     return bestFriend
+
+        # DominionCount = db.session.query(DominionGame).filter(or_(
+        #     DominionGame.winnerName == friend.fullname,
+        #     DominionGame.secondName == friend.fullname,
+        #     DominionGame.thirdName == friend.fullname,
+        #     DominionGame.fourthName == friend.fullname,
+        #     DominionGame.winnerName == friend.username,
+        #     DominionGame.secondName == friend.username,
+        #     DominionGame.thirdName == friend.username,
+        #     DominionGame.fourthName == friend.username,
+        #     DominionGame.winnerName == user.fullname,
+        #     DominionGame.secondName == user.fullname,
+        #     DominionGame.thirdName == user.fullname,
+        #     DominionGame.fourthName == user.fullname,
+        #     DominionGame.winnerName == user.username,
+        #     DominionGame.secondName == user.username,
+        #     DominionGame.thirdName == user.username,
+        #     DominionGame.fourthName == user.username)).count()

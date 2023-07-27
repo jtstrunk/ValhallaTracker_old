@@ -28,6 +28,7 @@ body{
 
 table{
     border-collapse: separate;
+    border-spacing: 30px 0;
 }
 
 tr td, th {
@@ -36,35 +37,11 @@ tr td, th {
     padding-right: 6px;
 }
 
-.fourTable{
-    width: 950px;
+.Table{
     /* background-color: #D2E6F3; */
     padding: 10px;
     margin-top: 5px;
     margin-bottom: 5px;
-    /* border-radius: 10px; */
-    border-radius: 8px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-}
-
-.fiveTable{
-    width: 1020px;
-    /* background-color: #D2E6F3; */
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    /* border-radius: 10px; */
-    border-radius: 8px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-}
-
-.sixTable{
-    width: 1090px;
-    /* background-color: #D2E6F3; */
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    /* border-radius: 10px; */
     border-radius: 8px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }

@@ -48,7 +48,7 @@
                         <div>
                             {% for friend in friends %}
                             <div style="margin-top: 10px;">
-                                <a href="/profile?name={{ friend.username }}" class="friend">{{ friend.fullname }}</a>
+                                <a href="/profile?name={{ friend.username }}" class="friend" style="cursor: pointer;">{{ friend.fullname }}</a>
                             </div>
                             {% endfor %}
                         </div>

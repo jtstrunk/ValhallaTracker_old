@@ -12,43 +12,434 @@
     {% import "bootstrap/wtf.html" as wtf %}
     {% block content %}
     <div id="addGame">
-        <a href="/Catan">
-            <div class="card">
-                <span>Catan</span>
-                <p>Add a Catan Record</p>
-                <p>3-4 Players</p>
-            </div>
-        </a>
-        <a href="/Dominion">
-            <div class="card">
-                <span>Dominion</span>
-                <p>Add a Dominion Record</p>
-                <p>2-4 Players</p>
-            </div>
-        </a>
-        <a href="/LordsofWaterdeep">
-            <div class="card">
-                <span>Lords of Waterdeep</span>
-                <p>Add a Lords of Waterdeep Record</p>
-                <p>2-5 Players</p>
-            </div>
-        </a>
-        <a href="/Coup">
-            <div class="card">
-                <span>Coup</span>
-                <p>Add a Coup Record</p>
-                <p>2-6 Players</p>
-            </div>
-        </a>
-        <a href="/LoveLetter">
-            <div class="card">
-                <span>Love Letter</span>
-                <p>Add a Love Letter Record</p>
-                <p>2-6 Players</p>
-            </div>
-        </a>
+        <div class="card">
+            <span>Catan</span>
+            <p>3-4 Players</p>
+            <p>Add Record</p>
+        </div>
+        <div class="card">
+            <span>Dominion</span>
+            <p>2-4 Players</p>
+            <p>Add Record</p>
+        </div>
+        <div class="card">
+            <span>Lords of Waterdeep</span>
+            <p>2-5 Players</p>
+            <p>Add Record</p>
+        </div>
+        <div class="card">
+            <span>Coup</span>
+            <p>2-6 Players</p>
+            <p>Add Record</p>
+        </div>
+        <div class="card">
+            <span>Love Letter</span>
+            <p>2-6 Players</p>
+            <p>Add Record</p>
+        </div>
+        <div class="card">
+            <span>Munchkin</span>
+            <p>3-6 Players</p>
+            <p>Add Record</p>
+        </div>
+        <div class="card">
+            <span>Just One</span>
+            <p>3-7 Players</p>
+            <p>Add Record</p>
+        </div>
+        <div class="card">
+            <span>The Mind</span>
+            <p>2-4 Players</p>
+            <p>Add Record</p>
+        </div>
+    </div>
+
+    <div id="catanPopup" class="gamepopup Hide" style="height: 400px;">
+        <p class="close-button">x</p>
+        <h2>Add Catan Record</h2>
+        <div style="margin-top: 25px;">
+            <form action = "{{ url_for('addCatan') }}" method = "POST">
+                <div class="players">
+                    <label for="Player1">Winner</label>
+                    <input type="text" id="Player1" name="Player1" placeholder="Name">
+    
+                    <label for="Player1_Score">Score</label>
+                    <input type="text" name="Player1_Score" id="Player1_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player2">Runner Up</label>
+                    <input type="text" id="Player2" name="Player2" placeholder="Name">
+    
+                    <label for="Player2_Score">Score</label>
+                    <input type="text" name="Player2_Score" id="Player2_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player3">Third Place</label>
+                    <input type="text" id="Player3" name="Player3" placeholder="Name">
+    
+                    <label for="Player3_Score">Score</label>
+                    <input type="text" name="Player3_Score" id="Player3_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player4">Fourth Place</label>
+                    <input type="text" id="Player4" name="Player4" placeholder="Name">
+    
+                    <label for="Player4_Score">Score</label>
+                    <input type="text" name="Player4_Score" id="Player4_Score" placeholder="Score">
+                </div>
+                <button class="btn btn-primary">Submit Record</button>
+            </form>
+        </div>
 
     </div>
+
+    <div id="dominionPopup" class="gamepopup Hide" style="height: 400px;">
+        <p class="close-button">x</p>
+        <h2>Add Dominion Record</h2>
+        <div style="margin-top: 25px;">
+            <form action = "{{ url_for('addDominion') }}" method = "POST">
+                <div class="players">
+                    <label for="Player1">Winner</label>
+                    <input type="text" id="Player1" name="Player1" placeholder="Name">
+    
+                    <label for="Player1_Score">Score</label>
+                    <input type="text" name="Player1_Score" id="Player1_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player2">Runner Up</label>
+                    <input type="text" id="Player2" name="Player2" placeholder="Name">
+    
+                    <label for="Player2_Score">Score</label>
+                    <input type="text" name="Player2_Score" id="Player2_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player3">Third Place</label>
+                    <input type="text" id="Player3" name="Player3" placeholder="Name">
+    
+                    <label for="Player3_Score">Score</label>
+                    <input type="text" name="Player3_Score" id="Player3_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player4">Fourth Place</label>
+                    <input type="text" id="Player4" name="Player4" placeholder="Name">
+    
+                    <label for="Player4_Score">Score</label>
+                    <input type="text" name="Player4_Score" id="Player4_Score" placeholder="Score">
+                </div>
+                <button class="btn btn-primary">Submit Record</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div id="lordsPopup" class="gamepopup Hide" style="height: 470px;">
+        <p class="close-button">x</p>
+        <h2 style="margin-bottom: 5px;">Add Lords of</h2>
+        <h2  style="margin-top: 5px; margin-bottom: 5px;">Waterdeep Record</h2>
+        <div style="margin-top: 15px;">
+            <form action = "{{ url_for('addLordsofWaterdeep') }}" method = "POST">
+                <div class="players">
+                    <label for="Player1">Winner</label>
+                    <input type="text" id="Player1" name="Player1" placeholder="Name">
+    
+                    <label for="Player1_Score">Score</label>
+                    <input type="text" name="Player1_Score" id="Player1_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player2">Runner Up</label>
+                    <input type="text" id="Player2" name="Player2" placeholder="Name">
+    
+                    <label for="Player2_Score">Score</label>
+                    <input type="text" name="Player2_Score" id="Player2_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player3">Third Place</label>
+                    <input type="text" id="Player3" name="Player3" placeholder="Name">
+    
+                    <label for="Player3_Score">Score</label>
+                    <input type="text" name="Player3_Score" id="Player3_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player4">Fourth Place</label>
+                    <input type="text" id="Player4" name="Player4" placeholder="Name">
+    
+                    <label for="Player4_Score">Score</label>
+                    <input type="text" name="Player4_Score" id="Player4_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player5">Fifth Place</label>
+                    <input type="text" id="Player5" name="Player5" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player5_Score">Score</label>
+                    <input type="text" name="Player5_Score" id="Player5_Score" placeholder="Score">
+                </div>
+                <button class="btn btn-primary">Submit Record</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div id="coupPopup" class="gamepopup Hide" style="height: 350px;">
+        <p class="close-button">x</p>
+        <h2>Add Coup Record</h2>
+        <div style="margin-top: 25px;">
+            <form action = "{{ url_for('addCoup') }}" method = "POST">
+                <div class="players">
+                    <label for="Player1">Winner</label>
+                    <input type="text" id="Player1" name="Player1" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player2">Runner Up</label>
+                    <input type="text" id="Player2" name="Player2" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player3">Third Place</label>
+                    <input type="text" id="Player3" name="Player3" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player4">Fourth Place</label>
+                    <input type="text" id="Player4" name="Player4" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player5">Fifth Place</label>
+                    <input type="text" id="Player5" name="Player5" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player6">Sixth Place</label>
+                    <input type="text" id="Player6" name="Player6" placeholder="Name">
+                </div>
+                <button class="btn btn-primary">Submit Record</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div id="lovePopup" class="gamepopup Hide" style="height: 350px;">
+        <p class="close-button">x</p>
+        <h2>Add Love Letter Record</h2>
+        <div style="margin-top: 25px;">
+            <form action = "{{ url_for('addLoveLetter') }}" method = "POST">
+                <div class="players">
+                    <label for="Player1">Winner</label>
+                    <input type="text" id="Player1" name="Player1" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player2">Runner Up</label>
+                    <input type="text" id="Player2" name="Player2" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player3">Third Place</label>
+                    <input type="text" id="Player3" name="Player3" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player4">Fourth Place</label>
+                    <input type="text" id="Player4" name="Player4" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player5">Fifth Place</label>
+                    <input type="text" id="Player5" name="Player5" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player6">Sixth Place</label>
+                    <input type="text" id="Player6" name="Player6" placeholder="Name">
+                </div>
+                <button class="btn btn-primary">Submit Record</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div id="lovePopup" class="gamepopup Hide" style="height: 400px; width: 650px; border-radius: 3%;">
+        <p class="close-button">x</p>
+        <h2>Add Munchkin Record</h2>
+        <div style="margin-top: 25px;">
+            <form action = "{{ url_for('addMunchkin') }}" method = "POST">
+                <div class="players">
+                    <label for="Player1">Winner</label>
+                    <input type="text" id="Player1" name="Player1" placeholder="Name">
+
+                    <label for="Player1_Score">Level</label>
+                    <input type="text" name="Player1_Score" id="Player1_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player2">Runner Up</label>
+                    <input type="text" id="Player2" name="Player2" placeholder="Name">
+
+                    <label for="Player2_Score">Level</label>
+                    <input type="text" name="Player2_Score" id="Player2_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player3">Third Place</label>
+                    <input type="text" id="Player3" name="Player3" placeholder="Name">
+
+                    <label for="Player3_Score">Level</label>
+                    <input type="text" name="Player3_Score" id="Player3_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player4">Fourth Place</label>
+                    <input type="text" id="Player4" name="Player4" placeholder="Name">
+
+                    <label for="Player4_Score">Level</label>
+                    <input type="text" name="Player4_Score" id="Player4_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player5">Fifth Place</label>
+                    <input type="text" id="Player5" name="Player5" placeholder="Name">
+
+                    <label for="Player5_Score">Level</label>
+                    <input type="text" name="Player5_Score" id="Player5_Score" placeholder="Score">
+                </div>
+                <div class="players">
+                    <label for="Player6">Sixth Place</label>
+                    <input type="text" id="Player6" name="Player6" placeholder="Name">
+
+                    <label for="Player6_Score">Level</label>
+                    <input type="text" name="Player6_Score" id="Player6_Score" placeholder="Score">
+                </div>
+
+                <button class="btn btn-primary" style="margin-top: 15px;">Submit Record</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div id="lovePopup" class="gamepopup Hide" style="height: 320px; width: 650px; border-radius: 3%;">
+        <p class="close-button">x</p>
+        <h2>Add Just One Record</h2>
+        <div style="margin-top: 25px;">
+            <form action = "{{ url_for('addJustOne') }}" method = "POST">
+                <div class="players">
+                    <label for="Player1">Player One</label>
+                    <input type="text" id="Player1" name="Player1" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player2">Player Two</label>
+                    <input type="text" id="Player2" name="Player2" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player3">Player Three</label>
+                    <input type="text" id="Player3" name="Player3" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player4">Player Four</label>
+                    <input type="text" id="Player4" name="Player4" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player5">Player Five</label>
+                    <input type="text" id="Player5" name="Player5" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player6">Player Six</label>
+                    <input type="text" id="Player6" name="Player6" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player7">Player Seven</label>
+                    <input type="text" id="Player7" name="Player7" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="win">Correct Cards</label>
+                    <input type="text" id="win" name="win" placeholder="Number">
+                </div>
+
+                <button class="primary-button" style="margin-top: 32px;">Submit Record</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div id="lovePopup" class="gamepopup Hide" style="height: 300px;">
+        <p class="close-button">x</p>
+        <h2>Add The Mind Record</h2>
+        <div style="margin-top: 25px;">
+            <form action = "{{ url_for('addTheMind') }}" method = "POST">
+                <div class="players">
+                    <label for="Player1">Player One</label>
+                    <input type="text" id="Player1" name="Player1" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player2">Player Two</label>
+                    <input type="text" id="Player2" name="Player2" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player3">Player Three</label>
+                    <input type="text" id="Player3" name="Player3" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="Player4">Player Four</label>
+                    <input type="text" id="Player4" name="Player4" placeholder="Name">
+                </div>
+                <div class="players">
+                    <label for="win">Team Victory?</label>
+                    <input type="text" id="win" name="win" placeholder="Yes/No">
+                </div>
+
+                <button class="primary-button" style="margin-top: 32px;">Submit Record</button>
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+        let cards = document.querySelectorAll(".card");
+        let gamepopups = document.querySelectorAll(".gamepopup");
+        let closebuttons = document.querySelectorAll(".close-button");
+
+        for (let i = 0; i < gamepopups.length; i++) {
+            cards[i].addEventListener('click', () => {
+                for (let j = 0; j < gamepopups.length; j++){
+                    gamepopups[j].classList.add("Hide");
+                }
+                gamepopups[i].classList.remove("Hide");
+            })
+            closebuttons[i].addEventListener('click', () => {
+                gamepopups[i].classList.add("Hide");
+            })
+        }
+
+        // let forms = document.querySelectorAll("form");
+        // for (let i = 0; i < forms.length; i++) {
+        //     forms[i].addEventListener('submit', function(event) {
+        //         event.preventDefault(); 
+        //     });
+        // }
+
+        // let adding = document.querySelector("#addFavorite");
+        // adding.addEventListener('click', () => {
+        //     console.log("clicked")
+        //     let popup = document.getElementById("myPopup");
+        //     popup.classList.remove("Hide");
+        //     popup.classList.add("popup");
+        // })
+
+        // document.querySelector("#close").addEventListener('click', () => {
+        //     let popup = document.getElementById("myPopup");
+        //     popup.classList.remove("popup");
+        //     popup.classList.add("Hide");
+        // })
+
+        // let joshy = document.querySelector("#joshy");
+        // joshy.addEventListener('click', () => {
+        //     let game = document.querySelector("#gameSelect").value;
+        //     console.log(game);
+        //     fetch(`/addFavorite?game=${game}`, {method: 'POST'})
+        //     .then(response => response.json())
+        //     .then(data => console.log(data))
+        //     location.reload();
+        // })
+
+        // console.log("hahah")
+        // let favoriteGamesLength = {{ favoriteGames|length }};
+
+        // if(favoriteGamesLength < 5) {
+        //     let fav = document.querySelector("#favorites");
+        //     fav.setAttribute("style","width:785px");
+        //     let addFavorite = document.querySelector("#addFavorite");
+        //     addFavorite.classList.remove("Hide");
+        // } 
+
+    </script>
+
     {% endblock %}
 </body>
 </html>
