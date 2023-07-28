@@ -343,6 +343,9 @@ def profile():
     else:
         user = current_user
 
+    print("USER")
+    print(user)
+
     user_friends = user.friends.limit(5).all()
     recentGames = []
 
@@ -467,7 +470,7 @@ def profile():
     profileStats = [gamesPlayed, gamesWon, mostPlayed, mostWon, bestFriend]
 
     
-    return render_template('profile.html', user=user, friends=user_friends, recentGames = top5Games, favoriteGames=gameResults, profileStats = profileStats)
+    return render_template('profile.html', user=user, friends=user_friends, recentGames = top5Games, favoriteGames=gameResults, profileStats = profileStats, profileName=userName, currUser = current_user)
 
 @app.route('/friend', methods = ['GET'])
 @login_required
@@ -665,13 +668,13 @@ def addGame():
 def addDominion():
     if request.method == 'POST':
         try:
-            player1 = request.form['Player1']
+            player1 = request.form['dominionPlayer1']
             player1Score = request.form['Player1_Score']
-            player2 = request.form['Player2']
+            player2 = request.form['dominionPlayer2']
             player2Score = request.form['Player2_Score']
-            player3 = request.form['Player3']
+            player3 = request.form['dominionPlayer3']
             player3Score = request.form['Player3_Score']
-            player4 = request.form['Player4']
+            player4 = request.form['dominionPlayer4']
             player4Score = request.form['Player4_Score']
             newGameID = findID()
             dominion_game = DominionGame(
@@ -701,13 +704,13 @@ def addDominion():
 def addCatan():
     if request.method == 'POST':
         try:
-            player1 = request.form['Player1']
+            player1 = request.form['catanPlayer1']
             player1Score = request.form['Player1_Score']
-            player2 = request.form['Player2']
+            player2 = request.form['catanPlayer2']
             player2Score = request.form['Player2_Score']
-            player3 = request.form['Player3']
+            player3 = request.form['catanPlayer3']
             player3Score = request.form['Player3_Score']
-            player4 = request.form['Player4']
+            player4 = request.form['catanPlayer4']
             player4Score = request.form['Player4_Score']
             newGameID = findID()
             catan_game = CatanGame(
@@ -736,15 +739,15 @@ def addCatan():
 def addLordsofWaterdeep():
     if request.method == 'POST':
         try:
-            player1 = request.form['Player1']
+            player1 = request.form['lordsofwaterdeepPlayer1']
             player1Score = request.form['Player1_Score']
-            player2 = request.form['Player2']
+            player2 = request.form['lordsofwaterdeepPlayer2']
             player2Score = request.form['Player2_Score']
-            player3 = request.form['Player3']
+            player3 = request.form['lordsofwaterdeepPlayer3']
             player3Score = request.form['Player3_Score']
-            player4 = request.form['Player4']
+            player4 = request.form['lordsofwaterdeepPlayer4']
             player4Score = request.form['Player4_Score']
-            player5 = request.form['Player5']
+            player5 = request.form['lordsofwaterdeepPlayer5']
             player5Score = request.form['Player5_Score']
             newGameID = findID()
             new_game = LordsofWaterdeepGame(
@@ -775,12 +778,12 @@ def addLordsofWaterdeep():
 def addCoup():
     if request.method == 'POST':
         try:
-            player1 = request.form['Player1']
-            player2 = request.form['Player2']
-            player3 = request.form['Player3']
-            player4 = request.form['Player4']
-            player5 = request.form['Player5']
-            player6 = request.form['Player6']
+            player1 = request.form['coupPlayer1']
+            player2 = request.form['coupPlayer2']
+            player3 = request.form['coupPlayer3']
+            player4 = request.form['coupPlayer4']
+            player5 = request.form['coupPlayer5']
+            player6 = request.form['coupPlayer6']
             newGameID = findID()
             new_game = CoupGame(
                 game_id=newGameID, 
@@ -805,12 +808,12 @@ def addCoup():
 def addLoveLetter():
     if request.method == 'POST':
         try:
-            player1 = request.form['Player1']
-            player2 = request.form['Player2']
-            player3 = request.form['Player3']
-            player4 = request.form['Player4']
-            player5 = request.form['Player5']
-            player6 = request.form['Player6']
+            player1 = request.form['loveletterPlayer1']
+            player2 = request.form['loveletterPlayer2']
+            player3 = request.form['loveletterPlayer3']
+            player4 = request.form['loveletterPlayer4']
+            player5 = request.form['loveletterPlayer5']
+            player6 = request.form['loveletterPlayer6']
             newGameID = findID()
             new_game = LoveLetterGame(
                 game_id=newGameID, 
@@ -833,17 +836,17 @@ def addLoveLetter():
 def addMunchkin():
     if request.method == 'POST':
         try:
-            player1 = request.form['Player1']
+            player1 = request.form['munchkinPlayer1']
             player1Score = request.form['Player1_Score']
-            player2 = request.form['Player2']
+            player2 = request.form['munchkinPlayer2']
             player2Score = request.form['Player2_Score']
-            player3 = request.form['Player3']
+            player3 = request.form['munchkinPlayer3']
             player3Score = request.form['Player3_Score']
-            player4 = request.form['Player4']
+            player4 = request.form['munchkinPlayer4']
             player4Score = request.form['Player4_Score']
-            player5 = request.form['Player5']
+            player5 = request.form['munchkinPlayer5']
             player5Score = request.form['Player5_Score']
-            player6 = request.form['Player6']
+            player6 = request.form['munchkinPlayer6']
             player6Score = request.form['Player6_Score']
             newGameID = findID()
             new_game = MunchkinGame(
@@ -876,13 +879,13 @@ def addMunchkin():
 def addJustOne():
     if request.method == 'POST':
         try:
-            player1 = request.form['Player1']
-            player2 = request.form['Player2']
-            player3 = request.form['Player3']
-            player4 = request.form['Player4']
-            player5 = request.form['Player5']
-            player6 = request.form['Player6']
-            player7 = request.form['Player7']
+            player1 = request.form['justonePlayer1']
+            player2 = request.form['justonePlayer2']
+            player3 = request.form['justonePlayer3']
+            player4 = request.form['justonePlayer4']
+            player5 = request.form['justonePlayer5']
+            player6 = request.form['justonePlayer6']
+            player7 = request.form['justonePlayer7']
             gamevictory = request.form['win']
             newGameID = findID()
             new_game = JustOneGame(
@@ -912,10 +915,10 @@ def addJustOne():
 def addTheMind():
     if request.method == 'POST':
         try:
-            player1 = request.form['Player1']
-            player2 = request.form['Player2']
-            player3 = request.form['Player3']
-            player4 = request.form['Player4']
+            player1 = request.form['themindPlayer1']
+            player2 = request.form['themindPlayer2']
+            player3 = request.form['themindPlayer3']
+            player4 = request.form['themindPlayer4']
             gamevictory = request.form['win']
             newGameID = findID()
             new_game = TheMindGame(

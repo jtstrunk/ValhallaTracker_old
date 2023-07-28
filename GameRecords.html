@@ -22,7 +22,7 @@
       </select>
     </div>
 
-
+    {% if Catandata %}
     <div class="gameWrapper" id="Catan">
       <p>Catan Games</p>
         <div class="catGames Table" style="width: 950px;">
@@ -54,7 +54,8 @@
           </table>
         </div>
     </div>
-
+    {% endif %}
+    {% if Coupdata %}
     <div class="gameWrapper" id="Coup">
       <p>Coup Games</p>
         <div class="couGames Table" style="width: 950px;">
@@ -84,7 +85,8 @@
           </table>
         </div>
     </div>
-
+    {% endif %}
+    {% if Dominiondata %}
     <div class="gameWrapper" id="Dominion">
       <p>Dominion Games</p>
         <div class="domGames Table" style="width: 950px;">
@@ -116,7 +118,8 @@
           </table>
         </div>
     </div>
-
+    {% endif %}
+    {% if LordsofWaterdeepdata %}
     <div class="gameWrapper" id="LordsofWaterdeep">
       <p>Lords of Waterdeep Games</p>
         <div class="lorGames Table" style="width: 1020px;">
@@ -152,7 +155,8 @@
           </table>
         </div>      
     </div>
-
+    {% endif %}
+    {% if LoveLetterdata %}
     <div class="gameWrapper" id="LoveLetter">
       <p>Love Letter Games</p>
         <div class="lovGames Table" style="width: 650px;">
@@ -180,6 +184,7 @@
           </table>
         </div>
     </div>
+    {% endif %}
     {% endblock %}
   </body>
 </html>

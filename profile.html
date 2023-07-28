@@ -63,12 +63,19 @@
                                 <p>{{ game[1] }}</p>
                             </div>
                             {% endfor %}
-                            <div id="addFavorite" class="miniCard Hide" style="cursor: pointer;">
-                                <span>Add a Favorite Game</span>
-                            </div>
+                            {% if currUser.username == profileName or profileName == 'current' %}
+                                <div id="addFavorite" class="miniCard" style="cursor: pointer;">
+                                    <span>Add a Favorite Game</span>
+                                </div>
+                            {% else %}
+                                <div id="addFavorite" class="Hide">
+                                </div>
+                            {% endif %}
                             <div id="noFavorite" class="miniCard Hide">
-                                <span>Looks like {{ user.fullname }}</span>
-                                <p>Does not have any favorite games</p>
+                                <span style="margin-bottom: 6px;">Looks like {{ user.fullname }}</span>
+                                <!-- <p>Does not have any favorite games</p> -->
+                                <p style="margin-bottom: 6px;">has no favorite</p>
+                                <p style="margin-top: 0px;">games listed</p>
                             </div>
 
                         </div>
@@ -129,6 +136,9 @@
         </div>
 
         <script>
+            console.log('{{ currUser.username }}')
+            console.log('{{ profileName }}')
+
             let adding = document.querySelector("#addFavorite");
             adding.addEventListener('click', () => {
                 console.log("clicked")
@@ -161,7 +171,12 @@
                 fav.setAttribute("style","width:785px");
                 let addFavorite = document.querySelector("#addFavorite");
                 addFavorite.classList.remove("Hide");
-            } 
+            }
+            
+            if(favoriteGamesLength === 0){
+                let none = document.querySelector("#noFavorite");
+                none.classList.remove("Hide");
+            }
 
         </script>
 

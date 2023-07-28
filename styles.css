@@ -14,6 +14,7 @@ body{
 }
 
 .players{
+    position: relative;
     display: flex;
     flex-direction: column;
     margin: 10px;
@@ -169,4 +170,30 @@ form button{
     line-height: 20px;
     cursor: pointer;
     font-size: x-large;
+}
+
+.res {
+    border: 1px solid black;
+    padding: 3px;
+    position: absolute;
+    top: 45px;
+    left: 0;
+    /* top: 33%; */
+    background-color: white;
+    width: 175px;
+    border-radius: 5%;
+}
+
+.res ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.res ul li {
+    padding: 5px 0;
+}
+
+.res ul li:hover {
+    background: #eee;
 }

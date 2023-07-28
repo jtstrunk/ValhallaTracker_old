@@ -58,32 +58,32 @@
         <p class="close-button">x</p>
         <h2>Add Catan Record</h2>
         <div style="margin-top: 25px;">
-            <form action = "{{ url_for('addCatan') }}" method = "POST">
+            <form action = "{{ url_for('addCatan') }}" method = "POST" autocomplete="off">
                 <div class="players">
-                    <label for="Player1">Winner</label>
-                    <input type="text" id="Player1" name="Player1" placeholder="Name">
-    
+                    <label for="catanPlayer1">Winner</label>
+                    <input type="text" id="catanPlayer1" name="catanPlayer1" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="catanresults Hide res"></div>
                     <label for="Player1_Score">Score</label>
                     <input type="text" name="Player1_Score" id="Player1_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player2">Runner Up</label>
-                    <input type="text" id="Player2" name="Player2" placeholder="Name">
-    
+                    <label for="catanPlayer2">Runner Up</label>
+                    <input type="text" id="catanPlayer2" name="catanPlayer2" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div id="catanresults Hide res"></div>
                     <label for="Player2_Score">Score</label>
                     <input type="text" name="Player2_Score" id="Player2_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player3">Third Place</label>
-                    <input type="text" id="Player3" name="Player3" placeholder="Name">
-    
+                    <label for="catanPlayer3">Third Place</label>
+                    <input type="text" id="catanPlayer3" name="catanPlayer3" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div id="catanresults Hide res"></div>
                     <label for="Player3_Score">Score</label>
                     <input type="text" name="Player3_Score" id="Player3_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player4">Fourth Place</label>
-                    <input type="text" id="Player4" name="Player4" placeholder="Name">
-    
+                    <label for="catanPlayer4">Fourth Place</label>
+                    <input type="text" id="catanPlayer4" name="catanPlayer4" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div id="catanresults Hide res"></div>
                     <label for="Player4_Score">Score</label>
                     <input type="text" name="Player4_Score" id="Player4_Score" placeholder="Score">
                 </div>
@@ -97,32 +97,32 @@
         <p class="close-button">x</p>
         <h2>Add Dominion Record</h2>
         <div style="margin-top: 25px;">
-            <form action = "{{ url_for('addDominion') }}" method = "POST">
+            <form action = "{{ url_for('addDominion') }}" method = "POST" autocomplete="off">
                 <div class="players">
-                    <label for="Player1">Winner</label>
-                    <input type="text" id="Player1" name="Player1" placeholder="Name">
-    
+                    <label for="dominionPlayer1">Winner</label>
+                    <input type="text" id="dominionPlayer1" name="dominionPlayer1" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="dominionresults Hide res"></div>
                     <label for="Player1_Score">Score</label>
                     <input type="text" name="Player1_Score" id="Player1_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player2">Runner Up</label>
-                    <input type="text" id="Player2" name="Player2" placeholder="Name">
-    
+                    <label for="dominionPlayer2">Runner Up</label>
+                    <input type="text" id="dominionPlayer2" name="dominionPlayer2" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="dominionresults Hide res"></div>
                     <label for="Player2_Score">Score</label>
                     <input type="text" name="Player2_Score" id="Player2_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player3">Third Place</label>
-                    <input type="text" id="Player3" name="Player3" placeholder="Name">
-    
+                    <label for="dominionPlayer3">Third Place</label>
+                    <input type="text" id="dominionPlayer3" name="dominionPlayer3" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="dominionresults Hide res"></div>
                     <label for="Player3_Score">Score</label>
                     <input type="text" name="Player3_Score" id="Player3_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player4">Fourth Place</label>
-                    <input type="text" id="Player4" name="Player4" placeholder="Name">
-    
+                    <label for="dominionPlayer4">Fourth Place</label>
+                    <input type="text" id="dominionPlayer4" name="dominionPlayer4" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="dominionresults Hide res" ></div>
                     <label for="Player4_Score">Score</label>
                     <input type="text" name="Player4_Score" id="Player4_Score" placeholder="Score">
                 </div>
@@ -139,36 +139,37 @@
         <div style="margin-top: 15px;">
             <form action = "{{ url_for('addLordsofWaterdeep') }}" method = "POST">
                 <div class="players">
-                    <label for="Player1">Winner</label>
-                    <input type="text" id="Player1" name="Player1" placeholder="Name">
-    
+                    <label for="lordsofwaterdeepPlayer1">Winner</label>
+                    <input type="text" id="lordsofwaterdeepPlayer1" name="lordsofwaterdeepPlayer1" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="lordsofwaterdeepresults Hide res"></div>
                     <label for="Player1_Score">Score</label>
                     <input type="text" name="Player1_Score" id="Player1_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player2">Runner Up</label>
-                    <input type="text" id="Player2" name="Player2" placeholder="Name">
-    
+                    <label for="lordsofwaterdeepPlayer2">Runner Up</label>
+                    <input type="text" id="lordsofwaterdeepPlayer2" name="lordsofwaterdeepPlayer2" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="lordsofwaterdeepresults Hide res"></div>
                     <label for="Player2_Score">Score</label>
                     <input type="text" name="Player2_Score" id="Player2_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player3">Third Place</label>
-                    <input type="text" id="Player3" name="Player3" placeholder="Name">
-    
+                    <label for="lordsofwaterdeepPlayer3">Third Place</label>
+                    <input type="text" id="lordsofwaterdeepPlayer3" name="lordsofwaterdeepPlayer3" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="lordsofwaterdeepresults Hide res"></div>
                     <label for="Player3_Score">Score</label>
                     <input type="text" name="Player3_Score" id="Player3_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player4">Fourth Place</label>
-                    <input type="text" id="Player4" name="Player4" placeholder="Name">
-    
+                    <label for="lordsofwaterdeepPlayer4">Fourth Place</label>
+                    <input type="text" id="lordsofwaterdeepPlayer4" name="lordsofwaterdeepPlayer4" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="lordsofwaterdeepresults Hide res"></div>
                     <label for="Player4_Score">Score</label>
                     <input type="text" name="Player4_Score" id="Player4_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player5">Fifth Place</label>
-                    <input type="text" id="Player5" name="Player5" placeholder="Name">
+                    <label for="lordsofwaterdeepPlayer5">Fifth Place</label>
+                    <input type="text" id="lordsofwaterdeepPlayer5" name="lordsofwaterdeepPlayer5" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="lordsofwaterdeepresults Hide res"></div>
                 </div>
                 <div class="players">
                     <label for="Player5_Score">Score</label>
@@ -186,28 +187,34 @@
         <div style="margin-top: 25px;">
             <form action = "{{ url_for('addCoup') }}" method = "POST">
                 <div class="players">
-                    <label for="Player1">Winner</label>
-                    <input type="text" id="Player1" name="Player1" placeholder="Name">
+                    <label for="coupPlayer1">Winner</label>
+                    <input type="text" id="coupPlayer1" name="coupPlayer1" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="coupresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player2">Runner Up</label>
-                    <input type="text" id="Player2" name="Player2" placeholder="Name">
+                    <label for="coupPlayer2">Runner Up</label>
+                    <input type="text" id="coupPlayer2" name="coupPlayer2" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="coupresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player3">Third Place</label>
-                    <input type="text" id="Player3" name="Player3" placeholder="Name">
+                    <label for="coupPlayer3">Third Place</label>
+                    <input type="text" id="coupPlayer3" name="coupPlayer3" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="coupresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player4">Fourth Place</label>
-                    <input type="text" id="Player4" name="Player4" placeholder="Name">
+                    <label for="coupPlayer4">Fourth Place</label>
+                    <input type="text" id="coupPlayer4" name="coupPlayer4" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="coupresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player5">Fifth Place</label>
-                    <input type="text" id="Player5" name="Player5" placeholder="Name">
+                    <label for="coupPlayer5">Fifth Place</label>
+                    <input type="text" id="coupPlayer5" name="coupPlayer5" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="coupresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player6">Sixth Place</label>
-                    <input type="text" id="Player6" name="Player6" placeholder="Name">
+                    <label for="coupPlayer6">Sixth Place</label>
+                    <input type="text" id="coupPlayer6" name="coupPlayer6" placeholder="Name">
+                    <div class="coupresults Hide res"></div>
                 </div>
                 <button class="btn btn-primary">Submit Record</button>
             </form>
@@ -221,28 +228,34 @@
         <div style="margin-top: 25px;">
             <form action = "{{ url_for('addLoveLetter') }}" method = "POST">
                 <div class="players">
-                    <label for="Player1">Winner</label>
-                    <input type="text" id="Player1" name="Player1" placeholder="Name">
+                    <label for="loveletterPlayer1">Winner</label>
+                    <input type="text" id="loveletterPlayer1" name="loveletterPlayer1" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="loveletterresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player2">Runner Up</label>
-                    <input type="text" id="Player2" name="Player2" placeholder="Name">
+                    <label for="loveletterPlayer2">Runner Up</label>
+                    <input type="text" id="loveletterPlayer2" name="loveletterPlayer2" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="loveletterresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player3">Third Place</label>
-                    <input type="text" id="Player3" name="Player3" placeholder="Name">
+                    <label for="loveletterPlayer3">Third Place</label>
+                    <input type="text" id="loveletterPlayer3" name="loveletterPlayer3" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="loveletterresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player4">Fourth Place</label>
-                    <input type="text" id="Player4" name="Player4" placeholder="Name">
+                    <label for="loveletterPlayer4">Fourth Place</label>
+                    <input type="text" id="loveletterPlayer4" name="loveletterPlayer4" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="loveletterresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player5">Fifth Place</label>
-                    <input type="text" id="Player5" name="Player5" placeholder="Name">
+                    <label for="loveletterPlayer5">Fifth Place</label>
+                    <input type="text" id="loveletterPlayer5" name="loveletterPlayer5" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="loveletterresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player6">Sixth Place</label>
-                    <input type="text" id="Player6" name="Player6" placeholder="Name">
+                    <label for="loveletterPlayer6">Sixth Place</label>
+                    <input type="text" id="loveletterPlayer6" name="loveletterPlayer6" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="loveletterresults Hide res"></div>
                 </div>
                 <button class="btn btn-primary">Submit Record</button>
             </form>
@@ -256,44 +269,44 @@
         <div style="margin-top: 25px;">
             <form action = "{{ url_for('addMunchkin') }}" method = "POST">
                 <div class="players">
-                    <label for="Player1">Winner</label>
-                    <input type="text" id="Player1" name="Player1" placeholder="Name">
-
+                    <label for="munchkinPlayer1">Winner</label>
+                    <input type="text" id="munchkinPlayer1" name="munchkinPlayer1" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="loveletterresults Hide res"></div>
                     <label for="Player1_Score">Level</label>
                     <input type="text" name="Player1_Score" id="Player1_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player2">Runner Up</label>
-                    <input type="text" id="Player2" name="Player2" placeholder="Name">
-
+                    <label for="munchkinPlayer2">Runner Up</label>
+                    <input type="text" id="munchkinPlayer2" name=munchkin"Player2" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="loveletterresults Hide res"></div>
                     <label for="Player2_Score">Level</label>
                     <input type="text" name="Player2_Score" id="Player2_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player3">Third Place</label>
-                    <input type="text" id="Player3" name="Player3" placeholder="Name">
-
+                    <label for="munchkinPlayer3">Third Place</label>
+                    <input type="text" id="munchkinPlayer3" name="munchkinPlayer3" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="loveletterresults Hide res"></div>
                     <label for="Player3_Score">Level</label>
                     <input type="text" name="Player3_Score" id="Player3_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player4">Fourth Place</label>
-                    <input type="text" id="Player4" name="Player4" placeholder="Name">
-
+                    <label for="munchkinPlayer4">Fourth Place</label>
+                    <input type="text" id="munchkinPlayer4" name="munchkinPlayer4" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="loveletterresults Hide res"></div>
                     <label for="Player4_Score">Level</label>
                     <input type="text" name="Player4_Score" id="Player4_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player5">Fifth Place</label>
-                    <input type="text" id="Player5" name="Player5" placeholder="Name">
-
+                    <label for="munchkinPlayer5">Fifth Place</label>
+                    <input type="text" id="munchkinPlayer5" name="munchkinPlayer5" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="loveletterresults Hide res"></div>
                     <label for="Player5_Score">Level</label>
                     <input type="text" name="Player5_Score" id="Player5_Score" placeholder="Score">
                 </div>
                 <div class="players">
-                    <label for="Player6">Sixth Place</label>
-                    <input type="text" id="Player6" name="Player6" placeholder="Name">
-
+                    <label for="munchkinPlayer6">Sixth Place</label>
+                    <input type="text" id="munchkinPlayer6" name="munchkinPlayer6" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="loveletterresults Hide res"></div>
                     <label for="Player6_Score">Level</label>
                     <input type="text" name="Player6_Score" id="Player6_Score" placeholder="Score">
                 </div>
@@ -310,32 +323,39 @@
         <div style="margin-top: 25px;">
             <form action = "{{ url_for('addJustOne') }}" method = "POST">
                 <div class="players">
-                    <label for="Player1">Player One</label>
-                    <input type="text" id="Player1" name="Player1" placeholder="Name">
+                    <label for="justonePlayer1">Player One</label>
+                    <input type="text" id="justonePlayer1" name="justonePlayer1" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="justoneresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player2">Player Two</label>
-                    <input type="text" id="Player2" name="Player2" placeholder="Name">
+                    <label for="justonePlayer2">Player Two</label>
+                    <input type="text" id="justonePlayer2" name="justonePlayer2" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="justoneresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player3">Player Three</label>
-                    <input type="text" id="Player3" name="Player3" placeholder="Name">
+                    <label for="justonePlayer3">Player Three</label>
+                    <input type="text" id="justonePlayer3" name="justonePlayer3" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="justoneresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player4">Player Four</label>
-                    <input type="text" id="Player4" name="Player4" placeholder="Name">
+                    <label for="justonePlayer4">Player Four</label>
+                    <input type="text" id="justonePlayer4" name="justonePlayer4" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="justoneresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player5">Player Five</label>
-                    <input type="text" id="Player5" name="Player5" placeholder="Name">
+                    <label for="justonePlayer5">Player Five</label>
+                    <input type="text" id="justonePlayer5" name="justonePlayer5" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="justoneresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player6">Player Six</label>
-                    <input type="text" id="Player6" name="Player6" placeholder="Name">
+                    <label for="justonePlayer6">Player Six</label>
+                    <input type="text" id="justonePlayer6" name="justonePlayer6" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="justoneresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player7">Player Seven</label>
-                    <input type="text" id="Player7" name="Player7" placeholder="Name">
+                    <label for="justonePlayer7">Player Seven</label>
+                    <input type="text" id="justonePlayer7" name="justonePlayer7" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="justoneresults Hide res"></div>
                 </div>
                 <div class="players">
                     <label for="win">Correct Cards</label>
@@ -354,20 +374,24 @@
         <div style="margin-top: 25px;">
             <form action = "{{ url_for('addTheMind') }}" method = "POST">
                 <div class="players">
-                    <label for="Player1">Player One</label>
-                    <input type="text" id="Player1" name="Player1" placeholder="Name">
+                    <label for="themindPlayer1">Player One</label>
+                    <input type="text" id="themindPlayer1" name="themindPlayer1" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="themindresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player2">Player Two</label>
-                    <input type="text" id="Player2" name="Player2" placeholder="Name">
+                    <label for="themindPlayer2">Player Two</label>
+                    <input type="text" id="themindPlayer2" name="themindPlayer2" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="themindresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player3">Player Three</label>
-                    <input type="text" id="Player3" name="Player3" placeholder="Name">
+                    <label for="themindPlayer3">Player Three</label>
+                    <input type="text" id="themindPlayer3" name="themindPlayer3" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="themindresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="Player4">Player Four</label>
-                    <input type="text" id="Player4" name="Player4" placeholder="Name">
+                    <label for="themindPlayer4">Player Four</label>
+                    <input type="text" id="themindPlayer4" name="themindPlayer4" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <div class="themindresults Hide res"></div>
                 </div>
                 <div class="players">
                     <label for="win">Team Victory?</label>
@@ -397,46 +421,50 @@
             })
         }
 
-        // let forms = document.querySelectorAll("form");
-        // for (let i = 0; i < forms.length; i++) {
-        //     forms[i].addEventListener('submit', function(event) {
-        //         event.preventDefault(); 
-        //     });
-        // }
+        var search_terms = ['josh.strunk', 'john.strunk', 'EthanGambles', 'Jim', 'thetwinmeister', 'Sammy322'];
 
-        // let adding = document.querySelector("#addFavorite");
-        // adding.addEventListener('click', () => {
-        //     console.log("clicked")
-        //     let popup = document.getElementById("myPopup");
-        //     popup.classList.remove("Hide");
-        //     popup.classList.add("popup");
-        // })
+        function autocompleteMatch(input) {
+            if (input == '') {
+                return [];
+            }
+            var reg = new RegExp(input,'i')
+            return search_terms.filter(function(term) {
+                if (term.match(reg)) {
+                return term;
+                }
+            });
+            }
 
-        // document.querySelector("#close").addEventListener('click', () => {
-        //     let popup = document.getElementById("myPopup");
-        //     popup.classList.remove("popup");
-        //     popup.classList.add("Hide");
-        // })
+            function showResults(val, id) {
+            let parts = id.split(/(\d+)/);
+            let part = parts[0];
+            let gameName = part.slice(0, -6);
+            console.log("GAME");
+            console.log(gameName);
+            let index = id.search(/\d/);
+            let num = id.substring(index);
+            console.log(num);
+            results = document.querySelectorAll(`.${gameName}results`);
+            results[num - 1].classList.remove("Hide");
+            let res = results[num - 1]
+            res.innerHTML = '';
+            let list = '';
+            let terms = autocompleteMatch(val);
+            for (i=0; i<terms.length; i++) {
+                list += '<li>' + terms[i] + '</li>';
+            }
+            res.innerHTML = '<ul>' + list + '</ul>';
 
-        // let joshy = document.querySelector("#joshy");
-        // joshy.addEventListener('click', () => {
-        //     let game = document.querySelector("#gameSelect").value;
-        //     console.log(game);
-        //     fetch(`/addFavorite?game=${game}`, {method: 'POST'})
-        //     .then(response => response.json())
-        //     .then(data => console.log(data))
-        //     location.reload();
-        // })
-
-        // console.log("hahah")
-        // let favoriteGamesLength = {{ favoriteGames|length }};
-
-        // if(favoriteGamesLength < 5) {
-        //     let fav = document.querySelector("#favorites");
-        //     fav.setAttribute("style","width:785px");
-        //     let addFavorite = document.querySelector("#addFavorite");
-        //     addFavorite.classList.remove("Hide");
-        // } 
+            // Add event listener to each li element
+            let liElements = document.querySelectorAll(`.${gameName}results li`);
+            liElements.forEach(function(li) {
+                li.addEventListener('click', function() {
+                    document.querySelector(`#${gameName}Player${num}`).value = li.innerText;
+                    res.innerHTML = '';
+                    res.classList.add("Hide");
+                });
+            });
+        }
 
     </script>
 
