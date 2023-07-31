@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect, url_for, request
+from flask import Flask, render_template, flash, redirect, url_for, request, jsonify
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import and_, or_, Date, text, literal
@@ -41,6 +41,11 @@ userFavorites = db.Table('userFavorites',
         db.Column('game_id', db.Integer, db.ForeignKey('supported_games.id'))
     )
 
+playedUsers = db.Table('playedUsers',
+        db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+        db.Column('player_id', db.Integer, db.ForeignKey('supported_names.id'))
+    )
+
 class User(UserMixin, db.Model):
         id = db.Column(db.Integer, primary_key=True)
         fullname = db.Column(db.String(50), nullable=False)
@@ -49,6 +54,7 @@ class User(UserMixin, db.Model):
         password = db.Column(db.String(80), nullable=False)
 
         favorites = db.relationship('SupportedGames', secondary=userFavorites, backref='favoritedby')
+        played = db.relationship('SupportedNames', secondary=playedUsers, backref='playedwith')
 
         friends = db.relationship('User', secondary=friends,
                                 primaryjoin=(friends.c.user_id == id),
@@ -60,6 +66,11 @@ class SupportedGames(db.Model):
         id = db.Column(db.Integer, primary_key=True)
         gameName = db.Column(db.String(50))
         numPlayers = db.Column(db.String(50))
+
+class SupportedNames(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        playerID = db.Column(db.Integer)
+        playerName = db.Column(db.String(50))
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -187,107 +198,7 @@ def home():
     user = User.query.filter_by(username=current_user.username).first()
     user_friends = user.friends.limit(5).all()
 
-    print(current_user.username)
-    print(current_user.fullname)
-
-    dominion_games = DominionGame.query.filter(or_(
-        DominionGame.winnerName == current_user.fullname,
-        DominionGame.secondName == current_user.fullname,
-        DominionGame.thirdName == current_user.fullname,
-        DominionGame.fourthName == current_user.fullname,
-        DominionGame.winnerName == current_user.username,
-        DominionGame.secondName == current_user.username,
-        DominionGame.thirdName == current_user.username,
-        DominionGame.fourthName == current_user.username
-    )).with_entities(DominionGame.game_id, DominionGame.winnerName, DominionGame.secondName, DominionGame.thirdName, DominionGame.date, literal('Dominion').label('game_type')).all()
-
-    recentGames = []
-
-    for game in dominion_games:
-        new_game = {}
-        if game.winnerName == current_user.username:
-            new_game['winnerName'] = current_user.fullname
-        else:
-            new_game['winnerName'] = game.winnerName
-        if game.secondName == current_user.username:
-            new_game['secondName'] = current_user.fullname
-        else:
-            new_game['secondName'] = game.secondName
-        if game.thirdName == current_user.username:
-            new_game['thirdName'] = current_user.fullname
-        else:
-            new_game['thirdName'] = game.thirdName
-
-        new_game['game_id'] = game.game_id
-        new_game['game_type'] = 'Dominion'
-        new_game['current_date'] = game.date
-        recentGames.append(new_game)
-
-    catan_games = CatanGame.query.filter(or_(
-        CatanGame.winnerName == current_user.fullname,
-        CatanGame.secondName == current_user.fullname,
-        CatanGame.thirdName == current_user.fullname,
-        CatanGame.fourthName == current_user.fullname,
-        CatanGame.winnerName == current_user.username,
-        CatanGame.secondName == current_user.username,
-        CatanGame.thirdName == current_user.username,
-        CatanGame.fourthName == current_user.username
-    )).with_entities(CatanGame.game_id, CatanGame.winnerName, CatanGame.secondName, CatanGame.thirdName, CatanGame.date, literal('Catan').label('game_type')).all()
-
-    for game in catan_games:
-        new_game = {}
-        if game.winnerName == current_user.username:
-            new_game['winnerName'] = current_user.fullname
-        else:
-            new_game['winnerName'] = game.winnerName
-        if game.secondName == current_user.username:
-            new_game['secondName'] = current_user.fullname
-        else:
-            new_game['secondName'] = game.secondName
-        if game.thirdName == current_user.username:
-            new_game['thirdName'] = current_user.fullname
-        else:
-            new_game['thirdName'] = game.thirdName
-
-        new_game['game_id'] = game.game_id
-        new_game['game_type'] = 'Catan'
-        new_game['current_date'] = game.date
-        recentGames.append(new_game)
-
-    lords_games = LordsofWaterdeepGame.query.filter(or_(
-        LordsofWaterdeepGame.winnerName == current_user.fullname,
-        LordsofWaterdeepGame.secondName == current_user.fullname,
-        LordsofWaterdeepGame.thirdName == current_user.fullname,
-        LordsofWaterdeepGame.fourthName == current_user.fullname,
-        LordsofWaterdeepGame.winnerName == current_user.username,
-        LordsofWaterdeepGame.secondName == current_user.username,
-        LordsofWaterdeepGame.thirdName == current_user.username,
-        LordsofWaterdeepGame.fourthName == current_user.username
-    )).with_entities(LordsofWaterdeepGame.game_id, LordsofWaterdeepGame.winnerName, LordsofWaterdeepGame.secondName, LordsofWaterdeepGame.thirdName, LordsofWaterdeepGame.date, literal('Catan').label('game_type')).all()
-
-    for game in lords_games:
-        new_game = {}
-        if game.winnerName == current_user.username:
-            new_game['winnerName'] = current_user.fullname
-        else:
-            new_game['winnerName'] = game.winnerName
-        if game.secondName == current_user.username:
-            new_game['secondName'] = current_user.fullname
-        else:
-            new_game['secondName'] = game.secondName
-        if game.thirdName == current_user.username:
-            new_game['thirdName'] = current_user.fullname
-        else:
-            new_game['thirdName'] = game.thirdName
-
-        new_game['game_id'] = game.game_id
-        new_game['game_type'] = 'Lords of Waterdeep'
-        new_game['current_date'] = date.today()
-        recentGames.append(new_game)
-
-    sortedGames = sorted(recentGames, key=lambda x: x['game_id'], reverse=True)
-    top5Games = sortedGames[:5]
-
+    topGames = findRecentGames(user)
     gamesWon = calcGamesWon(user)
     gamesPlayed = calcGamesPlayed(user)
     mostPlayed = calcMostPlayed(user)
@@ -296,7 +207,7 @@ def home():
 
     profileStats = [gamesPlayed, gamesWon, mostPlayed, mostWon, bestFriend]
 
-    return render_template('home.html', title='Home', name=current_user.fullname, friends=user_friends, recentGames=top5Games, profileStats=profileStats)
+    return render_template('home.html', title='Home', name=current_user.fullname, friends=user_friends, recentGames=topGames, profileStats=profileStats)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -343,288 +254,10 @@ def profile():
     else:
         user = current_user
 
-    print("USER")
-    print(user)
-
     user_friends = user.friends.limit(5).all()
-    recentGames = []
-
-    dominion_games = DominionGame.query.filter(or_(
-        DominionGame.winnerName == user.fullname,
-        DominionGame.secondName == user.fullname,
-        DominionGame.thirdName == user.fullname,
-        DominionGame.fourthName == user.fullname,
-        DominionGame.winnerName == user.username,
-        DominionGame.secondName == user.username,
-        DominionGame.thirdName == user.username,
-        DominionGame.fourthName == user.username
-    )).with_entities(DominionGame.game_id, DominionGame.winnerName, DominionGame.secondName, DominionGame.thirdName, DominionGame.date, literal('Dominion').label('game_type')).all()
-
-    for game in dominion_games:
-        new_game = {}
-        if game.winnerName == user.username:
-            new_game['winnerName'] = user.fullname
-        else:
-            new_game['winnerName'] = game.winnerName
-        if game.secondName == user.username:
-            new_game['secondName'] = user.fullname
-        else:
-            new_game['secondName'] = game.secondName
-        if game.thirdName == user.username:
-            new_game['thirdName'] = user.fullname
-        else:
-            new_game['thirdName'] = game.thirdName
-
-        new_game['game_id'] = game.game_id
-        new_game['game_type'] = 'Dominion'
-        new_game['current_date'] = game.date
-        recentGames.append(new_game)
-
-    catan_games = CatanGame.query.filter(or_(
-        CatanGame.winnerName == user.fullname,
-        CatanGame.secondName == user.fullname,
-        CatanGame.thirdName == user.fullname,
-        CatanGame.fourthName == user.fullname,
-        CatanGame.winnerName == user.username,
-        CatanGame.secondName == user.username,
-        CatanGame.thirdName == user.username,
-        CatanGame.fourthName == user.username
-    )).with_entities(CatanGame.game_id, CatanGame.winnerName, CatanGame.secondName, CatanGame.thirdName, CatanGame.date, literal('Catan').label('game_type')).all()
-
-    for game in catan_games:
-        new_game = {}
-        if game.winnerName == user.username:
-            new_game['winnerName'] = user.fullname
-        else:
-            new_game['winnerName'] = game.winnerName
-        if game.secondName == user.username:
-            new_game['secondName'] = user.fullname
-        else:
-            new_game['secondName'] = game.secondName
-        if game.thirdName == user.username:
-            new_game['thirdName'] = user.fullname
-        else:
-            new_game['thirdName'] = game.thirdName
-
-        new_game['game_id'] = game.game_id
-        new_game['game_type'] = 'Catan'
-        new_game['current_date'] = game.date
-        recentGames.append(new_game)
-
-    lords_games = LordsofWaterdeepGame.query.filter(or_(
-        LordsofWaterdeepGame.winnerName == user.fullname,
-        LordsofWaterdeepGame.secondName == user.fullname,
-        LordsofWaterdeepGame.thirdName == user.fullname,
-        LordsofWaterdeepGame.fourthName == user.fullname,
-        LordsofWaterdeepGame.winnerName == user.username,
-        LordsofWaterdeepGame.secondName == user.username,
-        LordsofWaterdeepGame.thirdName == user.username,
-        LordsofWaterdeepGame.fourthName == user.username
-    )).with_entities(LordsofWaterdeepGame.game_id, LordsofWaterdeepGame.winnerName, LordsofWaterdeepGame.secondName, LordsofWaterdeepGame.thirdName, LordsofWaterdeepGame.date, literal('Catan').label('game_type')).all()
-
-    for game in lords_games:
-        new_game = {}
-        if game.winnerName == user.username:
-            new_game['winnerName'] = user.fullname
-        else:
-            new_game['winnerName'] = game.winnerName
-        if game.secondName == user.username:
-            new_game['secondName'] = user.fullname
-        else:
-            new_game['secondName'] = game.secondName
-        if game.thirdName == user.username:
-            new_game['thirdName'] = user.fullname
-        else:
-            new_game['thirdName'] = game.thirdName
-
-        new_game['game_id'] = game.game_id
-        new_game['game_type'] = 'Lords of Waterdeep'
-        new_game['current_date'] = date.today()
-        recentGames.append(new_game)
-
-    munchkin_games = MunchkinGame.query.filter(or_(
-        MunchkinGame.winnerName == user.fullname,
-        MunchkinGame.secondName == user.fullname,
-        MunchkinGame.thirdName == user.fullname,
-        MunchkinGame.fourthName == user.fullname,
-        MunchkinGame.fifthName == user.fullname,
-        MunchkinGame.sixthName == user.fullname,
-        MunchkinGame.winnerName == user.username,
-        MunchkinGame.secondName == user.username,
-        MunchkinGame.thirdName == user.username,
-        MunchkinGame.fourthName == user.username,
-        MunchkinGame.fifthName == user.username,
-        MunchkinGame.sixthName == user.username
-    )).with_entities(MunchkinGame.game_id, MunchkinGame.winnerName, MunchkinGame.secondName, MunchkinGame.thirdName, MunchkinGame.date, literal('Munchkin').label('game_type')).all()
-
-    for game in munchkin_games:
-        new_game = {}
-        if game.winnerName == user.username:
-            new_game['winnerName'] = user.fullname
-        else:
-            new_game['winnerName'] = game.winnerName
-        if game.secondName == user.username:
-            new_game['secondName'] = user.fullname
-        else:
-            new_game['secondName'] = game.secondName
-        if game.thirdName == user.username:
-            new_game['thirdName'] = user.fullname
-        else:
-            new_game['thirdName'] = game.thirdName
-
-        new_game['game_id'] = game.game_id
-        new_game['game_type'] = 'Munchkin'
-        new_game['current_date'] = game.date
-        recentGames.append(new_game)
-
-    coup_games = CoupGame.query.filter(or_(
-        CoupGame.winnerName == user.fullname,
-        CoupGame.secondName == user.fullname,
-        CoupGame.thirdName == user.fullname,
-        CoupGame.fourthName == user.fullname,
-        CoupGame.fifthName == user.fullname,
-        CoupGame.sixthName == user.fullname,
-        CoupGame.winnerName == user.username,
-        CoupGame.secondName == user.username,
-        CoupGame.thirdName == user.username,
-        CoupGame.fourthName == user.username,
-        CoupGame.fifthName == user.username,
-        CoupGame.sixthName == user.username
-    )).with_entities(CoupGame.game_id, CoupGame.winnerName, CoupGame.secondName, CoupGame.thirdName, CoupGame.date, literal('Coup').label('game_type')).all()
-
-    for game in coup_games:
-        new_game = {}
-        if game.winnerName == user.username:
-            new_game['winnerName'] = user.fullname
-        else:
-            new_game['winnerName'] = game.winnerName
-        if game.secondName == user.username:
-            new_game['secondName'] = user.fullname
-        else:
-            new_game['secondName'] = game.secondName
-        if game.thirdName == user.username:
-            new_game['thirdName'] = user.fullname
-        else:
-            new_game['thirdName'] = game.thirdName
-
-        new_game['game_id'] = game.game_id
-        new_game['game_type'] = 'Coup'
-        new_game['current_date'] = game.date
-        recentGames.append(new_game)
-
-    love_letter_games = LoveLetterGame.query.filter(or_(
-        LoveLetterGame.winnerName == user.fullname,
-        LoveLetterGame.secondName == user.fullname,
-        LoveLetterGame.thirdName == user.fullname,
-        LoveLetterGame.fourthName == user.fullname,
-        LoveLetterGame.fifthName == user.fullname,
-        LoveLetterGame.sixthName == user.fullname,
-        LoveLetterGame.winnerName == user.username,
-        LoveLetterGame.secondName == user.username,
-        LoveLetterGame.thirdName == user.username,
-        LoveLetterGame.fourthName == user.username,
-        LoveLetterGame.fifthName == user.username,
-        LoveLetterGame.sixthName == user.username
-    )).with_entities(LoveLetterGame.game_id, LoveLetterGame.winnerName, LoveLetterGame.secondName, LoveLetterGame.thirdName, LoveLetterGame.date, literal('Love Letter').label('game_type')).all()
-
-    for game in love_letter_games:
-        new_game = {}
-        if game.winnerName == user.username:
-            new_game['winnerName'] = user.fullname
-        else:
-            new_game['winnerName'] = game.winnerName
-        if game.secondName == user.username:
-            new_game['secondName'] = user.fullname
-        else:
-            new_game['secondName'] = game.secondName
-        if game.thirdName == user.username:
-            new_game['thirdName'] = user.fullname
-        else:
-            new_game['thirdName'] = game.thirdName
-
-        new_game['game_id'] = game.game_id
-        new_game['game_type'] = 'Love Letter'
-        new_game['current_date'] = game.date
-        recentGames.append(new_game)
-
-    mind_games = TheMindGame.query.filter(or_(
-        TheMindGame.playerone == user.fullname,
-        TheMindGame.playertwo == user.fullname,
-        TheMindGame.playerthree == user.fullname,
-        TheMindGame.playerfour == user.fullname,
-        TheMindGame.playerone == user.username,
-        TheMindGame.playertwo == user.username,
-        TheMindGame.playerthree == user.username,
-        TheMindGame.playerfour == user.username
-    )).with_entities(TheMindGame.game_id, TheMindGame.playerone, TheMindGame.playertwo, TheMindGame.victory, TheMindGame.date, literal('The Mind').label('game_type')).all()
-
-    for game in mind_games:
-        new_game = {}
-        if game.victory == 'Yes':
-            new_game['winnerName'] = "Victory"
-
-        if game.victory == 'No':
-            new_game['winnerName'] = "Defeat"
-
-        if game.playerone == user.username:
-            new_game['secondName'] = user.fullname
-        else:
-            new_game['secondName'] = game.playerone
-        if game.playertwo == user.username:
-            new_game['thirdName'] = user.fullname
-        else:
-            new_game['thirdName'] = game.playertwo
-
-        new_game['game_id'] = game.game_id
-        new_game['game_type'] = 'The Mind'
-        new_game['current_date'] = game.date
-        recentGames.append(new_game)
-
-    just_one_games = JustOneGame.query.filter(or_(
-        JustOneGame.playerone == user.fullname,
-        JustOneGame.playertwo == user.fullname,
-        JustOneGame.playerthree == user.fullname,
-        JustOneGame.playerfour == user.fullname,
-        JustOneGame.playerfive == user.fullname,
-        JustOneGame.playersix == user.fullname,
-        JustOneGame.playerseven == user.fullname,
-        JustOneGame.playerone == user.username,
-        JustOneGame.playertwo == user.username,
-        JustOneGame.playerthree == user.username,
-        JustOneGame.playerfour == user.username,
-        JustOneGame.playerfive == user.username,
-        JustOneGame.playersix == user.username,
-        JustOneGame.playerseven == user.username
-    )).with_entities(JustOneGame.game_id, JustOneGame.playerone, JustOneGame.playertwo, JustOneGame.victory, JustOneGame.date, literal('Just One').label('game_type')).all()
-
-    for game in just_one_games:
-        new_game = {}
-
-        if game.victory == 'Yes':
-            new_game['winnerName'] = "Victory"
-
-        if game.victory == 'No':
-            new_game['winnerName'] = "Defeat"
-
-        if game.playerone == user.username:
-            new_game['secondName'] = user.fullname
-        else:
-            new_game['secondName'] = game.playerone
-        if game.playerthree == user.username:
-            new_game['thirdName'] = user.fullname
-        else:
-            new_game['thirdName'] = game.playerone
-
-        new_game['game_id'] = game.game_id
-        new_game['game_type'] = 'Just One'
-        new_game['current_date'] = game.date
-        recentGames.append(new_game)
-
-    sortedGames = sorted(recentGames, key=lambda x: x['game_id'], reverse=True)
-    top5Games = sortedGames[:5]
-
-    # user_id = user.id
-    # user = User.query.filter_by(id=user_id).first()
+    print("user_friends")
+    print(user_friends)
+    topGames = findRecentGames(user)
     games = user.favorites
 
     gameResults = []
@@ -647,7 +280,7 @@ def profile():
     
     profileStats = [gamesPlayed, gamesWon, mostPlayed, mostWon, bestFriend]
     
-    return render_template('profile.html', user=user, friends=user_friends, recentGames = top5Games, favoriteGames=gameResults, profileStats = profileStats, profileName=userName, currUser = current_user)
+    return render_template('profile.html', user=user, friends=user_friends, recentGames = topGames, favoriteGames=gameResults, profileStats = profileStats, profileName=userName, currUser = current_user)
 
 @app.route('/friend', methods = ['GET'])
 @login_required
@@ -689,6 +322,14 @@ def removefriend():
     print("removing")
     return redirect(url_for('friend'))
 
+@app.route('/returnFriends', methods=['GET'])
+def returnFriends():
+    user_playedwith = SupportedNames.query.filter(SupportedNames.playerID == current_user.id)
+
+    friends_list = [friend.playerName for friend in user_playedwith]
+    print(friends_list)
+    return jsonify(friends_list)
+
 @app.route('/addFavorite', methods=['POST'])
 def addFavorite():
     game = request.args.get('game')
@@ -707,133 +348,95 @@ def addFavorite():
 @app.route('/showGames', methods=['GET'])
 @login_required
 def showGames():
-
+    dominionplayers = ['winnerName', 'secondName', 'thirdName', 'fourthName']
     Dominiondata = DominionGame.query.filter(or_(
-        DominionGame.winnerName == current_user.fullname,
-        DominionGame.secondName == current_user.fullname,
-        DominionGame.thirdName == current_user.fullname,
-        DominionGame.fourthName == current_user.fullname,
-        DominionGame.winnerName == current_user.username,
-        DominionGame.secondName == current_user.username,
-        DominionGame.thirdName == current_user.username,
-        DominionGame.fourthName == current_user.username
+        *[getattr(DominionGame, player) == current_user.fullname for player in dominionplayers],
+        *[getattr(DominionGame, player) == current_user.username for player in dominionplayers]
     )).all()
 
     for game in Dominiondata:
-        if game.winnerName == current_user.username:
-            game.winnerName = current_user.fullname
-        if game.secondName == current_user.username:
-            game.secondName = current_user.fullname
-        if game.thirdName == current_user.username:
-            game.thirdName = current_user.fullname
-        if game.fourthName == current_user.username:
-            game.fourthName = current_user.fullname
+        for player in dominionplayers:
+            if getattr(game, player) == current_user.username:
+                setattr(game, player, current_user.fullname)
 
+    catanplayers = ['winnerName', 'secondName', 'thirdName', 'fourthName']
     Catandata = CatanGame.query.filter(or_(
-        CatanGame.winnerName == current_user.fullname,
-        CatanGame.secondName == current_user.fullname,
-        CatanGame.thirdName == current_user.fullname,
-        CatanGame.fourthName == current_user.fullname,
-        CatanGame.winnerName == current_user.username,
-        CatanGame.secondName == current_user.username,
-        CatanGame.thirdName == current_user.username,
-        CatanGame.fourthName == current_user.username
+        *[getattr(CatanGame, player) == current_user.fullname for player in catanplayers],
+        *[getattr(CatanGame, player) == current_user.username for player in catanplayers]
     )).all()
 
     for game in Catandata:
-        if game.winnerName == current_user.username:
-            game.winnerName = current_user.fullname
-        if game.secondName == current_user.username:
-            game.secondName = current_user.fullname
-        if game.thirdName == current_user.username:
-            game.thirdName = current_user.fullname
-        if game.fourthName == current_user.username:
-            game.fourthName = current_user.fullname
-    
+        for player in catanplayers:
+            if getattr(game, player) == current_user.username:
+                setattr(game, player, current_user.fullname)
+
+    lordsofwaterdeepplayers = ['winnerName', 'secondName', 'thirdName', 'fourthName', 'fifthName']
     LordsofWaterdeepdata = LordsofWaterdeepGame.query.filter(or_(
-        LordsofWaterdeepGame.winnerName == current_user.fullname,
-        LordsofWaterdeepGame.secondName == current_user.fullname,
-        LordsofWaterdeepGame.thirdName == current_user.fullname,
-        LordsofWaterdeepGame.fourthName == current_user.fullname,
-        LordsofWaterdeepGame.fifthName == current_user.fullname,
-        LordsofWaterdeepGame.winnerName == current_user.username,
-        LordsofWaterdeepGame.secondName == current_user.username,
-        LordsofWaterdeepGame.thirdName == current_user.username,
-        LordsofWaterdeepGame.fourthName == current_user.username,
-        LordsofWaterdeepGame.fifthName == current_user.username
+        *[getattr(LordsofWaterdeepGame, player) == current_user.fullname for player in lordsofwaterdeepplayers],
+        *[getattr(LordsofWaterdeepGame, player) == current_user.username for player in lordsofwaterdeepplayers]
     )).all()
 
     for game in LordsofWaterdeepdata:
-        if game.winnerName == current_user.username:
-            game.winnerName = current_user.fullname
-        if game.secondName == current_user.username:
-            game.secondName = current_user.fullname
-        if game.thirdName == current_user.username:
-            game.thirdName = current_user.fullname
-        if game.fourthName == current_user.username:
-            game.fourthName = current_user.fullname
-        if game.fifthName == current_user.username:
-            game.fifthName = current_user.fullname
+        for player in lordsofwaterdeepplayers:
+            if getattr(game, player) == current_user.username:
+                setattr(game, player, current_user.fullname)
 
+    coupplayers = ['winnerName', 'secondName', 'thirdName', 'fourthName', 'fifthName', 'sixthName']
     Coupdata = CoupGame.query.filter(or_(
-        CoupGame.winnerName == current_user.fullname,
-        CoupGame.secondName == current_user.fullname,
-        CoupGame.thirdName == current_user.fullname,
-        CoupGame.fourthName == current_user.fullname,
-        CoupGame.fifthName == current_user.fullname,
-        CoupGame.sixthName == current_user.fullname,
-        CoupGame.winnerName == current_user.username,
-        CoupGame.secondName == current_user.username,
-        CoupGame.thirdName == current_user.username,
-        CoupGame.fourthName == current_user.username,
-        CoupGame.fifthName == current_user.username,
-        CoupGame.sixthName == current_user.username
+        *[getattr(CoupGame, player) == current_user.fullname for player in coupplayers],
+        *[getattr(CoupGame, player) == current_user.username for player in coupplayers]
     )).all()
 
     for game in Coupdata:
-        if game.winnerName == current_user.username:
-            game.winnerName = current_user.fullname
-        if game.secondName == current_user.username:
-            game.secondName = current_user.fullname
-        if game.thirdName == current_user.username:
-            game.thirdName = current_user.fullname
-        if game.fourthName == current_user.username:
-            game.fourthName = current_user.fullname
-        if game.fifthName == current_user.username:
-            game.fifthName = current_user.fullname
-        if game.sixthName == current_user.username:
-            game.sixthName = current_user.fullname
+        for player in coupplayers:
+            if getattr(game, player) == current_user.username:
+                setattr(game, player, current_user.fullname)
 
+    loveletterplayers = ['winnerName', 'secondName', 'thirdName', 'fourthName', 'fifthName', 'sixthName']
     LoveLetterdata = LoveLetterGame.query.filter(or_(
-        LoveLetterGame.winnerName == current_user.fullname,
-        LoveLetterGame.secondName == current_user.fullname,
-        LoveLetterGame.thirdName == current_user.fullname,
-        LoveLetterGame.fourthName == current_user.fullname,
-        LoveLetterGame.fifthName == current_user.fullname,
-        LoveLetterGame.sixthName == current_user.fullname,
-        LoveLetterGame.winnerName == current_user.username,
-        LoveLetterGame.secondName == current_user.username,
-        LoveLetterGame.thirdName == current_user.username,
-        LoveLetterGame.fourthName == current_user.username,
-        LoveLetterGame.fifthName == current_user.username,
-        LoveLetterGame.sixthName == current_user.username
+        *[getattr(LoveLetterGame, player) == current_user.fullname for player in loveletterplayers],
+        *[getattr(LoveLetterGame, player) == current_user.username for player in loveletterplayers]
     )).all()
 
     for game in LoveLetterdata:
-        if game.winnerName == current_user.username:
-            game.winnerName = current_user.fullname
-        if game.secondName == current_user.username:
-            game.secondName = current_user.fullname
-        if game.thirdName == current_user.username:
-            game.thirdName = current_user.fullname
-        if game.fourthName == current_user.username:
-            game.fourthName = current_user.fullname
-        if game.fifthName == current_user.username:
-            game.fifthName = current_user.fullname
-        if game.sixthName == current_user.username:
-            game.sixthName = current_user.fullname
+        for player in loveletterplayers:
+            if getattr(game, player) == current_user.username:
+                setattr(game, player, current_user.fullname)
 
-    return render_template('GameRecords.html', title='Home', Dominiondata=Dominiondata, Catandata=Catandata, LordsofWaterdeepdata=LordsofWaterdeepdata, Coupdata=Coupdata, LoveLetterdata=LoveLetterdata)
+    munchkinplayers = ['winnerName', 'secondName', 'thirdName', 'fourthName', 'fifthName', 'sixthName']
+    Munchkindata = MunchkinGame.query.filter(or_(
+        *[getattr(MunchkinGame, player) == current_user.fullname for player in munchkinplayers],
+        *[getattr(MunchkinGame, player) == current_user.username for player in munchkinplayers]
+    )).all()
+
+    for game in Munchkindata:
+        for player in munchkinplayers:
+            if getattr(game, player) == current_user.username:
+                setattr(game, player, current_user.fullname)
+
+    justoneplayers = ['playerone', 'playertwo', 'playerthree', 'playerfour', 'playerfive', 'playersix', 'playerseven']
+    JustOnedata = JustOneGame.query.filter(or_(
+        *[getattr(JustOneGame, player) == current_user.fullname for player in justoneplayers],
+        *[getattr(JustOneGame, player) == current_user.username for player in justoneplayers]
+    )).all()
+
+    for game in JustOnedata:
+        for player in justoneplayers:
+            if getattr(game, player) == current_user.username:
+                setattr(game, player, current_user.fullname)
+
+    themindplayers = ['playerone', 'playertwo', 'playerthree', 'playerfour']
+    TheMinddata = TheMindGame.query.filter(or_(
+        *[getattr(TheMindGame, player) == current_user.fullname for player in themindplayers],
+        *[getattr(TheMindGame, player) == current_user.username for player in themindplayers]
+    )).all()
+
+    for game in TheMinddata:
+        for player in themindplayers:
+            if getattr(game, player) == current_user.username:
+                setattr(game, player, current_user.fullname)
+
+    return render_template('GameRecords.html', title='Home', Dominiondata=Dominiondata, Catandata=Catandata, LordsofWaterdeepdata=LordsofWaterdeepdata, Coupdata=Coupdata, LoveLetterdata=LoveLetterdata, Munchkindata=Munchkindata, JustOnedata=JustOnedata, TheMinddata=TheMinddata)
 
 @app.route('/addGame', methods=['GET'])
 @login_required
@@ -854,6 +457,14 @@ def addDominion():
             player4 = request.form['dominionPlayer4']
             player4Score = request.form['Player4_Score']
             newGameID = findID()
+            numPlayers = 4
+            game = "dominion"
+            for i in range(1, numPlayers):
+                player = request.form[f'{game}Player{i}']
+                if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
+                    new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
+                    db.session.add(new_played_user)
+
             dominion_game = DominionGame(
                 game_id=newGameID, 
                 winnerName=player1, 
@@ -890,6 +501,15 @@ def addCatan():
             player4 = request.form['catanPlayer4']
             player4Score = request.form['Player4_Score']
             newGameID = findID()
+
+            numPlayers = 4
+            game = "catan"
+            for i in range(1, numPlayers):
+                player = request.form[f'{game}Player{i}']
+                if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
+                    new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
+                    db.session.add(new_played_user)
+
             catan_game = CatanGame(
                 game_id=newGameID, 
                 winnerName=player1, 
@@ -927,6 +547,15 @@ def addLordsofWaterdeep():
             player5 = request.form['lordsofwaterdeepPlayer5']
             player5Score = request.form['Player5_Score']
             newGameID = findID()
+
+            numPlayers = 5
+            game = "lordsofwaterdeep"
+            for i in range(1, numPlayers):
+                player = request.form[f'{game}Player{i}']
+                if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
+                    new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
+                    db.session.add(new_played_user)
+
             new_game = LordsofWaterdeepGame(
                 game_id=newGameID, 
                 winnerName=player1, 
@@ -962,6 +591,15 @@ def addCoup():
             player5 = request.form['coupPlayer5']
             player6 = request.form['coupPlayer6']
             newGameID = findID()
+
+            numPlayers = 6
+            game = "coup"
+            for i in range(1, numPlayers):
+                player = request.form[f'{game}Player{i}']
+                if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
+                    new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
+                    db.session.add(new_played_user)
+
             new_game = CoupGame(
                 game_id=newGameID, 
                 winnerName=player1, 
@@ -992,6 +630,15 @@ def addLoveLetter():
             player5 = request.form['loveletterPlayer5']
             player6 = request.form['loveletterPlayer6']
             newGameID = findID()
+
+            numPlayers = 6
+            game = "loveletter"
+            for i in range(1, numPlayers):
+                player = request.form[f'{game}Player{i}']
+                if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
+                    new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
+                    db.session.add(new_played_user)
+            
             new_game = LoveLetterGame(
                 game_id=newGameID, 
                 winnerName=player1, 
@@ -1026,6 +673,15 @@ def addMunchkin():
             player6 = request.form['munchkinPlayer6']
             player6Score = request.form['Player6_Score']
             newGameID = findID()
+
+            numPlayers = 6
+            game = "munchkin"
+            for i in range(1, numPlayers):
+                player = request.form[f'{game}Player{i}']
+                if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
+                    new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
+                    db.session.add(new_played_user)
+
             new_game = MunchkinGame(
                 game_id=newGameID, 
                 winnerName=player1, 
@@ -1065,6 +721,15 @@ def addJustOne():
             player7 = request.form['justonePlayer7']
             gamevictory = request.form['win']
             newGameID = findID()
+
+            numPlayers = 7
+            game = "justone"
+            for i in range(1, numPlayers):
+                player = request.form[f'{game}Player{i}']
+                if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
+                    new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
+                    db.session.add(new_played_user)
+
             new_game = JustOneGame(
                 game_id=newGameID, 
                 playerone=player1, 
@@ -1098,6 +763,15 @@ def addTheMind():
             player4 = request.form['themindPlayer4']
             gamevictory = request.form['win']
             newGameID = findID()
+
+            numPlayers = 4
+            game = "themind"
+            for i in range(1, numPlayers):
+                player = request.form[f'{game}Player{i}']
+                if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
+                    new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
+                    db.session.add(new_played_user)
+
             new_game = TheMindGame(
                 game_id=newGameID, 
                 playerone=player1, 
@@ -1140,7 +814,7 @@ def calcGamesWon(user):
     gamesWon += db.session.query(MunchkinGame).filter(or_(MunchkinGame.winnerName == user.username, MunchkinGame.winnerName == user.fullname)).count()
     gamesWon += db.session.query(TheMindGame).filter(
         and_(
-            TheMindGame.victory == 'Yes',
+            TheMindGame.victory == 'Victory',
             or_(
                 TheMindGame.playerone == user.username,
                 TheMindGame.playerone == user.fullname,
@@ -1374,7 +1048,7 @@ def calcMostWon(user):
     munchkinWins = db.session.query(MunchkinGame).filter(or_(MunchkinGame.winnerName == user.username, MunchkinGame.winnerName == user.fullname)).count()
     themindWins = db.session.query(TheMindGame).filter(
         and_(
-            TheMindGame.victory == 'Yes',
+            TheMindGame.victory == 'Victory',
             or_(
                 TheMindGame.playerone == user.username,
                 TheMindGame.playerone == user.fullname,
@@ -1640,24 +1314,279 @@ def calcBestFriend(user):
         if JustOneCount > maxCount:
             maxCount = LoveLetterCount
             bestFriend = friend.fullname
-        
-    print(bestFriend)
+
     return bestFriend
 
-        # DominionCount = db.session.query(DominionGame).filter(or_(
-        #     DominionGame.winnerName == friend.fullname,
-        #     DominionGame.secondName == friend.fullname,
-        #     DominionGame.thirdName == friend.fullname,
-        #     DominionGame.fourthName == friend.fullname,
-        #     DominionGame.winnerName == friend.username,
-        #     DominionGame.secondName == friend.username,
-        #     DominionGame.thirdName == friend.username,
-        #     DominionGame.fourthName == friend.username,
-        #     DominionGame.winnerName == user.fullname,
-        #     DominionGame.secondName == user.fullname,
-        #     DominionGame.thirdName == user.fullname,
-        #     DominionGame.fourthName == user.fullname,
-        #     DominionGame.winnerName == user.username,
-        #     DominionGame.secondName == user.username,
-        #     DominionGame.thirdName == user.username,
-        #     DominionGame.fourthName == user.username)).count()
+def findRecentGames(user):
+    recentGames = []
+
+    dominion_games = DominionGame.query.filter(or_(
+        DominionGame.winnerName == user.fullname,
+        DominionGame.secondName == user.fullname,
+        DominionGame.thirdName == user.fullname,
+        DominionGame.fourthName == user.fullname,
+        DominionGame.winnerName == user.username,
+        DominionGame.secondName == user.username,
+        DominionGame.thirdName == user.username,
+        DominionGame.fourthName == user.username
+    )).with_entities(DominionGame.game_id, DominionGame.winnerName, DominionGame.secondName, DominionGame.thirdName, DominionGame.date, literal('Dominion').label('game_type')).all()
+
+    for game in dominion_games:
+        new_game = {}
+        if game.winnerName == user.username:
+            new_game['winnerName'] = user.fullname
+        else:
+            new_game['winnerName'] = game.winnerName
+        if game.secondName == user.username:
+            new_game['secondName'] = user.fullname
+        else:
+            new_game['secondName'] = game.secondName
+        if game.thirdName == user.username:
+            new_game['thirdName'] = user.fullname
+        else:
+            new_game['thirdName'] = game.thirdName
+
+        new_game['game_id'] = game.game_id
+        new_game['game_type'] = 'Dominion'
+        new_game['current_date'] = game.date
+        recentGames.append(new_game)
+
+    catan_games = CatanGame.query.filter(or_(
+        CatanGame.winnerName == user.fullname,
+        CatanGame.secondName == user.fullname,
+        CatanGame.thirdName == user.fullname,
+        CatanGame.fourthName == user.fullname,
+        CatanGame.winnerName == user.username,
+        CatanGame.secondName == user.username,
+        CatanGame.thirdName == user.username,
+        CatanGame.fourthName == user.username
+    )).with_entities(CatanGame.game_id, CatanGame.winnerName, CatanGame.secondName, CatanGame.thirdName, CatanGame.date, literal('Catan').label('game_type')).all()
+
+    for game in catan_games:
+        new_game = {}
+        if game.winnerName == user.username:
+            new_game['winnerName'] = user.fullname
+        else:
+            new_game['winnerName'] = game.winnerName
+        if game.secondName == user.username:
+            new_game['secondName'] = user.fullname
+        else:
+            new_game['secondName'] = game.secondName
+        if game.thirdName == user.username:
+            new_game['thirdName'] = user.fullname
+        else:
+            new_game['thirdName'] = game.thirdName
+
+        new_game['game_id'] = game.game_id
+        new_game['game_type'] = 'Catan'
+        new_game['current_date'] = game.date
+        recentGames.append(new_game)
+
+    lords_games = LordsofWaterdeepGame.query.filter(or_(
+        LordsofWaterdeepGame.winnerName == user.fullname,
+        LordsofWaterdeepGame.secondName == user.fullname,
+        LordsofWaterdeepGame.thirdName == user.fullname,
+        LordsofWaterdeepGame.fourthName == user.fullname,
+        LordsofWaterdeepGame.winnerName == user.username,
+        LordsofWaterdeepGame.secondName == user.username,
+        LordsofWaterdeepGame.thirdName == user.username,
+        LordsofWaterdeepGame.fourthName == user.username
+    )).with_entities(LordsofWaterdeepGame.game_id, LordsofWaterdeepGame.winnerName, LordsofWaterdeepGame.secondName, LordsofWaterdeepGame.thirdName, LordsofWaterdeepGame.date, literal('Catan').label('game_type')).all()
+
+    for game in lords_games:
+        new_game = {}
+        if game.winnerName == user.username:
+            new_game['winnerName'] = user.fullname
+        else:
+            new_game['winnerName'] = game.winnerName
+        if game.secondName == user.username:
+            new_game['secondName'] = user.fullname
+        else:
+            new_game['secondName'] = game.secondName
+        if game.thirdName == user.username:
+            new_game['thirdName'] = user.fullname
+        else:
+            new_game['thirdName'] = game.thirdName
+
+        new_game['game_id'] = game.game_id
+        new_game['game_type'] = 'Lords of Waterdeep'
+        new_game['current_date'] = date.today()
+        recentGames.append(new_game)
+
+    munchkin_games = MunchkinGame.query.filter(or_(
+        MunchkinGame.winnerName == user.fullname,
+        MunchkinGame.secondName == user.fullname,
+        MunchkinGame.thirdName == user.fullname,
+        MunchkinGame.fourthName == user.fullname,
+        MunchkinGame.fifthName == user.fullname,
+        MunchkinGame.sixthName == user.fullname,
+        MunchkinGame.winnerName == user.username,
+        MunchkinGame.secondName == user.username,
+        MunchkinGame.thirdName == user.username,
+        MunchkinGame.fourthName == user.username,
+        MunchkinGame.fifthName == user.username,
+        MunchkinGame.sixthName == user.username
+    )).with_entities(MunchkinGame.game_id, MunchkinGame.winnerName, MunchkinGame.secondName, MunchkinGame.thirdName, MunchkinGame.date, literal('Munchkin').label('game_type')).all()
+
+    for game in munchkin_games:
+        new_game = {}
+        if game.winnerName == user.username:
+            new_game['winnerName'] = user.fullname
+        else:
+            new_game['winnerName'] = game.winnerName
+        if game.secondName == user.username:
+            new_game['secondName'] = user.fullname
+        else:
+            new_game['secondName'] = game.secondName
+        if game.thirdName == user.username:
+            new_game['thirdName'] = user.fullname
+        else:
+            new_game['thirdName'] = game.thirdName
+
+        new_game['game_id'] = game.game_id
+        new_game['game_type'] = 'Munchkin'
+        new_game['current_date'] = game.date
+        recentGames.append(new_game)
+
+    coup_games = CoupGame.query.filter(or_(
+        CoupGame.winnerName == user.fullname,
+        CoupGame.secondName == user.fullname,
+        CoupGame.thirdName == user.fullname,
+        CoupGame.fourthName == user.fullname,
+        CoupGame.fifthName == user.fullname,
+        CoupGame.sixthName == user.fullname,
+        CoupGame.winnerName == user.username,
+        CoupGame.secondName == user.username,
+        CoupGame.thirdName == user.username,
+        CoupGame.fourthName == user.username,
+        CoupGame.fifthName == user.username,
+        CoupGame.sixthName == user.username
+    )).with_entities(CoupGame.game_id, CoupGame.winnerName, CoupGame.secondName, CoupGame.thirdName, CoupGame.date, literal('Coup').label('game_type')).all()
+
+    for game in coup_games:
+        new_game = {}
+        if game.winnerName == user.username:
+            new_game['winnerName'] = user.fullname
+        else:
+            new_game['winnerName'] = game.winnerName
+        if game.secondName == user.username:
+            new_game['secondName'] = user.fullname
+        else:
+            new_game['secondName'] = game.secondName
+        if game.thirdName == user.username:
+            new_game['thirdName'] = user.fullname
+        else:
+            new_game['thirdName'] = game.thirdName
+
+        new_game['game_id'] = game.game_id
+        new_game['game_type'] = 'Coup'
+        new_game['current_date'] = game.date
+        recentGames.append(new_game)
+
+    love_letter_games = LoveLetterGame.query.filter(or_(
+        LoveLetterGame.winnerName == user.fullname,
+        LoveLetterGame.secondName == user.fullname,
+        LoveLetterGame.thirdName == user.fullname,
+        LoveLetterGame.fourthName == user.fullname,
+        LoveLetterGame.fifthName == user.fullname,
+        LoveLetterGame.sixthName == user.fullname,
+        LoveLetterGame.winnerName == user.username,
+        LoveLetterGame.secondName == user.username,
+        LoveLetterGame.thirdName == user.username,
+        LoveLetterGame.fourthName == user.username,
+        LoveLetterGame.fifthName == user.username,
+        LoveLetterGame.sixthName == user.username
+    )).with_entities(LoveLetterGame.game_id, LoveLetterGame.winnerName, LoveLetterGame.secondName, LoveLetterGame.thirdName, LoveLetterGame.date, literal('Love Letter').label('game_type')).all()
+
+    for game in love_letter_games:
+        new_game = {}
+        if game.winnerName == user.username:
+            new_game['winnerName'] = user.fullname
+        else:
+            new_game['winnerName'] = game.winnerName
+        if game.secondName == user.username:
+            new_game['secondName'] = user.fullname
+        else:
+            new_game['secondName'] = game.secondName
+        if game.thirdName == user.username:
+            new_game['thirdName'] = user.fullname
+        else:
+            new_game['thirdName'] = game.thirdName
+
+        new_game['game_id'] = game.game_id
+        new_game['game_type'] = 'Love Letter'
+        new_game['current_date'] = game.date
+        recentGames.append(new_game)
+
+    mind_games = TheMindGame.query.filter(or_(
+        TheMindGame.playerone == user.fullname,
+        TheMindGame.playertwo == user.fullname,
+        TheMindGame.playerthree == user.fullname,
+        TheMindGame.playerfour == user.fullname,
+        TheMindGame.playerone == user.username,
+        TheMindGame.playertwo == user.username,
+        TheMindGame.playerthree == user.username,
+        TheMindGame.playerfour == user.username
+    )).with_entities(TheMindGame.game_id, TheMindGame.playerone, TheMindGame.playertwo, TheMindGame.victory, TheMindGame.date, literal('The Mind').label('game_type')).all()
+
+    for game in mind_games:
+        new_game = {}
+        if game.victory == 'Yes':
+            new_game['winnerName'] = "Victory"
+
+        if game.victory == 'No':
+            new_game['winnerName'] = "Defeat"
+
+        if game.playerone == user.username:
+            new_game['secondName'] = user.fullname
+        else:
+            new_game['secondName'] = game.playerone
+        if game.playertwo == user.username:
+            new_game['thirdName'] = user.fullname
+        else:
+            new_game['thirdName'] = game.playertwo
+
+        new_game['game_id'] = game.game_id
+        new_game['game_type'] = 'The Mind'
+        new_game['current_date'] = game.date
+        recentGames.append(new_game)
+
+    just_one_games = JustOneGame.query.filter(or_(
+        JustOneGame.playerone == user.fullname,
+        JustOneGame.playertwo == user.fullname,
+        JustOneGame.playerthree == user.fullname,
+        JustOneGame.playerfour == user.fullname,
+        JustOneGame.playerfive == user.fullname,
+        JustOneGame.playersix == user.fullname,
+        JustOneGame.playerseven == user.fullname,
+        JustOneGame.playerone == user.username,
+        JustOneGame.playertwo == user.username,
+        JustOneGame.playerthree == user.username,
+        JustOneGame.playerfour == user.username,
+        JustOneGame.playerfive == user.username,
+        JustOneGame.playersix == user.username,
+        JustOneGame.playerseven == user.username
+    )).with_entities(JustOneGame.game_id, JustOneGame.playerone, JustOneGame.playertwo, JustOneGame.victory, JustOneGame.date, literal('Just One').label('game_type')).all()
+
+    for game in just_one_games:
+        new_game = {}
+        new_game['winnerName'] = game.victory
+
+        if game.playerone == user.username:
+            new_game['secondName'] = user.fullname
+        else:
+            new_game['secondName'] = game.playerone
+        if game.playertwo == user.username:
+            new_game['thirdName'] = user.fullname
+        else:
+            new_game['thirdName'] = game.playerone
+
+        new_game['game_id'] = game.game_id
+        new_game['game_type'] = 'Just One'
+        new_game['current_date'] = game.date
+        recentGames.append(new_game)
+
+    sortedGames = sorted(recentGames, key=lambda x: x['game_id'], reverse=True)
+    top5Games = sortedGames[:5]
+
+    return  top5Games      

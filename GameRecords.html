@@ -19,6 +19,9 @@
         <option value="Dominion">Dominion</option>
         <option value="LordsofWaterdeep">Lords of Waterdeep</option>
         <option value="LoveLetter">Love Letter</option>
+        <option value="Munchkin">Munchkin</option>
+        <option value="JustOne">Just One</option>
+        <option value="TheMind">TheMind</option>
       </select>
     </div>
 
@@ -179,6 +182,107 @@
               <td>{{ game.fourthName }}</td>
               <td>{{ game.fifthName }}</td>
               <td>{{ game.sixthName }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+    </div>
+    {% endif %}
+    {% if Munchkindata %}
+    <div class="gameWrapper" id="Munchkin">
+      <p>Munchkin Games</p>
+        <div class="munGames Table" style="width: 1230px;">
+          <table>
+            <tr>
+              <th>Game Id</th>
+              <th>Winner</th>
+              <th>Score</th>
+              <th>Second</th>
+              <th>Score</th>
+              <th>Third</th>
+              <th>Score</th>
+              <th>Fourth</th>
+              <th>Score</th>
+              <th>Fifth</th>
+              <th>Score</th>
+              <th>Sixth</th>
+              <th>Score</th>
+            </tr>
+            {% for game in Munchkindata %}
+            <tr>
+              <td>{{ game.game_id }}</td>
+              <td>{{ game.winnerName }}</td>
+              <td>{{ game.winnerScore }}</td>
+              <td>{{ game.secondName }}</td>
+              <td>{{ game.secondScore }}</td>
+              <td>{{ game.thirdName }}</td>
+              <td>{{ game.thirdScore }}</td>
+              <td>{{ game.fourthName }}</td>
+              <td>{{ game.fourthScore }}</td>
+              <td>{{ game.fifthName }}</td>
+              <td>{{ game.fifthScore }}</td>
+              <td>{{ game.sixthName }}</td>
+              <td>{{ game.sixthScore }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+    </div>
+    {% endif %}
+    {% if JustOnedata %}
+    <div class="gameWrapper" id="JustOne">
+      <p>Just One Games</p>
+        <div class="jusGames Table" style="width: 900px;">
+          <table>
+            <tr>
+              <th>Game Id</th>
+              <th>Cards Completed</th>
+              <th>Winner</th>
+              <th>Second</th>
+              <th>Third</th>
+              <th>Fourth</th>
+              <th>Fifth</th>
+              <th>Sixth</th>
+              <th>Seventh</th>
+            </tr>
+            {% for game in JustOnedata %}
+            <tr>
+              <td>{{ game.game_id }}</td>
+              <td>{{ game.victory }}</td>
+              <td>{{ game.playerone }}</td>
+              <td>{{ game.playertwo }}</td>
+              <td>{{ game.playerthree }}</td>
+              <td>{{ game.playerfour }}</td>
+              <td>{{ game.playerfive }}</td>
+              <td>{{ game.playersix }}</td>
+              <td>{{ game.playerseven }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+    </div>
+    {% endif %}
+    {% if TheMinddata %}
+    <div class="gameWrapper" id="TheMind">
+      <p>The Mind Games</p>
+        <div class="minGames Table" style="width: 600px;">
+          <table>
+            <tr>
+              <th>Game Id</th>
+              <th>Outcome</th>
+              <th>Player One</th>
+              <th>Plyer Two</th>
+              <th>Player Three</th>
+              <th>Player Four</th>
+            </tr>
+            {% for game in TheMinddata %}
+            <tr>
+              <td>{{ game.game_id }}</td>
+              <td>{{ game.victory }}</td>
+              <td>{{ game.playerone }}</td>
+              <td>{{ game.playertwo }}</td>
+              <td>{{ game.playerthree }}</td>
+              <td>{{ game.playerfour }}</td>
             </tr>
             {% endfor %}
           </table>

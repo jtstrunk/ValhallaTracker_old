@@ -263,7 +263,7 @@
 
     </div>
 
-    <div id="lovePopup" class="gamepopup Hide" style="height: 400px; width: 650px; border-radius: 3%;">
+    <div id="muncPopup" class="gamepopup Hide" style="height: 400px; width: 650px; border-radius: 3%;">
         <p class="close-button">x</p>
         <h2>Add Munchkin Record</h2>
         <div style="margin-top: 25px;">
@@ -277,7 +277,7 @@
                 </div>
                 <div class="players">
                     <label for="munchkinPlayer2">Runner Up</label>
-                    <input type="text" id="munchkinPlayer2" name=munchkin"Player2" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
+                    <input type="text" id="munchkinPlayer2" name="munchkinPlayer2" placeholder="Name" onKeyUp="showResults(this.value, this.id)">
                     <div class="loveletterresults Hide res"></div>
                     <label for="Player2_Score">Level</label>
                     <input type="text" name="Player2_Score" id="Player2_Score" placeholder="Score">
@@ -317,7 +317,7 @@
 
     </div>
 
-    <div id="lovePopup" class="gamepopup Hide" style="height: 320px; width: 650px; border-radius: 3%;">
+    <div id="justPopup" class="gamepopup Hide" style="height: 320px; width: 650px; border-radius: 3%;">
         <p class="close-button">x</p>
         <h2>Add Just One Record</h2>
         <div style="margin-top: 25px;">
@@ -368,7 +368,7 @@
 
     </div>
 
-    <div id="lovePopup" class="gamepopup Hide" style="height: 300px;">
+    <div id="mindPopup" class="gamepopup Hide" style="height: 300px;">
         <p class="close-button">x</p>
         <h2>Add The Mind Record</h2>
         <div style="margin-top: 25px;">
@@ -394,11 +394,15 @@
                     <div class="themindresults Hide res"></div>
                 </div>
                 <div class="players">
-                    <label for="win">Team Victory?</label>
-                    <input type="text" id="win" name="win" placeholder="Yes/No">
+                    <label for="win">Result</label>
+                    <select id="win" name="win">
+                        <option value="Victory">Victory</option>
+                        <option value="Defeat">Defeat</option>
+                    </select>
+                    <!-- <input type="text" id="win" name="win" placeholder="Yes/No"> -->
                 </div>
 
-                <button class="primary-button" style="margin-top: 32px;">Submit Record</button>
+                <button class="primary-button" style="margin-top: 34px;">Submit Record</button>
             </form>
         </div>
 
@@ -421,7 +425,13 @@
             })
         }
 
-        var search_terms = ['josh.strunk', 'john.strunk', 'EthanGambles', 'Jim', 'thetwinmeister', 'Sammy322'];
+        fetch('/returnFriends')
+        .then(response => response.json())
+        .then(data => {
+            search_terms = data;
+            console.log(search_terms);
+        })
+        .catch(error => console.error(error));
 
         function autocompleteMatch(input) {
             if (input == '') {
@@ -449,6 +459,10 @@
             let res = results[num - 1]
             res.innerHTML = '';
             let list = '';
+            if (val === '') {
+                res.classList.add("Hide");
+                return;
+            }
             let terms = autocompleteMatch(val);
             for (i=0; i<terms.length; i++) {
                 list += '<li>' + terms[i] + '</li>';
@@ -464,6 +478,13 @@
                     res.classList.add("Hide");
                 });
             });
+
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest(`#${gameName}Player${num}`) && !event.target.closest(`.${gameName}results`)) {
+                    res.classList.add("Hide");
+                }
+            });
+
         }
 
     </script>
