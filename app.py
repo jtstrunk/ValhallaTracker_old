@@ -12,7 +12,7 @@ import sqlite3
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '1145'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/TrackerSite/db.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/Josh Strunk/Desktop/Projects/Coding Projects/BoardgameApp/db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 bootstrap = Bootstrap(app)
@@ -115,6 +115,31 @@ class LordsofWaterdeepGame(db.Model):
     fourthScore = db.Column(db.Integer)
     fifthName = db.Column(db.String(50))
     fifthScore = db.Column(db.Integer)
+    date = db.Column(db.Date)
+
+class MagicTheGatheringGame(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    game_id = db.Column(db.Integer, nullable=False)
+    winnerName = db.Column(db.String(50), nullable=False)
+    winnerColor = db.Column(db.String(50), nullable=False)
+    winnerKills = db.Column(db.Integer)
+    winnerDeck = db.Column(db.String(50))
+    secondName = db.Column(db.String(50), nullable=False)
+    secondColor = db.Column(db.String(50), nullable=False)
+    secondKills = db.Column(db.Integer)
+    secondDeck = db.Column(db.String(50))
+    thirdName = db.Column(db.String(50))
+    thirdColor = db.Column(db.String(50))
+    thirdKills = db.Column(db.Integer)
+    thirdDeck = db.Column(db.String(50))
+    fourthName = db.Column(db.String(50))
+    fourthColor = db.Column(db.String(50))
+    fourthKills = db.Column(db.Integer)
+    fourthDeck = db.Column(db.String(50))
+    fifthName = db.Column(db.String(50))
+    fifthColor = db.Column(db.String(50))
+    fifthKills = db.Column(db.Integer)
+    fifthDeck = db.Column(db.String(50))
     date = db.Column(db.Date)
 
 class CoupGame(db.Model):
@@ -579,6 +604,74 @@ def addLordsofWaterdeep():
             print("Record Added")
             return redirect('/addGame')
         
+@app.route('/addMagicTheGathering', methods = ['POST', 'GET'])
+@login_required
+def addMagicTheGathering():
+    if request.method == 'POST':
+        try:
+            player1 = request.form['magicthegatheringPlayer1']
+            player1Deck = request.form['Player1_Deck']
+            player1Kills = request.form['Player1_Kills']
+            player1Color = request.form['Player1_Color']
+            player2 = request.form['magicthegatheringPlayer2']
+            player2Deck = request.form['Player2_Deck']
+            player2Kills = request.form['Player2_Kills']
+            player2Color = request.form['Player2_Color']
+            player3 = request.form['magicthegatheringPlayer3']
+            player3Deck = request.form['Player3_Deck']
+            player3Kills = request.form['Player3_Kills']
+            player3Color = request.form['Player3_Color']
+            player4 = request.form['magicthegatheringPlayer4']
+            player4Deck = request.form['Player4_Deck']
+            player4Kills = request.form['Player4_Kills']
+            player4Color = request.form['Player4_Color']
+            player5 = request.form['magicthegatheringPlayer5']
+            player5Deck = request.form['Player5_Deck']
+            player5Kills = request.form['Player5_Kills']
+            player5Color = request.form['Player5_Color']
+            newGameID = findID()
+
+            numPlayers = 5
+            game = "magicthegathering"
+            for i in range(1, numPlayers):
+                player = request.form[f'{game}Player{i}']
+                if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
+                    new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
+                    db.session.add(new_played_user)
+
+            new_game = MagicTheGatheringGame(
+                game_id=newGameID, 
+                winnerName = player1, 
+                winnerColor = player1Color,
+                winnerKills = player1Kills,
+                winnerDeck = player1Deck,
+                secondName = player2, 
+                secondColor = player2Color,
+                secondKills = player2Kills,
+                secondDeck = player2Deck,
+                thirdName = player3, 
+                thirdColor = player3Color, 
+                thirdKills = player3Kills, 
+                thirdDeck = player3Deck,
+                fourthName = player4,
+                fourthColor = player4Color, 
+                fourthKills = player4Kills, 
+                fourthDeck = player4Deck,
+                fifthName = player5, 
+                fifthColor = player5Color,
+                fifthKills = player5Kills,
+                fifthDeck = player5Deck,
+                date=date.today())
+            db.session.add(new_game)
+            db.session.commit()
+
+        except Exception as e:
+            print(f"An error occurred while adding the MagicTheGatheringGame: {e}")
+
+        finally:
+            print("Record Added")
+            return redirect('/addGame')
+
 @app.route('/addCoup', methods = ['POST', 'GET'])
 @login_required
 def addCoup():
@@ -861,6 +954,17 @@ def calcGamesPlayed(user):
         LordsofWaterdeepGame.thirdName == user.username,
         LordsofWaterdeepGame.fourthName == user.username,
         LordsofWaterdeepGame.fifthName == user.username)).count()
+    gamesPlayed += db.session.query(MagicTheGatheringGame).filter(or_(
+        MagicTheGatheringGame.winnerName == user.fullname,
+        MagicTheGatheringGame.secondName == user.fullname,
+        MagicTheGatheringGame.thirdName == user.fullname,
+        MagicTheGatheringGame.fourthName == user.fullname,
+        MagicTheGatheringGame.fifthName == user.fullname,
+        MagicTheGatheringGame.winnerName == user.username,
+        MagicTheGatheringGame.secondName == user.username,
+        MagicTheGatheringGame.thirdName == user.username,
+        MagicTheGatheringGame.fourthName == user.username,
+        MagicTheGatheringGame.fifthName == user.username)).count()
     gamesPlayed += db.session.query(CoupGame).filter(or_(
         CoupGame.winnerName == user.fullname,
         CoupGame.secondName == user.fullname,
@@ -959,6 +1063,17 @@ def calcMostPlayed(user):
         LordsofWaterdeepGame.thirdName == user.username,
         LordsofWaterdeepGame.fourthName == user.username,
         LordsofWaterdeepGame.fifthName == user.username)).count()
+    MagicTheGatheringCount = db.session.query(MagicTheGatheringGame).filter(or_(
+        MagicTheGatheringGame.winnerName == user.fullname,
+        MagicTheGatheringGame.secondName == user.fullname,
+        MagicTheGatheringGame.thirdName == user.fullname,
+        MagicTheGatheringGame.fourthName == user.fullname,
+        MagicTheGatheringGame.fifthName == user.fullname,
+        MagicTheGatheringGame.winnerName == user.username,
+        MagicTheGatheringGame.secondName == user.username,
+        MagicTheGatheringGame.thirdName == user.username,
+        MagicTheGatheringGame.fourthName == user.username,
+        MagicTheGatheringGame.fifthName == user.username)).count()
     CoupCount = db.session.query(CoupGame).filter(or_(
         CoupGame.winnerName == user.fullname,
         CoupGame.secondName == user.fullname,
@@ -1027,6 +1142,7 @@ def calcMostPlayed(user):
         'DomionionCount': DominionCount,
         'CatanCount': CatanCount,
         'LordsofWaterdeepCount': LordsofWaterdeepCount,
+        'MagicTheGatheringCount': MagicTheGatheringCount,
         'CoupCount': CoupCount,
         'LoveLetterCount': LoveLetterCount,
         'MunchkinCount': MunchkinCount,
@@ -1043,6 +1159,7 @@ def calcMostWon(user):
     dominionWins = db.session.query(DominionGame).filter(or_(DominionGame.winnerName == user.username, DominionGame.winnerName == user.fullname)).count()
     catanWins = db.session.query(CatanGame).filter(or_(CatanGame.winnerName == user.username, CatanGame.winnerName == user.fullname)).count()
     lordsofwaterdeepWins = db.session.query(LordsofWaterdeepGame).filter(or_(LordsofWaterdeepGame.winnerName == user.username, LordsofWaterdeepGame.winnerName == user.fullname)).count()
+    magicthegatheringWins = db.session.query(MagicTheGatheringGame).filter(or_(MagicTheGatheringGame.winnerName == user.username, MagicTheGatheringGame.winnerName == user.fullname)).count()
     coupWins = db.session.query(CoupGame).filter(or_(CoupGame.winnerName == user.username, CoupGame.winnerName == user.fullname)).count()
     loveletterWins = db.session.query(LoveLetterGame).filter(or_(LoveLetterGame.winnerName == user.username, LoveLetterGame.winnerName == user.fullname)).count()
     munchkinWins = db.session.query(MunchkinGame).filter(or_(MunchkinGame.winnerName == user.username, MunchkinGame.winnerName == user.fullname)).count()
@@ -1066,6 +1183,7 @@ def calcMostWon(user):
         'DomionionCount': dominionWins,
         'CatanCount': catanWins,
         'LordsofWaterdeepCount': lordsofwaterdeepWins,
+        'MagicTheGatheringCount': magicthegatheringWins,
         'CoupCount': coupWins,
         'LoveLetterCount': loveletterWins,
         'MunchkinCount': munchkinWins,
@@ -1148,6 +1266,31 @@ def calcBestFriend(user):
                 LordsofWaterdeepGame.thirdName == user.username,
                 LordsofWaterdeepGame.fourthName == user.username,
                 LordsofWaterdeepGame.fifthName == user.username
+            ))).count()
+        
+        MagicTheGatheringCount = db.session.query(MagicTheGatheringGame).filter(and_(
+            or_(
+                MagicTheGatheringGame.winnerName == friend.fullname,
+                MagicTheGatheringGame.secondName == friend.fullname,
+                MagicTheGatheringGame.thirdName == friend.fullname,
+                MagicTheGatheringGame.fourthName == friend.fullname,
+                MagicTheGatheringGame.fifthName == friend.fullname,
+                MagicTheGatheringGame.winnerName == friend.username,
+                MagicTheGatheringGame.secondName == friend.username,
+                MagicTheGatheringGame.thirdName == friend.username,
+                MagicTheGatheringGame.fourthName == friend.username,
+                MagicTheGatheringGame.fifthName == friend.username
+            ), or_(
+                MagicTheGatheringGame.winnerName == user.fullname,
+                MagicTheGatheringGame.secondName == user.fullname,
+                MagicTheGatheringGame.thirdName == user.fullname,
+                MagicTheGatheringGame.fourthName == user.fullname,
+                MagicTheGatheringGame.fifthName == user.fullname,
+                MagicTheGatheringGame.winnerName == user.username,
+                MagicTheGatheringGame.secondName == user.username,
+                MagicTheGatheringGame.thirdName == user.username,
+                MagicTheGatheringGame.fourthName == user.username,
+                MagicTheGatheringGame.fifthName == user.username
             ))).count()
 
         CoupCount = db.session.query(CoupGame).filter(and_(
@@ -1299,6 +1442,9 @@ def calcBestFriend(user):
         if LordsofWaterdeepCount > maxCount:
             maxCount = LordsofWaterdeepCount
             bestFriend = friend.fullname
+        if MagicTheGatheringCount > maxCount:
+            maxCount = MagicTheGatheringCount
+            bestFriend = friend.fullname
         if CoupCount > maxCount:
             maxCount = CoupCount
             bestFriend = friend.fullname
@@ -1387,11 +1533,13 @@ def findRecentGames(user):
         LordsofWaterdeepGame.secondName == user.fullname,
         LordsofWaterdeepGame.thirdName == user.fullname,
         LordsofWaterdeepGame.fourthName == user.fullname,
+        LordsofWaterdeepGame.fifthName == user.fullname,
         LordsofWaterdeepGame.winnerName == user.username,
         LordsofWaterdeepGame.secondName == user.username,
         LordsofWaterdeepGame.thirdName == user.username,
-        LordsofWaterdeepGame.fourthName == user.username
-    )).with_entities(LordsofWaterdeepGame.game_id, LordsofWaterdeepGame.winnerName, LordsofWaterdeepGame.secondName, LordsofWaterdeepGame.thirdName, LordsofWaterdeepGame.date, literal('Catan').label('game_type')).all()
+        LordsofWaterdeepGame.fourthName == user.username,
+        LordsofWaterdeepGame.fifthName == user.username
+    )).with_entities(LordsofWaterdeepGame.game_id, LordsofWaterdeepGame.winnerName, LordsofWaterdeepGame.secondName, LordsofWaterdeepGame.thirdName, LordsofWaterdeepGame.date, literal('Lords of the Waterdeep').label('game_type')).all()
 
     for game in lords_games:
         new_game = {}
@@ -1410,6 +1558,40 @@ def findRecentGames(user):
 
         new_game['game_id'] = game.game_id
         new_game['game_type'] = 'Lords of Waterdeep'
+        new_game['current_date'] = date.today()
+        recentGames.append(new_game)
+
+    magic_games = MagicTheGatheringGame.query.filter(or_(
+        MagicTheGatheringGame.winnerName == user.fullname,
+        MagicTheGatheringGame.secondName == user.fullname,
+        MagicTheGatheringGame.thirdName == user.fullname,
+        MagicTheGatheringGame.fourthName == user.fullname,
+        MagicTheGatheringGame.fourthName == user.fullname,
+        MagicTheGatheringGame.fifthName == user.fullname,
+        MagicTheGatheringGame.winnerName == user.username,
+        MagicTheGatheringGame.secondName == user.username,
+        MagicTheGatheringGame.thirdName == user.username,
+        MagicTheGatheringGame.fourthName == user.username,
+        MagicTheGatheringGame.fifthName == user.username
+    )).with_entities(MagicTheGatheringGame.game_id, MagicTheGatheringGame.winnerName, MagicTheGatheringGame.secondName, MagicTheGatheringGame.thirdName, MagicTheGatheringGame.date, literal('Magic: The Gathering').label('game_type')).all()
+
+    for game in magic_games:
+        new_game = {}
+        if game.winnerName == user.username:
+            new_game['winnerName'] = user.fullname
+        else:
+            new_game['winnerName'] = game.winnerName
+        if game.secondName == user.username:
+            new_game['secondName'] = user.fullname
+        else:
+            new_game['secondName'] = game.secondName
+        if game.thirdName == user.username:
+            new_game['thirdName'] = user.fullname
+        else:
+            new_game['thirdName'] = game.thirdName
+
+        new_game['game_id'] = game.game_id
+        new_game['game_type'] = 'Magic: The Gathering'
         new_game['current_date'] = date.today()
         recentGames.append(new_game)
 
