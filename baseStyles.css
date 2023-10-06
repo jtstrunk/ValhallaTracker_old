@@ -32,6 +32,46 @@ nav h2 {
     color: white;
 }
 
+/* Style the dropdown button */
+.dropbtn {
+    margin: 10px;
+    height: 30px;
+    text-decoration: none;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border: 1px solid black;
+    border-radius: 8px;
+    text-align: center;
+    color: black;
+    background-color: white;
+    display: block;
+    cursor: pointer;
+}
+  
+/* Style the dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    /* display: block;
+    width: 90px; */
+}
+
+.dropdown:hover a {
+    width: 130px;
+    display: block;
+    margin: 0 10px;
+    margin-bottom: 2px;
+}
+  
+/* Show the dropdown content on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+    width: 90px;
+}
+
 #content{
     display: flex;
     justify-content: center;
@@ -87,7 +127,7 @@ nav h2 {
     justify-content: center;
 }
 
-.miniCard {
+.miniCards {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -100,11 +140,11 @@ nav h2 {
     padding: 10px;
 }
 
-.Card span {
+.game span {
     text-align: center;
 }
 
-.Card {
+.game {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -119,7 +159,7 @@ nav h2 {
     padding: 10px;
 }
 
-.miniCard span {
+.miniCards span {
     text-align: center;
     margin-bottom: 8px;
 }

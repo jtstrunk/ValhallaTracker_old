@@ -60,4 +60,3 @@ for (let i = 0; i < gameWrappers.length; i++) {
       gameWrappers[i].classList.add("Hide");
     }
 }
-

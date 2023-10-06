@@ -19,6 +19,7 @@
         <option value="Dominion">Dominion</option>
         <option value="LordsofWaterdeep">Lords of Waterdeep</option>
         <option value="LoveLetter">Love Letter</option>
+        <option value="Magic">Magic: The Gathering</option>
         <option value="Munchkin">Munchkin</option>
         <option value="JustOne">Just One</option>
         <option value="TheMind">TheMind</option>
@@ -182,6 +183,57 @@
               <td>{{ game.fourthName }}</td>
               <td>{{ game.fifthName }}</td>
               <td>{{ game.sixthName }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+    </div>
+    {% endif %}
+    {% if Magicdata %}
+    <div class="gameWrapper" id="Magic">
+      <p>Magic: The Gathering Games</p>
+        <div class="magGames Table" style="width: 840px;">
+          <table id="magicTable">
+            <tr>
+              <th>Game Id</th>
+              <th>Player</th>
+              <th>Color</th>
+              <th>Kills</th>
+              <th>Deck</th>
+              <th>Player</th>
+              <th>Color</th>
+              <th>Kills</th>
+              <th>Deck</th>
+            </tr>
+            {% for game in Magicdata %}
+            <tr>
+              <td>{{ game.game_id }}</td>
+              <td>{{ game.winnerName }}</td>
+              <td>{{ game.winnerColor }}</td>
+              <td>{{ game.winnerKills }}</td>
+              <td>{{ game.winnerDeck }}</td>
+              <td>{{ game.secondName }}</td>
+              <td>{{ game.secondColor }}</td>
+              <td>{{ game.secondKills }}</td>
+              <td>{{ game.secondDeck }}</td>
+            </tr>
+            <tr>
+              <td class="imp"></td>
+              <td>{{ game.thirdName }}</td>
+              <td>{{ game.thirdColor }}</td>
+              <td>{{ game.thirdKills }}</td>
+              <td>{{ game.thirdDeck }}</td>
+              <td>{{ game.fourthName }}</td>
+              <td>{{ game.fourthColor }}</td>
+              <td>{{ game.fourthKills }}</td>
+              <td>{{ game.fourthDeck }}</td>
+            </tr>
+            <tr>
+              <td class="imp"></td>
+              <td>{{ game.fifthName }}</td>
+              <td>{{ game.fifthColor }}</td>
+              <td>{{ game.fifthKills }}</td>
+              <td>{{ game.fifthDeck }}</td>
             </tr>
             {% endfor %}
           </table>

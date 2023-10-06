@@ -215,6 +215,81 @@ class RegisterForm(FlaskForm):
     fullname = StringField('display name', validators=[InputRequired()])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
 
+# class Cards(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), nullable=False)
+#     cardSet = db.Column(db.String(50), nullable=False)
+
+# class Village(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+#     card = db.relationship('Cards', backref='village')
+
+# class Cantrip(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+#     card = db.relationship('Cards', backref='cantrip')
+
+# class Gainer(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+#     card = db.relationship('Cards', backref='gainer')
+
+# class Sifter(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+#     card = db.relationship('Cards', backref='sifter')
+
+# class Trasher(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+#     card = db.relationship('Cards', backref='trasher')
+
+# class NonterminalDraw(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+#     card = db.relationship('Cards', backref='nonterminalDraw')
+
+# class TerminalDraw(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+#     card = db.relationship('Cards', backref='terminalDraw')
+
+# class TerminalSilver(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+#     card = db.relationship('Cards', backref='terminalSilver')
+
+# class Action(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+#     card = db.relationship('Cards', backref='action')
+
+# class Attack(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+#     card = db.relationship('Cards', backref='attack')
+
+# class Victory(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+#     card = db.relationship('Cards', backref='victory')
+
+# class Treasure(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+#     card = db.relationship('Cards', backref='treasure')
+
+# class Reaction(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+#     card = db.relationship('Cards', backref='reaction')
+
+# class Duration(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='duration')   
+
 @app.route('/')
 @app.route('/home')
 @login_required
@@ -233,6 +308,10 @@ def home():
     profileStats = [gamesPlayed, gamesWon, mostPlayed, mostWon, bestFriend]
 
     return render_template('home.html', title='Home', name=current_user.fullname, friends=user_friends, recentGames=topGames, profileStats=profileStats)
+
+@app.route('/dominion', methods=['GET'])
+def dominion():
+    return render_template('dominion.html')
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -428,6 +507,19 @@ def showGames():
             if getattr(game, player) == current_user.username:
                 setattr(game, player, current_user.fullname)
 
+    magicplayers = ['winnerName', 'secondName', 'thirdName', 'fourthName', 'fifthName']
+    Magicdata = MagicTheGatheringGame.query.filter(or_(
+        *[getattr(MagicTheGatheringGame, player) == current_user.fullname for player in magicplayers],
+        *[getattr(MagicTheGatheringGame, player) == current_user.username for player in magicplayers]
+    )).all()
+
+    for game in Magicdata:
+        for player in magicplayers:
+            if getattr(game, player) == current_user.username:
+                setattr(game, player, current_user.fullname)
+
+    print(Magicdata)
+
     munchkinplayers = ['winnerName', 'secondName', 'thirdName', 'fourthName', 'fifthName', 'sixthName']
     Munchkindata = MunchkinGame.query.filter(or_(
         *[getattr(MunchkinGame, player) == current_user.fullname for player in munchkinplayers],
@@ -461,12 +553,49 @@ def showGames():
             if getattr(game, player) == current_user.username:
                 setattr(game, player, current_user.fullname)
 
-    return render_template('GameRecords.html', title='Home', Dominiondata=Dominiondata, Catandata=Catandata, LordsofWaterdeepdata=LordsofWaterdeepdata, Coupdata=Coupdata, LoveLetterdata=LoveLetterdata, Munchkindata=Munchkindata, JustOnedata=JustOnedata, TheMinddata=TheMinddata)
+    return render_template('GameRecords.html', title='Home', Dominiondata=Dominiondata, Catandata=Catandata, LordsofWaterdeepdata=LordsofWaterdeepdata, Coupdata=Coupdata, LoveLetterdata=LoveLetterdata, Magicdata=Magicdata, Munchkindata=Munchkindata, JustOnedata=JustOnedata, TheMinddata=TheMinddata)
 
 @app.route('/addGame', methods=['GET'])
 @login_required
 def addGame():
     return render_template("addGame.html", title='Home')
+
+@app.route('/DominionSelect', methods=['GET'])
+@login_required
+def DominionSelect():
+    return render_template("DominionSelect.html", title='Home')
+
+@app.route('/cards')
+def cards():
+
+    cardType = request.args.get('cardType')
+
+    print(cardType)
+
+    table_map = {
+        'village': Village,
+        'cantrip': Cantrip,
+        'sifter': Sifter,
+        'gainer': Gainer,
+        'trasher': Trasher,
+        'terminalDraw': TerminalDraw,
+        'terminalSilver': TerminalSilver,
+        'action': Action,
+        'victory': Victory,
+        'treasure': Treasure,
+        'attack': Attack,
+        'reaction': Reaction,
+        'duration': Duration
+    }
+
+    if cardType in table_map:
+        records = table_map[cardType].query.all()
+        data = [card.cardName for card in records]
+
+    print(cardType)
+    
+
+    return jsonify(data)
 
 @app.route('/addDominion', methods = ['POST', 'GET'])
 @login_required
@@ -890,10 +1019,11 @@ def findID():
     lor_id = db.session.query(db.func.max(LordsofWaterdeepGame.game_id)).scalar() or 0
     cou_id = db.session.query(db.func.max(CoupGame.game_id)).scalar() or 0
     lov_id = db.session.query(db.func.max(LoveLetterGame.game_id)).scalar() or 0
+    mag_id = db.session.query(db.func.max(MagicTheGatheringGame.game_id)).scalar() or 0
     mun_id = db.session.query(db.func.max(MunchkinGame.game_id)).scalar() or 0
     jus_id = db.session.query(db.func.max(JustOneGame.game_id)).scalar() or 0
     min_id = db.session.query(db.func.max(TheMindGame.game_id)).scalar() or 0
-    max_id = max(dom_id, cat_id, lor_id, cou_id, lov_id, mun_id, jus_id, min_id)
+    max_id = max(dom_id, cat_id, lor_id, cou_id, lov_id, mun_id, jus_id, min_id, mag_id)
 
     return max_id + 1
 

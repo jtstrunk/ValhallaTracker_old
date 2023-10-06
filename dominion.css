@@ -1,0 +1,293 @@
+.hide-all img,
+.Hide {
+    display: none;
+}
+
+.show-all img,
+.Show{
+    display: inline !important;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#test {
+    display: flex;
+    align-items: start;
+    flex-direction: row;
+}
+
+button {
+    padding-right: 7px;
+    padding-left: 7px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: 5px;
+    background-color: rgb(232, 230, 225);
+    margin: 3.5px;
+    border: none;
+    width: 109px;
+    border: 3px solid rgb(232, 230, 225);
+}
+
+button:hover {
+   background-color: rgb(222, 220, 215);
+}
+
+#sets {
+    display: flex;
+    flex-direction: row;
+    position: sticky;
+    top: 0px;
+    background-color: white;
+    margin-left: 26px;
+}
+
+#types {
+    display: flex;
+    flex-direction: column;
+    width: 115px;
+    position: sticky;
+}
+
+#categories {
+    display: flex;
+    flex-direction: column;
+    width: 115px;
+
+}
+
+#filters {
+    display: flex;
+    flex-direction: row;
+    width: 130px;
+    position: sticky;
+    top: 10px
+}
+
+#sets {
+    margin-right: 316px;
+    margin-bottom: 15px;
+}
+
+.set {
+    width: 109px;
+}
+
+#alert {
+    color: red;
+}
+
+.startBTNs {
+    width: 153px !important;
+    margin-left: 2px !important; 
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+
+}
+
+#buttons button {
+    width: 117px;
+}
+
+#test {
+    display: flex;
+    flex-direction: row;
+}
+
+#cards {
+    width: 700px;
+    margin-left: 10px;
+    margin-right: 100px;
+}
+
+.special {
+    text-align: left !important;
+    margin: 0%;
+    margin-left: 5px;
+}
+
+img {
+    height: 264px;
+    width: 164px;
+    border: 3px solid black;
+    border-radius: 5px;
+    margin: 3.5px;
+}
+
+.miniCard {
+    width: 148px;
+    height: 238px;
+    margin: 2px;
+}
+
+#selcards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 316px;
+}
+
+#selectedCards {
+    position: sticky;
+    top: 20px;
+    /* set initial overflow to hidden */
+    overflow-y: scroll;
+}
+
+.selected {
+    border: 3px solid #5cc0e4;
+    background-color: rgb(232, 230, 225);
+}
+
+/* overflow-y:auto; */
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+#popUP {
+    width: 450px;
+    height: 450px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: white;
+    border-radius: 3%;
+    text-align: center;
+}
+
+input[type=number] {
+    /* border: 0; */
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    width: 350px;
+    border: 2px solid black;
+}
+
+.nameInput {
+    width: 300px;
+    box-shadow: none;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    border: 2px solid black;
+}
+
+#createGame {
+    width: 150px;
+    position: absolute;
+    bottom: 8px;
+    left: 147px;
+}
+
+#popUP label {
+    margin-top: 10px !important;
+}
+  
+.minus {
+    font-size: 45px;
+    color: black;
+    border: none;
+    width: 30px;
+    background-color: #e0e3cf;
+}
+
+.plus {
+    font-size: 32px;
+    font-weight: bold;
+    color: black;
+    border: none;
+    width: 30px;
+    background-color: #e0e3cf;
+}
+
+#scoreCards span {
+    font-size: xx-large;
+}
+
+.fixing {
+    margin: 0px;
+}
+
+.player {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 560px;
+    background-color: #e0e3cf;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 15px;
+}
+
+.scoreKeeper {
+    width: 110px;
+    margin: 0 15px;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 80px;
+    margin: 0 15px;
+}
+
+.title .name {
+    font-size: x-large;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.title .score {
+    width: auto;
+    font-size: large;
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.title .resize {
+    width: 2.1em;
+    height: 2.1em;
+    border: none;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.plus:hover, .minus:hover{
+    background: none;
+}
