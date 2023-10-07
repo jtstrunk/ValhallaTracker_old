@@ -215,77 +215,63 @@ class RegisterForm(FlaskForm):
     fullname = StringField('display name', validators=[InputRequired()])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
 
-# class Cards(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), nullable=False)
-#     cardSet = db.Column(db.String(50), nullable=False)
-
-# class Village(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
-#     card = db.relationship('Cards', backref='village')
-
-# class Cantrip(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
-#     card = db.relationship('Cards', backref='cantrip')
-
-# class Gainer(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
-#     card = db.relationship('Cards', backref='gainer')
-
-# class Sifter(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
-#     card = db.relationship('Cards', backref='sifter')
-
-# class Trasher(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
-#     card = db.relationship('Cards', backref='trasher')
-
-# class NonterminalDraw(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
-#     card = db.relationship('Cards', backref='nonterminalDraw')
-
-# class TerminalDraw(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
-#     card = db.relationship('Cards', backref='terminalDraw')
-
-# class TerminalSilver(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
-#     card = db.relationship('Cards', backref='terminalSilver')
-
-# class Action(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
-#     card = db.relationship('Cards', backref='action')
-
-# class Attack(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
-#     card = db.relationship('Cards', backref='attack')
-
-# class Victory(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
-#     card = db.relationship('Cards', backref='victory')
-
-# class Treasure(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
-#     card = db.relationship('Cards', backref='treasure')
-
-# class Reaction(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
-#     card = db.relationship('Cards', backref='reaction')
-
-# class Duration(db.Model):
+class Cards(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), nullable=False)
+    cardSet = db.Column(db.String(50), nullable=False)
+class Village(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='village')
+class Cantrip(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='cantrip')
+class Gainer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='gainer')
+class Sifter(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='sifter')
+class Trasher(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='trasher')
+class NonterminalDraw(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='nonterminalDraw')
+class TerminalDraw(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='terminalDraw')
+class TerminalSilver(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='terminalSilver')
+class Action(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='action')
+class Attack(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='attack')
+class Victory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='victory')
+class Treasure(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='treasure')
+class Reaction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
+    card = db.relationship('Cards', backref='reaction')
+class Duration(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cardName = db.Column(db.String(50), db.ForeignKey('cards.cardName'), nullable=False)
     card = db.relationship('Cards', backref='duration')   
@@ -563,6 +549,13 @@ def addGame():
 @app.route('/DominionSelect', methods=['GET'])
 @login_required
 def DominionSelect():
+    return render_template("DominionSelect.html", title='Home')
+
+@app.route('/addDominionRecord', methods=['POST'])
+@login_required
+def addDominionRecord():
+    cardType = request.args.get('cardType')
+    
     return render_template("DominionSelect.html", title='Home')
 
 @app.route('/cards')

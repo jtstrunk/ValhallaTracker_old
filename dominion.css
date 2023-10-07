@@ -250,6 +250,8 @@ input[type=number] {
     background-color: #e0e3cf;
     border-radius: 10px;
     margin-bottom: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
     padding-bottom: 15px;
 }
 
@@ -290,4 +292,13 @@ input[type=number] {
 
 .plus:hover, .minus:hover{
     background: none;
+}
+
+.displayScore {
+    margin-top: 40px !important;
+    width: 1200px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
 }

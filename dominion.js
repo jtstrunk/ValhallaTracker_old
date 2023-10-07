@@ -490,7 +490,7 @@ createGame.addEventListener('click', () => {
     console.log(players);
     document.querySelector("#test").classList.add("Hide");
     document.querySelector("#sets").classList.add("Hide");
-    
+
     let selcards = [];
     let selectedCards = document.querySelectorAll(".miniCard");
 
@@ -854,5 +854,12 @@ createGame.addEventListener('click', () => {
             changeScore(minus);
         });
     });
+
+    let contain = document.querySelector("#scoreCards");
+    contain.classList.add("displayScore");
+
+    addRecord = document.createElement("button");
+    addRecord.innerText = "Add Record";
+    document.querySelector("#container").appendChild(addRecord);
 
 })
