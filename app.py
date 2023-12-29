@@ -285,6 +285,7 @@ def home():
     user_friends = user.friends.limit(5).all()
 
     topGames = findRecentGames(user)
+    print(topGames)
     gamesWon = calcGamesWon(user)
     gamesPlayed = calcGamesPlayed(user)
     mostPlayed = calcMostPlayed(user)
@@ -551,12 +552,80 @@ def addGame():
 def DominionSelect():
     return render_template("DominionSelect.html", title='Home')
 
-@app.route('/addDominionRecord', methods=['POST'])
+@app.route('/addDominionRecord', methods=['POST', 'GET'])
 @login_required
 def addDominionRecord():
-    cardType = request.args.get('cardType')
-    
-    return render_template("DominionSelect.html", title='Home')
+    print("HELLOW THERE")
+    if request.method == 'POST':
+        print("nrpyja")
+        player1 = request.form['dominionPlayer1']
+        print(player1)
+        player1Score = request.form['scorePlayer1']
+        print(player1Score)
+        player2 = request.form['dominionPlayer2']
+        print(player2)
+        player2Score = request.form['scorePlayer2']
+        print(player2Score)
+        newGameID = findID()
+
+        dominion_game = DominionGame(
+            game_id=newGameID, 
+            winnerName=player1, 
+            winnerScore=player1Score, 
+            secondName=player2, 
+            secondScore=player2Score, 
+            # thirdName=player3, 
+            # thirdScore=player3Score, 
+            # fourthName=player4, 
+            # fourthScore=player4Score,
+            date=date.today())
+        db.session.add(dominion_game)
+        db.session.commit()
+
+        return render_template("DominionSelect.html", title='Home')
+
+        # try:
+        #     player1 = request.form['dominionPlayer1']
+        #     print(player1)
+        #     player1Score = request.form['scorePlayer1']
+        #     print(player1Score)
+        #     player2 = request.form['dominionPlayer2']
+        #     player2Score = request.form['scorePlayer2']
+        #     # player3 = request.form['dominionPlayer3']
+        #     # player3Score = request.form['scorePlayer3']
+        #     # player4 = request.form['dominionPlayer4']
+        #     # player4Score = request.form['scorePlayer4']
+        #     newGameID = findID()
+        #     numPlayers = 4
+        #     game = "dominion"
+        #     for i in range(1, numPlayers):
+        #         player = request.form[f'{game}Player{i}']
+        #         if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
+        #             new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
+        #             db.session.add(new_played_user)
+
+        #     dominion_game = DominionGame(
+        #         game_id=newGameID, 
+        #         winnerName=player1, 
+        #         winnerScore=player1Score, 
+        #         secondName=player2, 
+        #         secondScore=player2Score, 
+        #         # thirdName=player3, 
+        #         # thirdScore=player3Score, 
+        #         # fourthName=player4, 
+        #         # fourthScore=player4Score,
+        #         date=date.today())
+        #     db.session.add(dominion_game)
+        #     db.session.commit()
+        #     print("DominionGame added successfully!")
+
+        # except Exception as e:
+        #     print(f"An error occurred while adding the DominionGame: {e}")
+
+        # finally:
+        #     print("Record Added")
+        #     return render_template("DominionSelect.html", title='Home')
+    # return render_template("DominionSelect.html", title='Home')
 
 @app.route('/cards')
 def cards():
@@ -1681,7 +1750,7 @@ def findRecentGames(user):
 
         new_game['game_id'] = game.game_id
         new_game['game_type'] = 'Lords of Waterdeep'
-        new_game['current_date'] = date.today()
+        new_game['current_date'] = game.date
         recentGames.append(new_game)
 
     magic_games = MagicTheGatheringGame.query.filter(or_(
@@ -1715,7 +1784,7 @@ def findRecentGames(user):
 
         new_game['game_id'] = game.game_id
         new_game['game_type'] = 'Magic: The Gathering'
-        new_game['current_date'] = date.today()
+        new_game['current_date'] = game.date
         recentGames.append(new_game)
 
     munchkin_games = MunchkinGame.query.filter(or_(
