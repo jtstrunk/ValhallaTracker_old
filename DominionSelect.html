@@ -145,10 +145,9 @@
                 <img src="static/images/IntrigueSE/200px-Nobles.jpg" class="card IntrigueSE" id="Nobles">
                 <div id="popUP" class="Hide">
                     <label for="playerCount">How many players are playing in this Dominion Game?</label>
-                    <input type="number" id="playerCount" min="2" max="6" placeholder="Number of players">
-                    <div>
-                        <span>*Mininum is 2</span>&nbsp;&nbsp;&nbsp;<span>*Maxinum is 6</span>
-                    </div>
+                    <button value="2" id="2players" class="amountofplayers">Two Players</button>
+                    <button value="3" id="3players" class="amountofplayers">Three Players</button>
+                    <button value="4" id="4players" class="amountofplayers">Four Players</button>
                     <div id="names">
 
                     </div>
@@ -178,11 +177,12 @@
 
 
         </div>
-
-        <div id="scoreCards">
-            
-        </div>
-
+        <form id="scoreCardsValues" action="{{ url_for('addDominionRecord') }}" method="POST">
+            <div id="scoreCards">
+                
+            </div>
+            <button type="submit">Submit</button>
+        </form>
 
     </div>
 

@@ -330,67 +330,81 @@ fillBTN.addEventListener('click', () => {
 
 })
 
-let playerCount = document.querySelector("#playerCount");
-let currValue = 0;
-let names = document.querySelector("#names")
 
-playerCount.addEventListener('change', () => {
-    console.log("joshy washy")
-    console.log(playerCount.value)
-    console.log(currValue)
+let playerCount = 0;
+let selected = false;
+let names = document.querySelector("#names");
+let numNames = 0;
+
+document.getElementById('2players').addEventListener('click', function() {
+    removeSelection();
+    document.getElementById('2players').classList.add('nameclicked');
+    playerCount = 2;
+    createNameInputs(playerCount, selected);
+    selected = true;    
+});
+  
+document.getElementById('3players').addEventListener('click', function() {
+    removeSelection();
+    document.getElementById('3players').classList.add('nameclicked');
+    playerCount = 3;
+    createNameInputs(playerCount, selected);
+    selected = true;
+});
+  
+document.getElementById('4players').addEventListener('click', function() {
+    removeSelection();
+    document.getElementById('4players').classList.add('nameclicked');
+    playerCount = 4;
+    createNameInputs(playerCount, selected);
+    selected = true;
+});
+
+function createNameInputs(playercount, selection){
     
-    if (currValue === 0){
-        for (let i = 0; i < playerCount.value; i++){
+    console.log(selection)
+    if(selection == false){ // if this is the first time a player count has been selected
+        for (let i = 0; i < playercount; i++){ // creating that number of inputs
             newName = document.createElement("input");
             newName.id = `name${i + 1}`
             newName.classList.add("nameInput")
-
-            names.appendChild(newName);
-
-        }
-        currValue = playerCount.value;
-    } else if (currValue < playerCount.value) {
-        // delete reverse
-        console.log("MORE")
-        let inputs = document.querySelectorAll(".nameInput");
-        console.log(inputs)
-        console.log(inputs.length)
-        console.log(playerCount.value)
-        for (let j = inputs.length; j < playerCount.value; j++) {
-            console.log("val")
-            console.log(j)
-            newName = document.createElement("input");
-            newName.id = `name${j}`
-            newName.classList.add("nameInput")
-
+    
             names.appendChild(newName);
         }
-        currValue = playerCount.value;
-    } else if (currValue > playerCount.value) {
-        // add
-        console.log("Less")
-        let inputs = document.querySelectorAll(".nameInput");
-        console.log(inputs)
-        currValue = playerCount.value;
+    } else {
+        if(numNames > playercount){ // if the new player count is less than the old
 
-        console.log(inputs)
-        console.log(inputs.length)
-        console.log(playerCount.value)
+            let NAMES = document.querySelectorAll(".nameInput");
 
-        // let diff = inputs.length - playerCount.value;
+            if (numNames - playerCount == 1) { // if the difference is 1
+                NAMES[NAMES.length - 1].remove(); // removes last element
+            }
 
-        // console.log("diff")
-        // console.log(diff)
+            if(numNames - playerCount == 2){ // if the difference is 2
+                for (let i = NAMES.length; i > numNames - playerCount; i--) { // removes last two elements
+                    NAMES[i - 1].remove();
+                }
+            }
 
-        for (let j = inputs.length; j > playerCount.value; j--) {
-            console.log("MINUS")
-            console.log(inputs[j - 1])
-
-            inputs[j - 1].remove();
+        } else if (numNames < playercount) { // if the new player count is more than the old
+            console.log("more names");
+            for (let i = 0; i < (playercount - numNames); i++){ // creaing the correct amount of new inputs
+                newName = document.createElement("input");
+                newName.id = `name${numNames + 1}`
+                newName.classList.add("nameInput")
+        
+                names.appendChild(newName);
+            }
         }
     }
+    numNames = playercount;
+}
 
-})
+function removeSelection(){
+    document.getElementById('2players').classList.remove('nameclicked');
+    document.getElementById('3players').classList.remove('nameclicked');
+    document.getElementById('4players').classList.remove('nameclicked');
+}
 
 function minusclicked(element){
     let val = element.id.match(/\d+$/)[0];
@@ -425,11 +439,6 @@ function changeScore(element){
     }
 
     let score = ((amounts[1].innerText * 1) + (amounts[2].innerText * -1) + (amounts[3].innerText * 3) + (amounts[4].innerText * 6));
-    // console.log(amounts[5].id);
-    // let newStr = amounts[5].id.replace(/AmountPlayer2$/, "");
-    // console.log(newStr);
-
-    
 
     for (let i = 5; i < amounts.length; i++){
         let newStr = amounts[i].id.replace(/AmountPlayer\d+$/, "");
@@ -470,7 +479,7 @@ function changeScore(element){
 
     let playerScore = document.querySelector(`#score${playerId}`);
     console.log(playerScore);
-    playerScore.innerText = score;
+    playerScore.value = score;
 
 
     
@@ -485,8 +494,17 @@ let scoreCards = document.querySelector("#scoreCards");
 
 createGame.addEventListener('click', () => {
 
+    let amountofplayers = document.querySelectorAll(".amountofplayers");
+
+    for(let i = 0; i < amountofplayers.length; i++){
+        console.log(amountofplayers[i]);
+        if(amountofplayers[i].classList.contains('nameclicked')){
+            players = amountofplayers[i].value
+        }
+    }
+
     console.log("Create Game");
-    let players = document.querySelector("#playerCount").value
+    // let players = document.querySelector("#playerCount").value
     console.log(players);
     document.querySelector("#test").classList.add("Hide");
     document.querySelector("#sets").classList.add("Hide");
@@ -510,23 +528,29 @@ createGame.addEventListener('click', () => {
         PlayerInfo = document.createElement("div");
         PlayerInfo.classList.add("title");
         newPlayer.appendChild(PlayerInfo);
-        playerName = document.createElement("p");
+        playerName = document.createElement("input");
+        playerName.readOnly = true;
         let name = document.querySelector(`#name${i+1}`);
         console.log('name');
         console.log(name);
-        playerName.innerText = name.value;
+        playerName.value = name.value;
         playerName.classList.add("name");
+        playerName.id = `dominionPlayer${i+1}`;
+        playerName.name =`dominionPlayer${i+1}`;
         let test = document.createElement("div");
         
-        playerPoints = document.createElement("span");
-        playerPoints.innerText = `3`;
+        playerPoints = document.createElement("input");
+        playerPoints.type = "number";
+        playerPoints.readOnly = true;
+        playerPoints.value = `3`;
         playerPoints.classList.add("score");
         playerPoints.id= `scorePlayer${i + 1}`;
+        playerPoints.name= `scorePlayer${i + 1}`;
         logo = document.createElement("img");
         logo.src = "static/images/vp.png";
         logo.classList.add("resize");
-        test.appendChild(playerPoints);
         test.appendChild(logo);
+        test.appendChild(playerPoints);
         PlayerInfo.appendChild(playerName);
         PlayerInfo.appendChild(test);
         // PlayerInfo.appendChild(playerPoints);
@@ -541,6 +565,7 @@ createGame.addEventListener('click', () => {
         cardsBTNminus.classList.add("minus");
         cardsBTNminus.innerText = "-";
         cardsBTNminus.id = `cardsminusPlayer${i+1}`;
+        cardsBTNminus.type = 'button';
         cardsAmount = document.createElement("span");
         cardsAmount.id = `cardsAmountPlayer${i+1}`
         cardsAmount.value = "10";
@@ -550,6 +575,7 @@ createGame.addEventListener('click', () => {
         cardsBTNplus.classList.add("plus");
         cardsBTNplus.innerText = "+";
         cardsBTNplus.id = `cardsplusPlayer${i+1}`;
+        cardsBTNplus.type = 'button';
         cards = document.createElement("p");
         cards.innerText = "Cards";
         cards.classList.add("fixing");
@@ -559,7 +585,6 @@ createGame.addEventListener('click', () => {
         newCards.appendChild(cardsBTNplus);
         newCards.appendChild(cards);
 
-
         newEstate = document.createElement("div");
         newEstate.classList.add("scoreKeeper");
         newPlayer.appendChild(newEstate);
@@ -567,6 +592,7 @@ createGame.addEventListener('click', () => {
         estateBTNminus.classList.add("minus");
         estateBTNminus.innerText = "-";
         estateBTNminus.id = `estateminusPlayer${i+1}`;
+        estateBTNminus.type = 'button';
         estateAmount = document.createElement("span");
         estateAmount.id = `estateAmountPlayer${i+1}`
         estateAmount.value = "3";
@@ -576,6 +602,7 @@ createGame.addEventListener('click', () => {
         estateBTNplus.classList.add("plus");
         estateBTNplus.innerText = "+";
         estateBTNplus.id = `estateplusPlayer${i+1}`;
+        estateBTNplus.type = 'button';
         estate = document.createElement("p");
         estate.innerText = "Estate";
         estate.classList.add("fixing");
@@ -591,6 +618,7 @@ createGame.addEventListener('click', () => {
         curseBTNminus.classList.add("minus");
         curseBTNminus.innerText = "-";
         curseBTNminus.id = `curseminusPlayer${i+1}`;
+        curseBTNminus.type = 'button';
         curseAmount = document.createElement("span");
         curseAmount.id = `curseAmountPlayer${i+1}`
         curseAmount.value = "0";
@@ -600,6 +628,7 @@ createGame.addEventListener('click', () => {
         curseBTNplus.classList.add("plus");
         curseBTNplus.innerText = "+";
         curseBTNplus.id = `curseplusPlayer${i+1}`;
+        curseBTNplus.type = 'button';
         curse = document.createElement("p");
         curse.innerText = "Curse";
         curse.classList.add("fixing");
@@ -615,6 +644,7 @@ createGame.addEventListener('click', () => {
         duchyBTNminus.classList.add("minus");
         duchyBTNminus.innerText = "-";
         duchyBTNminus.id = `duchyminusPlayer${i+1}`;
+        duchyBTNminus.type = 'button';
         duchyAmount = document.createElement("span");
         duchyAmount.id = `duchyAmountPlayer${i+1}`;
         duchyAmount.value = "0";
@@ -624,6 +654,7 @@ createGame.addEventListener('click', () => {
         duchyBTNplus.classList.add("plus");
         duchyBTNplus.innerText = "+";
         duchyBTNplus.id = `duchyplusPlayer${i+1}`;
+        duchyBTNplus.type = 'button';
         duchy = document.createElement("p");
         duchy.innerText = "Duchy";
         duchy.classList.add("fixing");
@@ -639,6 +670,7 @@ createGame.addEventListener('click', () => {
         provinceBTNminus.classList.add("minus");
         provinceBTNminus.innerText = "-";
         provinceBTNminus.id = `provinceminusPlayer${i+1}`;
+        provinceBTNminus.type = 'button';
         provinceAmount = document.createElement("span");
         provinceAmount.id = `provinceAmountPlayer${i+1}`
         provinceAmount.value = "0";
@@ -648,6 +680,7 @@ createGame.addEventListener('click', () => {
         provinceBTNplus.classList.add("plus");
         provinceBTNplus.innerText = "+";
         provinceBTNplus.id = `provinceplusPlayer${i+1}`;
+        provinceBTNplus.type = 'button';
         province = document.createElement("p");
         province.innerText = "Province";
         province.classList.add("fixing");
@@ -668,6 +701,7 @@ createGame.addEventListener('click', () => {
             gardensBTNminus.classList.add("minus");
             gardensBTNminus.innerText = "-";
             gardensBTNminus.id = `gardensminusPlayer${i+1}`;
+            gardensBTNminus.type = 'button';
             gardensAmount = document.createElement("span");
             gardensAmount.id = `gardensAmountPlayer${i+1}`
             gardensAmount.value = "0";
@@ -677,6 +711,7 @@ createGame.addEventListener('click', () => {
             gardensBTNplus.classList.add("plus");
             gardensBTNplus.innerText = "+";
             gardensBTNplus.id = `gardensplusPlayer${i+1}`;
+            gardensBTNplus.type = 'button';
             gardens = document.createElement("p");
             gardens.innerText = "Gardens";
             gardens.classList.add("fixing");
@@ -697,6 +732,7 @@ createGame.addEventListener('click', () => {
             noblesBTNminus.classList.add("minus");
             noblesBTNminus.innerText = "-";
             noblesBTNminus.id = `noblesminusPlayer${i+1}`;
+            noblesBTNminus.type = 'button';
             noblesAmount = document.createElement("span");
             noblesAmount.id = `noblesAmountPlayer${i+1}`
             noblesAmount.value = "0";
@@ -706,6 +742,7 @@ createGame.addEventListener('click', () => {
             noblesBTNplus.classList.add("plus");
             noblesBTNplus.innerText = "+";
             noblesBTNplus.id = `noblesplusPlayer${i+1}`;
+            noblesBTNplus.type = 'button';
             nobles = document.createElement("p");
             nobles.innerText = "Nobles";
             nobles.classList.add("fixing");
@@ -726,6 +763,7 @@ createGame.addEventListener('click', () => {
             islandBTNminus.classList.add("minus");
             islandBTNminus.innerText = "-";
             islandBTNminus.id = `islandminusPlayer${i+1}`;
+            islandBTNminus.type = 'button';
             islandAmount = document.createElement("span");
             islandAmount.id = `islandAmountPlayer${i+1}`
             islandAmount.value = "0";
@@ -735,6 +773,7 @@ createGame.addEventListener('click', () => {
             islandBTNplus.classList.add("plus");
             islandBTNplus.innerText = "+";
             islandBTNplus.id = `islandplusPlayer${i+1}`;
+            islandBTNplus.type = 'button';
             island = document.createElement("p");
             island.innerText = "Island";
             island.classList.add("fixing");
@@ -755,6 +794,7 @@ createGame.addEventListener('click', () => {
             haremBTNminus.classList.add("minus");
             haremBTNminus.innerText = "-";
             haremBTNminus.id = `haremminusPlayer${i+1}`;
+            haremBTNminus.type = 'button';
             haremAmount = document.createElement("span");
             haremAmount.id = `haremAmountPlayer${i+1}`
             haremAmount.value = "0";
@@ -764,6 +804,7 @@ createGame.addEventListener('click', () => {
             haremBTNplus.classList.add("plus");
             haremBTNplus.innerText = "+";
             haremBTNplus.id = `haremplusPlayer${i+1}`;
+            haremBTNplus.type = 'button';
             harem = document.createElement("p");
             harem.innerText = "Harem";
             harem.classList.add("fixing");
@@ -785,6 +826,7 @@ createGame.addEventListener('click', () => {
             dukeBTNminus.classList.add("minus");
             dukeBTNminus.innerText = "-";
             dukeBTNminus.id = `dukeminusPlayer${i+1}`;
+            dukeBTNminus.type = 'button';
             dukeAmount = document.createElement("span");
             dukeAmount.id = `dukeAmountPlayer${i+1}`
             dukeAmount.value = "0";
@@ -794,6 +836,7 @@ createGame.addEventListener('click', () => {
             dukeBTNplus.classList.add("plus");
             dukeBTNplus.innerText = "+";
             dukeBTNplus.id = `dukeplusPlayer${i+1}`;
+            dukeBTNplus.type = 'button';
             duke = document.createElement("p");
             duke.innerText = "Duke";
             duke.classList.add("fixing");
@@ -815,6 +858,7 @@ createGame.addEventListener('click', () => {
             millBTNminus.classList.add("minus");
             millBTNminus.innerText = "-";
             millBTNminus.id = `millminusPlayer${i+1}`;
+            millBTNminus.type = 'button';
             millAmount = document.createElement("span");
             millAmount.id = `millAmountPlayer${i+1}`
             millAmount.value = "0";
@@ -824,6 +868,7 @@ createGame.addEventListener('click', () => {
             millBTNplus.classList.add("plus");
             millBTNplus.innerText = "+";
             millBTNplus.id = `millplusPlayer${i+1}`;
+            millBTNplus.type = 'button';
             mill = document.createElement("p");
             mill.innerText = "Mill";
             mill.classList.add("fixing");
@@ -858,8 +903,8 @@ createGame.addEventListener('click', () => {
     let contain = document.querySelector("#scoreCards");
     contain.classList.add("displayScore");
 
-    addRecord = document.createElement("button");
-    addRecord.innerText = "Add Record";
-    document.querySelector("#container").appendChild(addRecord);
+    // addRecord = document.createElement("button");
+    // addRecord.innerText = "Add Record";
+    // document.querySelector("#container").appendChild(addRecord);
 
 })
