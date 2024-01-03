@@ -60,3 +60,47 @@ for (let i = 0; i < gameWrappers.length; i++) {
       gameWrappers[i].classList.add("Hide");
     }
 }
+
+
+let airplane = document.querySelectorAll(".airplane");
+
+for(let i = 0; i < airplane.length; i++){
+    if(airplane[i].innerText == ''){
+        airplane[i].parentElement.remove();
+    }
+}
+
+let carrots = document.querySelectorAll(".carrot");
+
+for(let i = 0; i < carrots.length; i++){
+    carrots[i].addEventListener('click', () => {
+        carrotParent = carrots[i].parentElement;
+        mainParent = carrotParent.parentElement;
+        carrotChildren = mainParent.children;
+
+        if(!carrotChildren[1].classList.contains("DrawerHide")) {
+            if(carrotChildren[1].classList.contains("DrawerShow")) {
+                carrotChildren[1].classList.remove('DrawerShow'); 
+            }
+            carrotChildren[1].classList.add("DrawerHide");
+            // setTimeout( () => {
+            //     hideGames(carrotChildren[1])
+            // }, 350); 
+        } else {
+            // carrotChildren[1].classList.remove("Hide");
+            carrotChildren[1].classList.add('DrawerShow'); 
+            // setTimeout( () => {
+            //     displayGames(carrotChildren[1])
+            // }, 100);
+            carrotChildren[1].classList.remove('DrawerHide'); 
+        }
+    })
+}
+
+function hideGames(element){
+    element.classList.add('Hide');
+}
+
+function displayGames(element){
+    element.classList.add('DrawerShow');
+}
