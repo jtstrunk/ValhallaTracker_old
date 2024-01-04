@@ -5,7 +5,7 @@ body{
     align-items: center;
 }
 
-#select select {
+/* #select select {
     width: 210px;
     height: 25px;
     margin-top: 5px;
@@ -15,41 +15,10 @@ body{
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-}
-
-.gameInfo span{
-    margin-left: 3px;
-    margin-right: 3px;
-}
+} */
 
 .Hide{
     display: none;
-}
-
-table{
-    border-collapse: separate;
-    border-spacing: 30px 0;
-}
-
-tr td, th {
-    padding: 2px;
-    padding-left: 6px;
-    padding-right: 6px;
-}
-
-.Table{
-    /* background-color: #D2E6F3; */
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
-    /* border: 1px solid black; */
-}
-
-.gameWrapper p {
-    margin: 10px;
-    font-size: larger;
 }
 
 .game{
@@ -60,11 +29,15 @@ tr td, th {
     margin: 4px 5px;
 }
 
-.newgamewrapper {
+.gameWrapper {
     width: 690px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+}
+
+.topWrapper{
+    margin-top: 25px;
 }
 
 .testgames {
@@ -134,4 +107,14 @@ tr td, th {
     visibility: visible !important;
     height: auto !important;
     transition: opacity 0.3s, visibility 0.3s, height .5s !important;
+}
+
+.carrot {
+    font-size: 24px; /* Adjust the size as needed */
+    display: inline-block;
+    transition: transform 0.3s; /* Add a smooth transition for the transform property */
+}
+
+.carrot.flipped {
+    transform: rotate(180deg); /* Rotate the arrow 180 degrees */
 }

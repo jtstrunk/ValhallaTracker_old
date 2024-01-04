@@ -10,180 +10,7 @@
     {% import "bootstrap/wtf.html" as wtf %}
     {% block content %}
 
-    <div id="test">
-      <p>Dominion Games</p>
-      <div class="testgames" style="margin-bottom: 10px;">
-        <div class="testwrap">
-          <div class="winner">
-            <p style="margin-top: 5px; margin-bottom: 2px;">Josh</p>
-            <p >45 Points</p>
-          </div>
-          <div class="row2">
-            <div class="testplayer">
-              <p>Jimothy</p>
-              <p>34 Points</p>
-            </div>
-            <div class="testplayer">
-              <p>Jonah</p>
-              <p>28 Points</p>
-            </div>
-          </div>
-          <div class="row3">
-            <div class="testplayer">
-              <p>Ethan</p>
-              <p>25 Points</p>
-            </div>
-            <div class="testplayer">
-              <p>December</p>
-              <p>12th, 2023</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="testwrap">
-          <div class="winner">
-            <p style="margin-top: 5px; margin-bottom: 2px;">Jim</p>
-            <p >45 Points</p>
-          </div>
-          <div class="row2">
-            <div class="testplayer">
-              <p>David</p>
-              <p>34 Points</p>
-            </div>
-            <div class="testplayer">
-              <p>Chase</p>
-              <p>28 Points</p>
-            </div>
-          </div>
-          <div class="row3">
-            <div class="testplayer">
-              <p>John</p>
-              <p>25 Points</p>
-            </div>
-            <div class="testplayer">
-              <p>December</p>
-              <p>24th, 2023</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="testwrap">
-          <div class="winner">
-            <p style="margin-top: 5px; margin-bottom: 2px;">Will</p>
-            <p >30 Points</p>
-          </div>
-          <div class="row2">
-            <div class="testplayer">
-              <p>Cole</p>
-              <p>26 Points</p>
-            </div>
-            <div class="testplayer">
-              <p>Caleb</p>
-              <p>18 Points</p>
-            </div>
-          </div>
-          <div class="row3">
-            <div class="testplayer">
-              <p>Ben</p>
-              <p>13 Points</p>
-            </div>
-            <div class="testplayer">
-              <p>December</p>
-              <p>26th, 2023</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-
-      <p>Catan Games</p>
-      <div class="testgames" style="margin-top: 10px;">
-        <div class="testwrap">
-          <div class="winner">
-            <p style="margin-top: 5px; margin-bottom: 2px;">Josh</p>
-            <p >45 Points</p>
-          </div>
-          <div class="row2">
-            <div class="testplayer">
-              <p>Jimothy</p>
-              <p>34 Points</p>
-            </div>
-            <div class="testplayer">
-              <p>Jonah</p>
-              <p>28 Points</p>
-            </div>
-          </div>
-          <div class="row3">
-            <div class="testplayer">
-              <p>Ethan</p>
-              <p>25 Points</p>
-            </div>
-            <div class="testplayer">
-              <p>December</p>
-              <p>12th, 2023</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="testwrap">
-          <div class="winner">
-            <p style="margin-top: 5px; margin-bottom: 2px;">Jim</p>
-            <p >45 Points</p>
-          </div>
-          <div class="row2">
-            <div class="testplayer">
-              <p>David</p>
-              <p>34 Points</p>
-            </div>
-            <div class="testplayer">
-              <p>Chase</p>
-              <p>28 Points</p>
-            </div>
-          </div>
-          <div class="row3">
-            <div class="testplayer">
-              <p>John</p>
-              <p>25 Points</p>
-            </div>
-            <div class="testplayer">
-              <p>December</p>
-              <p>24th, 2023</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="testwrap">
-          <div class="winner">
-            <p style="margin-top: 5px; margin-bottom: 2px;">Will</p>
-            <p >30 Points</p>
-          </div>
-          <div class="row2">
-            <div class="testplayer">
-              <p>Cole</p>
-              <p>26 Points</p>
-            </div>
-            <div class="testplayer">
-              <p>Caleb</p>
-              <p>18 Points</p>
-            </div>
-          </div>
-          <div class="row3">
-            <div class="testplayer">
-              <p>Ben</p>
-              <p>13 Points</p>
-            </div>
-            <div class="testplayer">
-              <p>December</p>
-              <p>26th, 2023</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-
-    <div id="select">
+    <!-- <div id="select">
       <label for="gameSelect">Choose a game to see its records</label>
       <select name="gameSelect" id="gameSelect">
         <option value="allGames">Select a Game</option>
@@ -198,263 +25,307 @@
         <option value="JustOne">Just One</option>
         <option value="TheMind">TheMind</option>
       </select>
-    </div>
+    </div> -->
 
     {% if Catandata %}
-    <div class="gameWrapper" id="Catan">
-      <p>Catan Games</p>
-        <div class="catGames Table" style="width: 950px;">
-          <table>
-            <tr>
-              <th>Game Id</th>
-              <th>Winner</th>
-              <th>Score</th>
-              <th>Second</th>
-              <th>Score</th>
-              <th>Third</th>
-              <th>Score</th>
-              <th>Fourth</th>
-              <th>Score</th>
-            </tr>
-            {% for game in Catandata %}
-            <tr>
-              <td>{{ game.game_id }}</td>
-              <td>{{ game.winnerName }}</td>
-              <td>{{ game.winnerScore }}</td>
-              <td>{{ game.secondName }}</td>
-              <td>{{ game.secondScore }}</td>
-              <td>{{ game.thirdName }}</td>
-              <td>{{ game.thirdScore }}</td>
-              <td>{{ game.fourthName }}</td>
-              <td>{{ game.fourthScore }}</td>
-            </tr>
-            {% endfor %}
-          </table>
+    <div class="gameWrapper">
+      <div class="gameTitle">
+        <p>Catan Games</p>
+        <p class="carrot" style="margin-right: 10px;">^</p>
+      </div>
+      <div class="testgames" style="margin-bottom: 10px;">
+        {% for game in Catandata %}
+        <div class="game">
+          <div class="winner">
+            <p style="margin-top: 5px; margin-bottom: 2px;">{{ game.winnerName }}</p>
+            <p>{{ game.winnerScore }} Points</p>
+          </div>
+          <div class="row2">
+            <div class="testplayer">
+              <p>{{ game.secondName }}</p>
+              <p>{{ game.secondScore }} Points</p>
+            </div>
+            <div class="testplayer">
+              <p>{{ game.thirdName }}</p>
+              <p>{{ game.thirdScore }} Points</p>
+            </div>
+          </div>
+          <div class="row3">
+            <div class="testplayer">
+              <p class="airplane">{{ game.fourthName }}</p>
+              <p>{{ game.fourthScore }} Points</p>
+            </div>
+            <div class="testplayer">
+              <p>{{ game.date }}</p>
+              
+            </div>
+          </div>
         </div>
+        {% endfor %}
+      </div>
     </div>
     {% endif %}
-    {% if Coupdata %}
-    <div class="gameWrapper" id="Coup">
-      <p>Coup Games</p>
-        <div class="couGames Table" style="width: 950px;">
-          <table>
-            <tr>
-              <th>Game Id</th>
-              <th>Winner</th>
-              <th>Lives</th>
-              <th>Second</th>
-              <th>Third</th>
-              <th>Fourth</th>
-              <th>Fifth</th>
-              <th>Sixth</th>
-            </tr>
-            {% for game in Coupdata %}
-            <tr>
-              <td>{{ game.game_id }}</td>
-              <td>{{ game.winnerName }}</td>
-              <td>{{ game.cardsLeft }}</td>
-              <td>{{ game.secondName }}</td>
-              <td>{{ game.thirdName }}</td>
-              <td>{{ game.fourthName }}</td>
-              <td>{{ game.fifthName }}</td>
-              <td>{{ game.sixthName }}</td>
-            </tr>
-            {% endfor %}
-          </table>
-        </div>
-    </div>
-    {% endif %}
+
     {% if Dominiondata %}
-    <div class="gameWrapper" id="Dominion">
-      <p>Dominion Games</p>
-        <div class="domGames Table" style="width: 950px;">
-          <table>
-            <tr>
-              <th>Game Id</th>
-              <th>Winner</th>
-              <th>Score</th>
-              <th>Second</th>
-              <th>Score</th>
-              <th>Third</th>
-              <th>Score</th>
-              <th>Fourth</th>
-              <th>Score</th>
-            </tr>
-            {% for game in Dominiondata %}
-            <tr>
-              <td>{{ game.game_id }}</td>
-              <td>{{ game.winnerName }}</td>
-              <td>{{ game.winnerScore }}</td>
-              <td>{{ game.secondName }}</td>
-              <td>{{ game.secondScore }}</td>
-              <td>{{ game.thirdName }}</td>
-              <td>{{ game.thirdScore }}</td>
-              <td>{{ game.fourthName }}</td>
-              <td>{{ game.fourthScore }}</td>
-            </tr>
-            {% endfor %}
-          </table>
+    <div class="gameWrapper">
+      <div class="gameTitle">
+        <p>Dominion Games</p>
+        <p class="carrot" style="margin-right: 10px;">^</p>
+      </div>
+      <div class="testgames" style="margin-bottom: 10px;">
+        {% for game in Dominiondata %}
+        <div class="game">
+          <div class="winner">
+            <p style="margin-top: 5px; margin-bottom: 2px;">{{ game.winnerName }}</p>
+            <p>{{ game.winnerScore }} Points</p>
+          </div>
+          <div class="row2">
+            <div class="testplayer">
+              <p >{{ game.secondName }}</p>
+              <p >{{ game.secondScore }} Points</p>
+            </div>
+            <div class="testplayer">
+              <p class="airplane">{{ game.thirdName }}</p>
+              <p >{{ game.thirdScore }} Points</p>
+            </div>
+          </div>
+          <div class="row3">
+            <div class="testplayer">
+              <p class="airplane">{{ game.fourthName }}</p>
+              <p >{{ game.fourthScore }} Points</p>
+            </div>
+            <div class="testplayer">
+              <p>{{ game.date }}</p>
+              
+            </div>
+          </div>
         </div>
+        {% endfor %}
+      </div>
     </div>
     {% endif %}
+
     {% if LordsofWaterdeepdata %}
-    <div class="gameWrapper" id="LordsofWaterdeep">
-      <p>Lords of Waterdeep Games</p>
-        <div class="lorGames Table" style="width: 1020px;">
-          <table>
-            <tr>
-              <th>Game Id</th>
-              <th>Winner</th>
-              <th>Score</th>
-              <th>Second</th>
-              <th>Score</th>
-              <th>Third</th>
-              <th>Score</th>
-              <th>Fourth</th>
-              <th>Score</th>
-              <th>Fifth</th>
-              <th>Score</th>
-            </tr>
-            {% for game in LordsofWaterdeepdata %}
-            <tr>
-              <td>{{ game.game_id }}</td>
-              <td>{{ game.winnerName }}</td>
-              <td>{{ game.winnerScore }}</td>
-              <td>{{ game.secondName }}</td>
-              <td>{{ game.secondScore }}</td>
-              <td>{{ game.thirdName }}</td>
-              <td>{{ game.thirdScore }}</td>
-              <td>{{ game.fourthName }}</td>
-              <td>{{ game.fourthScore }}</td>
-              <td>{{ game.fifthName }}</td>
-              <td>{{ game.fifthScore }}</td>
-            </tr>
-            {% endfor %}
-          </table>
-        </div>      
+    <div class="gameWrapper">
+      <div class="gameTitle">
+        <p>Lords of Waterdeep Games</p>
+        <p class="carrot" style="margin-right: 10px;">^</p>
+      </div>
+      <div class="testgames" style="margin-bottom: 10px;">
+        {% for game in LordsofWaterdeepdata %}
+        <div class="game">
+          <div class="winner">
+            <p style="margin-top: 5px; margin-bottom: 2px;">{{ game.winnerName }}</p>
+            <p>{{ game.winnerScore }} Points</p>
+          </div>
+          <div class="row2">
+            <div class="testplayer">
+              <p >{{ game.secondName }}</p>
+              <p>{{ game.secondScore }} Points</p>
+            </div>
+            <div class="testplayer">
+              <p class="airplane">{{ game.thirdName }}</p>
+              <p>{{ game.thirdScore }} Points</p>
+            </div>
+          </div>
+          <div class="row3">
+            <div class="testplayer">
+              <p class="airplane">{{ game.fourthName }}</p>
+              <p>{{ game.fourthScore }} Points</p>
+            </div>
+            <div class="testplayer">
+              <p class="airplane">{{ game.fifthName }}</p>
+              <p>{{ game.fifthScore }} Points</p>
+            </div>
+          </div>
+          <div class="row4">
+            <p>{{ game.date }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
     </div>
     {% endif %}
+
+    {% if Coupdata %}
+    <div class="gameWrapper">
+      <div class="gameTitle">
+        <p>Coup Games</p>
+        <p class="carrot" style="margin-right: 10px;">^</p>
+      </div>
+      <div class="testgames" style="margin-bottom: 10px;">
+        {% for game in Coupdata %}
+        <div class="game">
+          <div class="winner">
+            <p style="margin-top: 5px; margin-bottom: 2px;">{{ game.winnerName }}</p>
+          </div>
+          <div class="row2">
+            <div class="testplayer">
+              <p >{{ game.secondName }}</p>
+            </div>
+            <div class="testplayer">
+              <p class="airplane">{{ game.thirdName }}</p>
+            </div>
+          </div>
+          <div class="row3">
+            <div class="testplayer">
+              <p class="airplane">{{ game.fourthName }}</p>
+            </div>
+            <div class="testplayer">
+              <p class="airplane">{{ game.fifthName }}</p>
+            </div>
+          </div>
+          <div class="row4">
+            <div class="testplayer">
+              <p class="airplane">{{ game.fifthName }}</p>
+            </div>
+            <p>{{ game.date }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
     {% if LoveLetterdata %}
-    <div class="gameWrapper" id="LoveLetter">
-      <p>Love Letter Games</p>
-        <div class="lovGames Table" style="width: 650px;">
-          <table>
-            <tr>
-              <th>Game Id</th>
-              <th>Winner</th>
-              <th>Second</th>
-              <th>Third</th>
-              <th>Fourth</th>
-              <th>Fifth</th>
-              <th>Sixth</th>
-            </tr>
-            {% for game in LoveLetterdata %}
-            <tr>
-              <td>{{ game.game_id }}</td>
-              <td>{{ game.winnerName }}</td>
-              <td>{{ game.secondName }}</td>
-              <td>{{ game.thirdName }}</td>
-              <td>{{ game.fourthName }}</td>
-              <td>{{ game.fifthName }}</td>
-              <td>{{ game.sixthName }}</td>
-            </tr>
-            {% endfor %}
-          </table>
+    <div class="gameWrapper">
+      <div class="gameTitle">
+        <p>Love Letter Games</p>
+        <p class="carrot" style="margin-right: 10px;">^</p>
+      </div>
+      <div class="testgames" style="margin-bottom: 10px;">
+        {% for game in LoveLetterdata %}
+        <div class="game">
+          <div class="winner">
+            <p style="margin-top: 5px; margin-bottom: 2px;">{{ game.winnerName }}</p>
+          </div>
+          <div class="row2">
+            <div class="testplayer">
+              <p >{{ game.secondName }}</p>
+            </div>
+            <div class="testplayer">
+              <p class="airplane">{{ game.thirdName }}</p>
+            </div>
+          </div>
+          <div class="row3">
+            <div class="testplayer">
+              <p class="airplane">{{ game.fourthName }}</p>
+            </div>
+            <div class="testplayer">
+              <p class="airplane">{{ game.fifthName }}</p>
+            </div>
+          </div>
+          <div class="row4">
+            <div class="testplayer">
+              <p class="airplane">{{ game.fifthName }}</p>
+              <p>{{ game.fifthScore }} Points</p>
+            </div>
+            <p>{{ game.date }}</p>
+          </div>
         </div>
+        {% endfor %}
+      </div>
     </div>
     {% endif %}
+
     {% if Magicdata %}
-    <div class="gameWrapper" id="Magic">
-      <p>Magic: The Gathering Games</p>
-        <div class="magGames Table" style="width: 840px;">
-          <table id="magicTable">
-            <tr>
-              <th>Game Id</th>
-              <th>Player</th>
-              <th>Color</th>
-              <th>Kills</th>
-              <th>Deck</th>
-              <th>Player</th>
-              <th>Color</th>
-              <th>Kills</th>
-              <th>Deck</th>
-            </tr>
-            {% for game in Magicdata %}
-            <tr>
-              <td>{{ game.game_id }}</td>
-              <td>{{ game.winnerName }}</td>
-              <td>{{ game.winnerColor }}</td>
-              <td>{{ game.winnerKills }}</td>
-              <td>{{ game.winnerDeck }}</td>
-              <td>{{ game.secondName }}</td>
-              <td>{{ game.secondColor }}</td>
-              <td>{{ game.secondKills }}</td>
-              <td>{{ game.secondDeck }}</td>
-            </tr>
-            <tr>
-              <td class="imp"></td>
-              <td>{{ game.thirdName }}</td>
-              <td>{{ game.thirdColor }}</td>
-              <td>{{ game.thirdKills }}</td>
-              <td>{{ game.thirdDeck }}</td>
-              <td>{{ game.fourthName }}</td>
-              <td>{{ game.fourthColor }}</td>
-              <td>{{ game.fourthKills }}</td>
-              <td>{{ game.fourthDeck }}</td>
-            </tr>
-            <tr>
-              <td class="imp"></td>
-              <td>{{ game.fifthName }}</td>
-              <td>{{ game.fifthColor }}</td>
-              <td>{{ game.fifthKills }}</td>
-              <td>{{ game.fifthDeck }}</td>
-            </tr>
-            {% endfor %}
-          </table>
+    <div class="gameWrapper">
+      <div class="gameTitle">
+        <p>Magic: The Gathering Games</p>
+        <p class="carrot" style="margin-right: 10px;">^</p>
+      </div>
+      <div class="testgames" style="margin-bottom: 10px;">
+        {% for game in Magicdata %}
+        <div class="game">
+          <div class="winner">
+            <p style="margin-top: 5px; margin-bottom: 2px;">{{ game.winnerName }}</p>
+            <p>Color: {{ game.winnerColor }}</p>
+            <p>Kills: {{ game.winnerKills }}</p>
+            <p>Deck: {{ game.winnerDeck }}</p>
+          </div>
+          <div class="row2">
+            <div class="testplayer">
+              <p>{{ game.secondName }}</p>
+              <p>Color: {{ game.secondColor }}</p>
+              <p>Kills: {{ game.secondKills }}</p>
+              <p>Deck: {{ game.secondDeck }}</p>
+            </div>
+            <div class="testplayer">
+              <p>{{ game.thirdName }}</p>
+              <p>Color: {{ game.thirdColor }}</p>
+              <p>Kills: {{ game.thirdKills }}</p>
+              <p>Deck: {{ game.thirdDeck }}</p>
+            </div>
+          </div>
+          <div class="row3">
+            <div class="testplayer">
+              <p>{{ game.fourthName }}</p>
+              <p>Color: {{ game.fourthColor }}</p>
+              <p>Kills: {{ game.fourthKills }}</p>
+              <p>Deck: {{ game.fourthDeck }}</p>
+            </div>
+            <div class="testplayer">
+              <p>{{ game.fifthName }}</p>
+              <p>Color: {{ game.fifthColor }}</p>
+              <p>Kills: {{ game.fifthKills }}</p>
+              <p>Deck: {{ game.fifthDeck }}</p>
+            </div>
+          </div>
+          <div class="row4">
+            <p>{{ game.date }}</p>
+          </div>
         </div>
+        {% endfor %}
+      </div>
     </div>
     {% endif %}
+
     {% if Munchkindata %}
-    <div class="gameWrapper" id="Munchkin">
-      <p>Munchkin Games</p>
-        <div class="munGames Table" style="width: 1230px;">
-          <table>
-            <tr>
-              <th>Game Id</th>
-              <th>Winner</th>
-              <th>Score</th>
-              <th>Second</th>
-              <th>Score</th>
-              <th>Third</th>
-              <th>Score</th>
-              <th>Fourth</th>
-              <th>Score</th>
-              <th>Fifth</th>
-              <th>Score</th>
-              <th>Sixth</th>
-              <th>Score</th>
-            </tr>
-            {% for game in Munchkindata %}
-            <tr>
-              <td>{{ game.game_id }}</td>
-              <td>{{ game.winnerName }}</td>
-              <td>{{ game.winnerScore }}</td>
-              <td>{{ game.secondName }}</td>
-              <td>{{ game.secondScore }}</td>
-              <td>{{ game.thirdName }}</td>
-              <td>{{ game.thirdScore }}</td>
-              <td>{{ game.fourthName }}</td>
-              <td>{{ game.fourthScore }}</td>
-              <td>{{ game.fifthName }}</td>
-              <td>{{ game.fifthScore }}</td>
-              <td>{{ game.sixthName }}</td>
-              <td>{{ game.sixthScore }}</td>
-            </tr>
-            {% endfor %}
-          </table>
+    <div class="gameWrapper">
+      <div class="gameTitle">
+        <p>Munchkin Games</p>
+        <p class="carrot" style="margin-right: 10px;">^</p>
+      </div>
+      <div class="testgames" style="margin-bottom: 10px;">
+        {% for game in Munchkindata %}
+        <div class="game">
+          <div class="winner">
+            <p style="margin-top: 5px; margin-bottom: 2px;">{{ game.winnerName }}</p>
+            <p>Level {{ game.winnerScore }}</p>
+          </div>
+          <div class="row2">
+            <div class="testplayer">
+              <p>{{ game.secondName }}</p>
+              <p>Level {{ game.secondScore }}</p>
+            </div>
+            <div class="testplayer">
+              <p class="airplane">{{ game.thirdName }}</p>
+              <p>Level {{ game.thirdScore }}</p>
+            </div>
+          </div>
+          <div class="row3">
+            <div class="testplayer">
+              <p class="airplane">{{ game.fourthName }}</p>
+              <p>Level {{ game.fourthScore }}</p>
+            </div>
+            <div class="testplayer">
+              <p class="airplane">{{ game.fifthName }}</p>
+              <p>Level {{ game.fifthScore }}</p>
+            </div>
+          </div>
+          <div class="row4">
+            <div class="testplayer">
+              <p class="airplane">{{ game.sixthName }}</p>
+              <p>Level {{ game.sixthScore }}</p>
+            </div>
+            <p>{{ game.date }}</p>
+          </div>
         </div>
+        {% endfor %}
+      </div>
     </div>
     {% endif %}
+    
     {% if JustOnedata %}
     <div class="gameWrapper" id="JustOne">
       <p>Just One Games</p>
