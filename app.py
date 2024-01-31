@@ -12,7 +12,7 @@ import sqlite3
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '1145'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/Josh Strunk/Desktop/Projects/Coding Projects/BoardgameApp/db.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/joshs/Desktop/ValhallaTracker/db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 bootstrap = Bootstrap(app)
@@ -204,6 +204,40 @@ class JustOneGame(db.Model):
     victory = db.Column(db.Integer, nullable=False)
     date = db.Column(db.Date)
 
+class CosmicEncounterGame(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    game_id = db.Column(db.Integer, nullable=False)
+    firstName = db.Column(db.String(50), nullable=False)
+    firstScore = db.Column(db.Integer, nullable=False)
+    secondName = db.Column(db.String(50), nullable=False)
+    secondScore = db.Column(db.Integer, nullable=False)
+    thirdName = db.Column(db.String(50), nullable=False)
+    thirdScore = db.Column(db.Integer, nullable=False)
+    fourthName = db.Column(db.String(50))
+    fourthScore = db.Column(db.Integer)
+    fourthName = db.Column(db.String(50))
+    fourthScore = db.Column(db.Integer)
+    fifthName = db.Column(db.String(50))
+    fifthScore = db.Column(db.Integer)
+    date = db.Column(db.Date)
+
+class MoonrakersGame(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    game_id = db.Column(db.Integer, nullable=False)
+    winnerName = db.Column(db.String(50), nullable=False)
+    winnerScore = db.Column(db.Integer, nullable=False)
+    secondName = db.Column(db.String(50))
+    secondScore = db.Column(db.Integer)
+    thirdName = db.Column(db.String(50))
+    thirdScore = db.Column(db.Integer)
+    fourthName = db.Column(db.String(50))
+    fourthScore = db.Column(db.Integer)
+    fourthName = db.Column(db.String(50))
+    fourthScore = db.Column(db.Integer)
+    fifthName = db.Column(db.String(50))
+    fifthScore = db.Column(db.Integer)
+    date = db.Column(db.Date)
+
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[InputRequired()])
     password = PasswordField('password', validators=[InputRequired()])
@@ -299,6 +333,10 @@ def home():
 @app.route('/dominion', methods=['GET'])
 def dominion():
     return render_template('dominion.html')
+
+@app.route('/darktest', methods=['GET'])
+def darktest():
+    return render_template('test.html')
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -558,13 +596,13 @@ def addDominionRecord():
     print("HELLOW THERE")
     if request.method == 'POST':
         print("nrpyja")
-        player1 = request.form['dominionPlayer1']
+        player1 = request.form['Player1']
         print(player1)
-        player1Score = request.form['scorePlayer1']
+        player1Score = request.form['Score1']
         print(player1Score)
-        player2 = request.form['dominionPlayer2']
+        player2 = request.form['Player2']
         print(player2)
-        player2Score = request.form['scorePlayer2']
+        player2Score = request.form['Score2']
         print(player2Score)
         newGameID = findID()
 
@@ -632,8 +670,6 @@ def cards():
 
     cardType = request.args.get('cardType')
 
-    print(cardType)
-
     table_map = {
         'village': Village,
         'cantrip': Cantrip,
@@ -654,9 +690,6 @@ def cards():
         records = table_map[cardType].query.all()
         data = [card.cardName for card in records]
 
-    print(cardType)
-    
-
     return jsonify(data)
 
 @app.route('/addDominion', methods = ['POST', 'GET'])
@@ -664,19 +697,19 @@ def cards():
 def addDominion():
     if request.method == 'POST':
         try:
-            player1 = request.form['dominionPlayer1']
-            player1Score = request.form['Player1_Score']
-            player2 = request.form['dominionPlayer2']
-            player2Score = request.form['Player2_Score']
-            player3 = request.form['dominionPlayer3']
-            player3Score = request.form['Player3_Score']
-            player4 = request.form['dominionPlayer4']
-            player4Score = request.form['Player4_Score']
+            player1 = request.form['Player1']
+            player1Score = request.form['Score1']
+            player2 = request.form['Player2']
+            player2Score = request.form['Score2']
+            player3 = request.form['Player3']
+            player3Score = request.form['Score3']
+            player4 = request.form['Player4']
+            player4Score = request.form['Score4']
             newGameID = findID()
             numPlayers = 4
             game = "dominion"
             for i in range(1, numPlayers):
-                player = request.form[f'{game}Player{i}']
+                player = request.form[f'Player{i}']
                 if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
                     new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
                     db.session.add(new_played_user)
@@ -702,72 +735,28 @@ def addDominion():
         finally:
             print("Record Added")
             return redirect('/addGame')
-
-@app.route('/addCatan', methods = ['POST', 'GET'])
-@login_required
-def addCatan():
-    if request.method == 'POST':
-        try:
-            player1 = request.form['catanPlayer1']
-            player1Score = request.form['Player1_Score']
-            player2 = request.form['catanPlayer2']
-            player2Score = request.form['Player2_Score']
-            player3 = request.form['catanPlayer3']
-            player3Score = request.form['Player3_Score']
-            player4 = request.form['catanPlayer4']
-            player4Score = request.form['Player4_Score']
-            newGameID = findID()
-
-            numPlayers = 4
-            game = "catan"
-            for i in range(1, numPlayers):
-                player = request.form[f'{game}Player{i}']
-                if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
-                    new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
-                    db.session.add(new_played_user)
-
-            catan_game = CatanGame(
-                game_id=newGameID, 
-                winnerName=player1, 
-                winnerScore=player1Score, 
-                secondName=player2, 
-                secondScore=player2Score, 
-                thirdName=player3, 
-                thirdScore=player3Score, 
-                fourthName=player4, 
-                fourthScore=player4Score,
-                date=date.today())
-            db.session.add(catan_game)
-            db.session.commit()
-
-        except Exception as e:
-            print(f"An error occurred while adding the CatanGame: {e}")
-
-        finally:
-            print("Record Added")
-            return redirect('/addGame')
-
+        
 @app.route('/addLordsofWaterdeep', methods = ['POST', 'GET'])
 @login_required
 def addLordsofWaterdeep():
     if request.method == 'POST':
         try:
-            player1 = request.form['lordsofwaterdeepPlayer1']
-            player1Score = request.form['Player1_Score']
-            player2 = request.form['lordsofwaterdeepPlayer2']
-            player2Score = request.form['Player2_Score']
-            player3 = request.form['lordsofwaterdeepPlayer3']
-            player3Score = request.form['Player3_Score']
-            player4 = request.form['lordsofwaterdeepPlayer4']
-            player4Score = request.form['Player4_Score']
-            player5 = request.form['lordsofwaterdeepPlayer5']
-            player5Score = request.form['Player5_Score']
+            player1 = request.form['Player1']
+            player1Score = request.form['Score1']
+            player2 = request.form['Player2']
+            player2Score = request.form['Score2']
+            player3 = request.form['Player3']
+            player3Score = request.form['Score3']
+            player4 = request.form['Player4']
+            player4Score = request.form['Score4']
+            player5 = request.form['Player5']
+            player5Score = request.form['Score5']
             newGameID = findID()
 
             numPlayers = 5
             game = "lordsofwaterdeep"
             for i in range(1, numPlayers):
-                player = request.form[f'{game}Player{i}']
+                player = request.form[f'Player{i}']
                 if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
                     new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
                     db.session.add(new_played_user)
@@ -790,6 +779,146 @@ def addLordsofWaterdeep():
 
         except Exception as e:
             print(f"An error occurred while adding the LordsofWaterdeepGame: {e}")
+
+        finally:
+            print("Record Added")
+            return redirect('/addGame')
+        
+@app.route('/addMoonrakers', methods = ['POST', 'GET'])
+@login_required
+def addMoonrakers():
+    if request.method == 'POST':
+        try:
+            player1 = request.form['Player1']
+            player1Score = request.form['Score1']
+            player2 = request.form['Player2']
+            player2Score = request.form['Score2']
+            player3 = request.form['Player3']
+            player3Score = request.form['Score3']
+            player4 = request.form['Player4']
+            player4Score = request.form['Score4']
+            player5 = request.form['Player5']
+            player5Score = request.form['Score5']
+            newGameID = findID()
+
+            numPlayers = 5
+            game = "moonrakers"
+            for i in range(1, numPlayers):
+                player = request.form[f'Player{i}']
+                if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
+                    new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
+                    db.session.add(new_played_user)
+
+            new_game = MoonrakersGame(
+                game_id=newGameID, 
+                winnerName=player1, 
+                winnerScore=player1Score, 
+                secondName=player2, 
+                secondScore=player2Score, 
+                thirdName=player3, 
+                thirdScore=player3Score, 
+                fourthName=player4, 
+                fourthScore=player4Score, 
+                fifthName=player5, 
+                fifthScore=player5Score,
+                date=date.today())
+            db.session.add(new_game)
+            db.session.commit()
+
+        except Exception as e:
+            print(f"An error occurred while adding the MoonrakersGame: {e}")
+
+        finally:
+            print("Record Added")
+            return redirect('/addGame')
+        
+@app.route('/addCosmicEncounter', methods = ['POST', 'GET'])
+@login_required
+def addCosmicEncounter():
+    if request.method == 'POST':
+        try:
+            player1 = request.form['Player1']
+            player1Score = request.form['Score1']
+            player2 = request.form['Player2']
+            player2Score = request.form['Score2']
+            player3 = request.form['Player3']
+            player3Score = request.form['Score3']
+            player4 = request.form['Player4']
+            player4Score = request.form['Score4']
+            player5 = request.form['Player5']
+            player5Score = request.form['Score5']
+            newGameID = findID()
+
+            numPlayers = 5
+            game = "cosmicencounter"
+            for i in range(1, numPlayers):
+                player = request.form[f'{game}Player{i}']
+                if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
+                    new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
+                    db.session.add(new_played_user)
+
+            new_game = CosmicEncounterGame(
+                game_id=newGameID, 
+                winnerName=player1, 
+                winnerScore=player1Score, 
+                secondName=player2, 
+                secondScore=player2Score, 
+                thirdName=player3, 
+                thirdScore=player3Score, 
+                fourthName=player4, 
+                fourthScore=player4Score, 
+                fifthName=player5, 
+                fifthScore=player5Score,
+                date=date.today())
+            db.session.add(new_game)
+            db.session.commit()
+
+        except Exception as e:
+            print(f"An error occurred while adding the CosmicEncounterGame: {e}")
+
+        finally:
+            print("Record Added")
+            return redirect('/addGame')
+
+@app.route('/addCatan', methods = ['POST', 'GET'])
+@login_required
+def addCatan():
+    if request.method == 'POST':
+        try:
+            player1 = request.form['Player1']
+            player1Score = request.form['Score1']
+            player2 = request.form['Player2']
+            player2Score = request.form['Score2']
+            player3 = request.form['Player3']
+            player3Score = request.form['Score3']
+            player4 = request.form['Player4']
+            player4Score = request.form['Score4']
+            newGameID = findID()
+
+            numPlayers = 4
+            game = "catan"
+            for i in range(1, numPlayers):
+                player = request.form[f'Player{i}']
+                if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
+                    new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
+                    db.session.add(new_played_user)
+
+            catan_game = CatanGame(
+                game_id=newGameID, 
+                winnerName=player1, 
+                winnerScore=player1Score, 
+                secondName=player2, 
+                secondScore=player2Score, 
+                thirdName=player3, 
+                thirdScore=player3Score, 
+                fourthName=player4, 
+                fourthScore=player4Score,
+                date=date.today())
+            db.session.add(catan_game)
+            db.session.commit()
+
+        except Exception as e:
+            print(f"An error occurred while adding the CatanGame: {e}")
 
         finally:
             print("Record Added")
