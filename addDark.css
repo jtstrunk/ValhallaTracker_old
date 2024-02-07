@@ -74,16 +74,13 @@ img {
     margin-bottom: 4px;
 }
 
-span {
-    
-}
-
 .card {
     transition: transform 0.2s; /* Add a smooth transition */
 }
   
 .card:hover {
     transform: scale(1.04); /* Increase the scale on hover */
+    cursor: pointer;
 }
 
 #addGame {
