@@ -330,13 +330,47 @@ def home():
 
     return render_template('home.html', title='Home', name=current_user.fullname, friends=user_friends, recentGames=topGames, profileStats=profileStats)
 
+@app.route('/hometest')
+@login_required
+def hometest():
+
+    user = User.query.filter_by(username=current_user.username).first()
+    user_friends = user.friends.limit(5).all()
+
+    topGames = findRecentGames(user)
+    print(topGames)
+    gamesWon = calcGamesWon(user)
+    gamesPlayed = calcGamesPlayed(user)
+    mostPlayed = calcMostPlayed(user)
+    mostWon = calcMostWon(user)
+    bestFriend = calcBestFriend(user)
+
+    profileStats = [gamesPlayed, gamesWon, mostPlayed, mostWon, bestFriend]
+
+    return render_template('hometest.html', title='HomeTest', name=current_user.fullname, friends=user_friends, recentGames=topGames, profileStats=profileStats)
+
+@app.route('/hometesttwo')
+@login_required
+def hometesttwo():
+
+    user = User.query.filter_by(username=current_user.username).first()
+    user_friends = user.friends.limit(5).all()
+
+    topGames = findRecentGames(user)
+    print(topGames)
+    gamesWon = calcGamesWon(user)
+    gamesPlayed = calcGamesPlayed(user)
+    mostPlayed = calcMostPlayed(user)
+    mostWon = calcMostWon(user)
+    bestFriend = calcBestFriend(user)
+
+    profileStats = [gamesPlayed, gamesWon, mostPlayed, mostWon, bestFriend]
+
+    return render_template('hometesttwo.html', title='HomeTest', name=current_user.fullname, friends=user_friends, recentGames=topGames, profileStats=profileStats)
+
 @app.route('/dominion', methods=['GET'])
 def dominion():
     return render_template('dominion.html')
-
-@app.route('/darktest', methods=['GET'])
-def darktest():
-    return render_template('test.html')
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -593,17 +627,15 @@ def DominionSelect():
 @app.route('/addDominionRecord', methods=['POST', 'GET'])
 @login_required
 def addDominionRecord():
-    print("HELLOW THERE")
     if request.method == 'POST':
-        print("nrpyja")
         player1 = request.form['Player1']
-        print(player1)
         player1Score = request.form['Score1']
-        print(player1Score)
         player2 = request.form['Player2']
-        print(player2)
         player2Score = request.form['Score2']
-        print(player2Score)
+        player3 = request.form['Player3']
+        player3Score = request.form['Score3']
+        player4 = request.form['Player4']
+        player4Score = request.form['Score4']
         newGameID = findID()
 
         dominion_game = DominionGame(
@@ -612,58 +644,15 @@ def addDominionRecord():
             winnerScore=player1Score, 
             secondName=player2, 
             secondScore=player2Score, 
-            # thirdName=player3, 
-            # thirdScore=player3Score, 
-            # fourthName=player4, 
-            # fourthScore=player4Score,
+            thirdName=player3, 
+            thirdScore=player3Score, 
+            fourthName=player4, 
+            fourthScore=player4Score,
             date=date.today())
         db.session.add(dominion_game)
         db.session.commit()
 
-        return render_template("DominionSelect.html", title='Home')
-
-        # try:
-        #     player1 = request.form['dominionPlayer1']
-        #     print(player1)
-        #     player1Score = request.form['scorePlayer1']
-        #     print(player1Score)
-        #     player2 = request.form['dominionPlayer2']
-        #     player2Score = request.form['scorePlayer2']
-        #     # player3 = request.form['dominionPlayer3']
-        #     # player3Score = request.form['scorePlayer3']
-        #     # player4 = request.form['dominionPlayer4']
-        #     # player4Score = request.form['scorePlayer4']
-        #     newGameID = findID()
-        #     numPlayers = 4
-        #     game = "dominion"
-        #     for i in range(1, numPlayers):
-        #         player = request.form[f'{game}Player{i}']
-        #         if not SupportedNames.query.filter_by(playerID=current_user.id, playerName=player).first():
-        #             new_played_user = SupportedNames(playerID=current_user.id, playerName=player)
-        #             db.session.add(new_played_user)
-
-        #     dominion_game = DominionGame(
-        #         game_id=newGameID, 
-        #         winnerName=player1, 
-        #         winnerScore=player1Score, 
-        #         secondName=player2, 
-        #         secondScore=player2Score, 
-        #         # thirdName=player3, 
-        #         # thirdScore=player3Score, 
-        #         # fourthName=player4, 
-        #         # fourthScore=player4Score,
-        #         date=date.today())
-        #     db.session.add(dominion_game)
-        #     db.session.commit()
-        #     print("DominionGame added successfully!")
-
-        # except Exception as e:
-        #     print(f"An error occurred while adding the DominionGame: {e}")
-
-        # finally:
-        #     print("Record Added")
-        #     return render_template("DominionSelect.html", title='Home')
-    # return render_template("DominionSelect.html", title='Home')
+        return render_template("home.html", title='Home')
 
 @app.route('/cards')
 def cards():
@@ -2090,6 +2079,6 @@ def findRecentGames(user):
         recentGames.append(new_game)
 
     sortedGames = sorted(recentGames, key=lambda x: x['game_id'], reverse=True)
-    top5Games = sortedGames[:5]
+    top5Games = sortedGames[:6]
 
     return  top5Games      
